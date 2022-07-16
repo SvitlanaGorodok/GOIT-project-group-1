@@ -25,13 +25,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasCallbackQuery()) {
-//            System.out.println(update.getCallbackQuery());
-//            System.out.println("111111111111111111111111");
-//            System.out.println(update.getMessage());
-//            System.out.println(update.getMessage().getChatId());
-//            System.out.println(update.getCallbackQuery().getFrom().getId());
-//
-//            System.out.println(update.getCallbackQuery().getChatInstance());
             String sss = update.getCallbackQuery().getData();
             SendMessage ssss = new SendMessage();
             ssss.setChatId(update.getCallbackQuery().getFrom().getId());
