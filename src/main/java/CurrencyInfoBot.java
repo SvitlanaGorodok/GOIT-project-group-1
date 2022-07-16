@@ -7,10 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
 
@@ -46,14 +43,16 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 switch (commad){
                     case  "/start":
                         List<List<InlineKeyboardButton>> buttonsSetingsAndInfo = new ArrayList<>();
-                        buttonsSetingsAndInfo.add(Arrays.asList(InlineKeyboardButton.builder().text("Отримати інфо").
-                                callbackData("GET_INFO").build(),InlineKeyboardButton.builder().text("Налаштування").
-                                callbackData("SETTINGS").build()));
+                        buttonsSetingsAndInfo.add(Arrays.asList(InlineKeyboardButton.builder().text("Отримати інфо")
+                                .callbackData("GET_INFO").build()));
+                        buttonsSetingsAndInfo.add(Arrays.asList(InlineKeyboardButton.builder().text("Налаштування")
+                                .callbackData("SETTINGS").build()));
                         execute(SendMessage.builder()
                                 .text("Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют").
                                 chatId(message.getChatId().toString())
                                 .replyMarkup(InlineKeyboardMarkup.builder()
-                                        .keyboard(buttonsSetingsAndInfo).build())
+                                        .keyboard(buttonsSetingsAndInfo)
+                                        .build())
                                 .build());
                         return;
                 }
