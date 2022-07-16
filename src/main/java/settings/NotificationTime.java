@@ -1,6 +1,4 @@
-package Settings;
-
-import java.sql.Time;
+package settings;
 
 public enum NotificationTime {
     NINE (9),
