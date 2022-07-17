@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="projectGroup1" />
+        <module name="GOIT-project-group-1" />
       </profile>
     </annotationProcessing>
   </component>
