@@ -78,8 +78,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> keyboardRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardRow2 = new ArrayList<>();
 
-        InlineKeyboardButton getInfoButton = InlineKeyboardButton.builder().text("Отрмати інфо").callbackData("GET_INFO").build();
-        InlineKeyboardButton settingsButton = InlineKeyboardButton.builder().text("Налаштування").callbackData("SETTINGS").build();
+        InlineKeyboardButton getInfoButton = InlineKeyboardButton.builder()
+                .text("Отрмати інфо").callbackData("GET_INFO")
+                .build();
+        InlineKeyboardButton settingsButton = InlineKeyboardButton.builder()
+                .text("Налаштування").callbackData("SETTINGS")
+                .build();
         keyboardRow1.add(getInfoButton);
         keyboardRow2.add(settingsButton);
 
@@ -97,10 +101,20 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> keyboardRow3 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardRow4 = new ArrayList<>();
 
-        InlineKeyboardButton numberOfDecPlacesButton = InlineKeyboardButton.builder().text("Кількість знаків після коми" + " (" + setting.getNumberOfDecimalPlaces() + ")").callbackData("SELECTED_NUMBER_OF_DEC_PLACES").build();
-        InlineKeyboardButton BankButton = InlineKeyboardButton.builder().text("Банк" + " (" + setting.getSelectedBank() + ")").callbackData("SELECTED_BANK").build();
-        InlineKeyboardButton CurrencyButton = InlineKeyboardButton.builder().text("Валюти" + " (" + setting.getSelectedCurrency() + ")").callbackData("SELECTED_CURRENCY").build();
-        InlineKeyboardButton NotificationTimeButton = InlineKeyboardButton.builder().text("Час сповіщення" + " (" + setting.getNotificationTime() + ")").callbackData("SELECTED_NOTIFICATION_TIME").build();
+        InlineKeyboardButton numberOfDecPlacesButton = InlineKeyboardButton.builder()
+                .text("Кількість знаків після коми" + " (" + setting.getNumberOfDecimalPlaces() + ")")
+                .callbackData("SELECTED_NUMBER_OF_DEC_PLACES")
+                .build();
+        InlineKeyboardButton BankButton = InlineKeyboardButton.builder().text("Банк" + " (" + setting.getSelectedBank() + ")")
+                .callbackData("SELECTED_BANK")
+                .build();
+        InlineKeyboardButton CurrencyButton = InlineKeyboardButton.builder().text("Валюти" + " (" + setting.getSelectedCurrency() + ")")
+                .callbackData("SELECTED_CURRENCY")
+                .build();
+        InlineKeyboardButton NotificationTimeButton = InlineKeyboardButton.builder()
+                .text("Час сповіщення" + " (" + setting.getNotificationTime() + ")")
+                .callbackData("SELECTED_NOTIFICATION_TIME")
+                .build();
 
         keyboardRow1.add(numberOfDecPlacesButton);
         keyboardRow2.add(BankButton);
