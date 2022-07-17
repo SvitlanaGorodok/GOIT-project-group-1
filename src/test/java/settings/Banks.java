@@ -1,7 +1,7 @@
 package settings;
 
 public enum Banks {
-    PRIVAT,
+    PRIVATE,
     MONO,
     NBU
 }
