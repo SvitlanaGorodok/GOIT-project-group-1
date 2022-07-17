@@ -21,6 +21,6 @@ public class APIPrivat {
         }
         System.out.println("API Privat " + date);
         final Bank bank = HttpUtil.getPrivat(date);
-        System.out.println(bank.toString());
+        System.out.println("Class "+bank.toString());
     }
 }

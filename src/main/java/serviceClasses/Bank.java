@@ -5,7 +5,6 @@ import settings.Banks;
 import java.util.Objects;
 
 public class Bank {
-
     private Banks bankName;
     private Float USD_buy;
     private Float USD_sell;

@@ -26,22 +26,23 @@ public class HttpUtil {
         }.getType());
         return date;
     }
+
     public static Bank getPrivat(List<Private> date) throws IOException, InterruptedException {
         Banks bankPrivat = Banks.PRIVAT;
         Bank bank = new Bank();
 
         bank.setBankName(bankPrivat);
         for (Private currency : date) {
-            if(currency.getCcy().equals("USD")){
+            if (currency.getCcy().equals("USD")) {
                 bank.setUSD_buy(currency.getBuy());
                 bank.setUSD_sell(currency.getSale());
-            }else if (currency.getCcy().equals("EUR")){
+            } else if (currency.getCcy().equals("EUR")) {
                 bank.setEUR_buy(currency.getBuy());
                 bank.setEUR_sell(currency.getSale());
-            }else if (currency.getCcy().equals("PLZ")){
+            } else if (currency.getCcy().equals("PLZ")) {
                 bank.setPLN_buy(currency.getBuy());
                 bank.setPLN_sell(currency.getSale());
-            }else if (currency.getCcy().equals("BTC")){
+            } else if (currency.getCcy().equals("BTC")) {
                 bank.setBTC_buy(currency.getBuy());
                 bank.setBTC_sell(currency.getSale());
             }
