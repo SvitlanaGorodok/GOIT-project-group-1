@@ -1,4 +1,4 @@
-package Monobank;
+package monobank;
 
 import java.util.Objects;
 
@@ -11,62 +11,17 @@ public class Monobank {
     private float rateSell;
     private float rateCross;
 
-    public Monobank(int currencyCodeA, int currencyCodeB, int date, float rateBuy, float rateSell, float rateCross) {
-        this.currencyCodeA = currencyCodeA;
-        this.currencyCodeB = currencyCodeB;
-        this.date = date;
-        this.rateBuy = rateBuy;
-        this.rateSell = rateSell;
-        this.rateCross = rateCross;
-    }
+    public int getCurrencyCodeA() { return currencyCodeA; }
 
-    public int getCurrencyCodeA() {
-        return currencyCodeA;
-    }
+    public int getCurrencyCodeB() { return currencyCodeB; }
 
-    public void setCurrencyCodeA(int currencyCodeA) {
-        this.currencyCodeA = currencyCodeA;
-    }
+    public int getDate() { return date; }
 
-    public int getCurrencyCodeB() {
-        return currencyCodeB;
-    }
+    public float getRateBuy() { return rateBuy; }
 
-    public void setCurrencyCodeB(int currencyCodeB) {
-        this.currencyCodeB = currencyCodeB;
-    }
+    public float getRateSell() { return rateSell; }
 
-    public int getDate() {
-        return date;
-    }
-
-    public void setDate(int date) {
-        this.date = date;
-    }
-
-    public float getRateBuy() {
-        return rateBuy;
-    }
-
-    public void setRateBuy(float rateBuy) {
-        this.rateBuy = rateBuy;
-    }
-
-    public float getRateSell() {
-        return rateSell;
-    }
-
-    public void setRateSell(float rateSell) {
-        this.rateSell = rateSell;
-    }
-
-    public float getRateCross() {
-        return rateCross;
-    }
-
-    public void setRateCross(float rateCross) {
-        this.rateCross = rateCross;
-    }
+    public float getRateCross() { return rateCross; }
 
     @Override
     public boolean equals(Object o) {

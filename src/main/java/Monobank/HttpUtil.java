@@ -1,7 +1,9 @@
-package Monobank;
+package monobank;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import serviceClasses.Bank;
+import settings.Banks;
 
 import java.io.IOException;
 import java.net.URI;
@@ -24,5 +26,23 @@ public class HttpUtil {
         List<Monobank> monobankList = GSON.fromJson(response.body(), new TypeToken<List<Monobank>>() {
         }.getType());
         return monobankList;
+    }
+
+    public static Bank getMonobank(List<Monobank> monobankList) {
+        Bank bank = new Bank();
+        bank.setBankName(Banks.MONO);
+        for (Monobank currency : monobankList) {
+            if (currency.getCurrencyCodeA() == 840 && currency.getCurrencyCodeB() == 980) {
+                bank.setUSD_buy(currency.getRateBuy());
+                bank.setUSD_sell(currency.getRateSell());
+            }else if(currency.getCurrencyCodeA() == 978 && currency.getCurrencyCodeB() == 980) {
+                bank.setEUR_buy(currency.getRateBuy());
+                bank.setEUR_sell(currency.getRateSell());
+            }else if(currency.getCurrencyCodeA() == 985) {
+                bank.setPLN_buy(currency.getRateCross());
+                bank.setPLN_sell(currency.getRateCross());
+            }
+        }
+        return bank;
     }
 }
