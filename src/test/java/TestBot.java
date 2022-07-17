@@ -1,6 +1,7 @@
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import settings.Settings;
 
 public class TestBot {
     public static void main(String[] args) {
@@ -10,5 +11,6 @@ public class TestBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+        Settings settings = new Settings();
     }
 }
