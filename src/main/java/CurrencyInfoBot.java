@@ -42,63 +42,93 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void handleMessage(Message message) throws TelegramApiException {
+        long chatId = message.getChatId();
         if (message.hasText() && message.hasEntities()) {
-            Optional<MessageEntity> comandEntity = message.getEntities().stream()
+            Optional<MessageEntity> commandEntity;
+            commandEntity = message.getEntities().stream()
                     .filter(e -> "bot_command".equals(e.getType())).findFirst();
-            if (comandEntity.isPresent()) {
-                String commad = message.getText()
-                        .substring(comandEntity.get().getOffset(), comandEntity.get().getLength());
-                switch (commad) {
+            if (commandEntity.isPresent()) {
+                String command = message.getText()
+                        .substring(commandEntity.get().getOffset(), commandEntity.get().getLength());
+                switch (command) {
                     case "/start":
                         execute(SendMessage.builder()
-                                .text("Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют").
-                                chatId(message.getChatId().toString())
-                                .replyMarkup(InlineKeyboardMarkup.builder()
-                                        .keyboard(buttonsSetingsAndInfo())
-                                        .build())
+                                .text("Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют")
+                                .chatId(chatId)
+                                .replyMarkup(keyboardMenuStart())
                                 .build());
-                        return;
                 }
             }
         }
     }
 
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
-        final long chatId = buttonQuery.getMessage().getChatId();
-        if (buttonQuery.getData().equals("SETTINGS")) {
+        long chatId = buttonQuery.getMessage().getChatId();
+        String dataButtonQuery = buttonQuery.getData();
+        switch (dataButtonQuery){
+            case "SETTINGS":
             execute(SendMessage.builder()
-                    .text("Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют").
-                    chatId(chatId)
-                    .replyMarkup(InlineKeyboardMarkup.builder()
-                            .keyboard(buttonsBankNumberOfDecimalPlacesCurrencyNotificationTime())
-                            .build())
+                    .text("Налаштування")
+                    .chatId(chatId)
+                    .replyMarkup(keyboardMenuSettings())
                     .build());
         }
     }
 
-    private static List<List<InlineKeyboardButton>> buttonsSetingsAndInfo() {
-        List<List<InlineKeyboardButton>> buttonsSetingsAndInfo = new ArrayList<>();
-        buttonsSetingsAndInfo.add(Arrays.asList(InlineKeyboardButton.builder().text("Отримати інфо")
-                .callbackData("GET_INFO").build()));
-        buttonsSetingsAndInfo.add(Arrays.asList(InlineKeyboardButton.builder().text("Налаштування")
-                .callbackData("SETTINGS").build()));
-        return buttonsSetingsAndInfo;
+    private static InlineKeyboardMarkup keyboardMenuStart() {
+
+        List<List<InlineKeyboardButton>> keyboardMenuStart = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMSRow1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMSRow2 = new ArrayList<>();
+        InlineKeyboardButton buttonGetInfo = InlineKeyboardButton.builder()
+                .text("Отримати інфо")
+                .callbackData("GET_INFO")
+                .build();
+        InlineKeyboardButton buttonSettings = InlineKeyboardButton.builder()
+                .text("Налаштування")
+                .callbackData("SETTINGS")
+                .build();
+        keyboardMSRow1.add(buttonGetInfo);
+        keyboardMSRow2.add(buttonSettings);
+        keyboardMenuStart.add(keyboardMSRow1);
+        keyboardMenuStart.add(keyboardMSRow2);
+        return InlineKeyboardMarkup.builder().keyboard(keyboardMenuStart).build();
     }
 
-    private static List<List<InlineKeyboardButton>> buttonsBankNumberOfDecimalPlacesCurrencyNotificationTime() {
-        List<List<InlineKeyboardButton>> buttonsBankNumberOfDecimalPlacesCurrencyNotificationTime = new ArrayList<>();
-        buttonsBankNumberOfDecimalPlacesCurrencyNotificationTime
-                .add(Arrays.asList(InlineKeyboardButton.builder().text("Кількість знаків після коми")
-                        .callbackData("NumberOfDecimalPlaces").build()));
-        buttonsBankNumberOfDecimalPlacesCurrencyNotificationTime
-                .add(Arrays.asList(InlineKeyboardButton.builder().text("Банк")
-                        .callbackData("Bank").build()));
-        buttonsBankNumberOfDecimalPlacesCurrencyNotificationTime
-                .add(Arrays.asList(InlineKeyboardButton.builder().text("Валюта")
-                        .callbackData("Currency").build()));
-        buttonsBankNumberOfDecimalPlacesCurrencyNotificationTime
-                .add(Arrays.asList(InlineKeyboardButton.builder().text("Час сповіщення")
-                        .callbackData("NotificationTime").build()));
-        return buttonsBankNumberOfDecimalPlacesCurrencyNotificationTime;
+    private static InlineKeyboardMarkup keyboardMenuSettings() {
+        List<List<InlineKeyboardButton>> keyboardMenuSettings = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMSetRow2 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMSetRow3 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
+        InlineKeyboardButton buttonNumOfDecPlaces = InlineKeyboardButton.builder()
+                .text("Кількість знаків після коми")
+                .callbackData("NumberOfDecimalPlaces")
+                .build();
+        InlineKeyboardButton buttonBank = InlineKeyboardButton.builder()
+                .text("Банк")
+                .callbackData("Bank")
+                .build();
+        InlineKeyboardButton buttonCurrency = InlineKeyboardButton.builder()
+                .text("Валюта")
+                .callbackData("Currency")
+                .build();
+        InlineKeyboardButton buttonNotificationTime = InlineKeyboardButton.builder()
+                .text("Час сповіщення")
+                .callbackData("NotificationTime")
+                .build();
+        keyboardMSetRow1.add(buttonNumOfDecPlaces);
+        keyboardMSetRow2.add(buttonBank);
+        keyboardMSetRow3.add(buttonCurrency);
+        keyboardMSetRow4.add(buttonNotificationTime);
+        keyboardMenuSettings.add(keyboardMSetRow1);
+        keyboardMenuSettings.add(keyboardMSetRow2);
+        keyboardMenuSettings.add(keyboardMSetRow3);
+        keyboardMenuSettings.add(keyboardMSetRow4);
+
+        return InlineKeyboardMarkup.builder().keyboard(keyboardMenuSettings).build();
     }
 }
+
+
+
