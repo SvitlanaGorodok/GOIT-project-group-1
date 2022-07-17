@@ -1,3 +1,5 @@
+package serviceClasses;
+
 import java.util.Objects;
 
 public class Bank {
@@ -124,7 +126,7 @@ public class Bank {
 
     @Override
     public String toString() {
-        return "Bank{" +
+        return "serviceClasses.Bank{" +
                 "bankName='" + bankName + '\'' +
                 ", USD_buy=" + USD_buy +
                 ", USD_sell=" + USD_sell +
