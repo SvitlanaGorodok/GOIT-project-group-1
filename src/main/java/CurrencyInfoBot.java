@@ -65,13 +65,13 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        switch (dataButtonQuery){
+        switch (dataButtonQuery) {
             case "SETTINGS":
-            execute(SendMessage.builder()
-                    .text("Налаштування")
-                    .chatId(chatId)
-                    .replyMarkup(keyboardMenuSettings())
-                    .build());
+                execute(SendMessage.builder()
+                        .text("Налаштування")
+                        .chatId(chatId)
+                        .replyMarkup(keyboardMenuSettings())
+                        .build());
         }
     }
 
