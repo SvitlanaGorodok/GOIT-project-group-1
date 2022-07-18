@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import serviceClasses.Bank;
 import settings.Banks;
 
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -22,29 +23,33 @@ public class HttpUtil {
                 .GET()
                 .build();
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        List<Private> date = GSON.fromJson(response.body(), new TypeToken<List<Private>>() {
+        return GSON.fromJson(response.body(), new TypeToken<List<Private>>() {
         }.getType());
-        return date;
     }
 
-    public static Bank getPrivat(List<Private> date) throws IOException, InterruptedException {
+    public static Bank getPrivat(List<Private> date) {
         Banks bankPrivat = Banks.PRIVAT;
         Bank bank = new Bank();
 
         bank.setBankName(bankPrivat);
         for (Private currency : date) {
-            if (currency.getCcy().equals("USD")) {
-                bank.setUSD_buy(currency.getBuy());
-                bank.setUSD_sell(currency.getSale());
-            } else if (currency.getCcy().equals("EUR")) {
-                bank.setEUR_buy(currency.getBuy());
-                bank.setEUR_sell(currency.getSale());
-            } else if (currency.getCcy().equals("PLZ")) {
-                bank.setPLN_buy(currency.getBuy());
-                bank.setPLN_sell(currency.getSale());
-            } else if (currency.getCcy().equals("BTC")) {
-                bank.setBTC_buy(currency.getBuy());
-                bank.setBTC_sell(currency.getSale());
+            switch (currency.getCcy()) {
+                case "USD":
+                    bank.setUSD_buy(currency.getBuy());
+                    bank.setUSD_sell(currency.getSale());
+                    break;
+                case "EUR":
+                    bank.setEUR_buy(currency.getBuy());
+                    bank.setEUR_sell(currency.getSale());
+                    break;
+                case "PLZ":
+                    bank.setPLN_buy(currency.getBuy());
+                    bank.setPLN_sell(currency.getSale());
+                    break;
+                case "BTC":
+                    bank.setBTC_buy(currency.getBuy());
+                    bank.setBTC_sell(currency.getSale());
+                    break;
             }
         }
         return bank;
