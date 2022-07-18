@@ -67,11 +67,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         String dataButtonQuery = buttonQuery.getData();
         switch (dataButtonQuery) {
             case "SETTINGS":
-                execute(SendMessage.builder()
-                        .text("Налаштування")
-                        .chatId(chatId)
-                        .replyMarkup(keyboardMenuSettings())
-                        .build());
+                printMenu(chatId, keyboardMenuSettings(), "Налаштування:");
         }
     }
 
@@ -127,6 +123,22 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         keyboardMenuSettings.add(keyboardMSetRow4);
 
         return InlineKeyboardMarkup.builder().keyboard(keyboardMenuSettings).build();
+    }
+
+    private void printMenu(Long chatID, InlineKeyboardMarkup keyboard, String text)
+            throws TelegramApiException {
+        execute(SendMessage.builder()
+                .text(text)
+                .chatId(chatID)
+                .replyMarkup(keyboard)
+                .build());
+    }
+
+    private void printMessage(Long chatID, String messageText) throws TelegramApiException {
+        execute(SendMessage.builder()
+                .text(messageText)
+                .chatId(chatID)
+                .build());
     }
 }
 
