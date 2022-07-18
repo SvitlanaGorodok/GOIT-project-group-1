@@ -105,10 +105,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                 .text("Кількість знаків після коми" + " (" + setting.getNumberOfDecimalPlaces() + ")")
                 .callbackData("SELECTED_NUMBER_OF_DEC_PLACES")
                 .build();
-        InlineKeyboardButton BankButton = InlineKeyboardButton.builder().text("Банк" + " (" + setting.getSelectedBank() + ")")
+        InlineKeyboardButton BankButton = InlineKeyboardButton.builder()
+                .text("Банк" + " (" + setting.getSelectedBank() + ")")
                 .callbackData("SELECTED_BANK")
                 .build();
-        InlineKeyboardButton CurrencyButton = InlineKeyboardButton.builder().text("Валюти" + " (" + setting.getSelectedCurrency() + ")")
+        InlineKeyboardButton CurrencyButton = InlineKeyboardButton.builder()
+                .text("Валюти" + " (" + setting.getSelectedCurrency() + ")")
                 .callbackData("SELECTED_CURRENCY")
                 .build();
         InlineKeyboardButton NotificationTimeButton = InlineKeyboardButton.builder()

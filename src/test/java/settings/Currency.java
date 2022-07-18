@@ -51,18 +51,18 @@ public enum Currency {
         return selectedCurrency;
     }
 
-    public static void main(String[] args) {
-        System.out.println(getSelectedCurrency());
-        EUR.setCurrencySelect(true);
-        System.out.println(getSelectedCurrency());
-        PLN.setCurrencySelect(true);
-        System.out.println(getSelectedCurrency());
-        BTC.setCurrencySelect(true);
-        System.out.println(getSelectedCurrency());
-
-        System.out.println(getSelectedCurrencyList());
-
-    }
+//    public static void main(String[] args) {
+//        System.out.println(getSelectedCurrency());
+//        EUR.setCurrencySelect(true);
+//        System.out.println(getSelectedCurrency());
+//        PLN.setCurrencySelect(true);
+//        System.out.println(getSelectedCurrency());
+//        BTC.setCurrencySelect(true);
+//        System.out.println(getSelectedCurrency());
+//
+//        System.out.println(getSelectedCurrencyList());
+//
+//    }
 }
 
 
