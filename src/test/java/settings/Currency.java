@@ -34,13 +34,6 @@ public enum Currency {
         this.currencySelect = currencySelect;
     }
 
-    public static String getSelectedCurrency() {
-        return getSelectedCurrencyList().stream()
-                .map(currency -> currency.currencyName)
-                .collect(Collectors.joining(", ", "(", ")"));
-
-    }
-
     public static List<Currency> getSelectedCurrencyList() {
         List<Currency> selectedCurrency = new ArrayList<>();
         for (Currency curr : Currency.values()) {

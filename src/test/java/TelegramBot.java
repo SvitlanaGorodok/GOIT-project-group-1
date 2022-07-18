@@ -1,3 +1,4 @@
+import org.jvnet.hk2.internal.Collector;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -7,11 +8,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import settings.Currency;
 import settings.Setting;
 import settings.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TelegramBot extends TelegramLongPollingBot {
     @Override
@@ -94,6 +97,10 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private InlineKeyboardMarkup initKeyboard2(Setting setting) {
+        String selectedCurr = setting.getSelectedCurrency().stream()
+                .map(Currency::getCurrencyName)
+                .collect(Collectors.joining(", ", "(", ")"));
+
         List<List<InlineKeyboardButton>> keyboardRows = new ArrayList<>();
 
         List<InlineKeyboardButton> keyboardRow1 = new ArrayList<>();
@@ -106,15 +113,15 @@ public class TelegramBot extends TelegramLongPollingBot {
                 .callbackData("SELECTED_NUMBER_OF_DEC_PLACES")
                 .build();
         InlineKeyboardButton BankButton = InlineKeyboardButton.builder()
-                .text("Банк" + " (" + setting.getSelectedBank() + ")")
+                .text("Банк" + " (" + setting.getSelectedBank().getBankName() + ")")
                 .callbackData("SELECTED_BANK")
                 .build();
         InlineKeyboardButton CurrencyButton = InlineKeyboardButton.builder()
-                .text("Валюти" + " (" + setting.getSelectedCurrency() + ")")
+                .text("Валюти " + selectedCurr)
                 .callbackData("SELECTED_CURRENCY")
                 .build();
         InlineKeyboardButton NotificationTimeButton = InlineKeyboardButton.builder()
-                .text("Час сповіщення" + " (" + setting.getNotificationTime() + ")")
+                .text("Час сповіщення" + " (" + setting.getNotificationTime().getTime() + ")")
                 .callbackData("SELECTED_NOTIFICATION_TIME")
                 .build();
 
