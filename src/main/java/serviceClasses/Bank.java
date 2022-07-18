@@ -5,7 +5,8 @@ import settings.Banks;
 import java.util.Objects;
 
 public class Bank {
-    private Banks bankName;
+
+    private Enum<Banks> bankName;
     private Float USD_buy;
     private Float USD_sell;
     private Float EUR_buy;
@@ -16,13 +17,11 @@ public class Bank {
     private Float BTC_sell;
     private Float time;
 
-   public Banks getBankName() {
-        return bankName;
-    }
+    public Enum<Banks> getBankName() {
+        return bankName; }
 
-    public void setBankName(Banks bankName) {
-        this.bankName = bankName;
-    }
+    public void setBankName(Enum<Banks> bankName) {
+        this.bankName = bankName; }
 
     public Float getUSD_buy() {
         return USD_buy;
@@ -72,14 +71,6 @@ public class Bank {
         this.PLN_sell = PLN_sell;
     }
 
-    public Float getTime() {
-        return time;
-    }
-
-    public void setTime(Float time) {
-        this.time = time;
-    }
-
     public Float getBTC_buy() {
         return BTC_buy;
     }
@@ -96,23 +87,40 @@ public class Bank {
         this.BTC_sell = BTC_sell;
     }
 
+    public Float getTime() {
+        return time;
+    }
+
+    public void setTime(Float time) {
+        this.time = time;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bank bank = (Bank) o;
-        return Objects.equals(bankName, bank.bankName) && Objects.equals(USD_buy, bank.USD_buy) && Objects.equals(USD_sell, bank.USD_sell) && Objects.equals(EUR_buy, bank.EUR_buy) && Objects.equals(EUR_sell, bank.EUR_sell) && Objects.equals(PLN_buy, bank.PLN_buy) && Objects.equals(PLN_sell, bank.PLN_sell) && Objects.equals(time, bank.time);
+        return Objects.equals(bankName, bank.bankName)
+                && Objects.equals(USD_buy, bank.USD_buy)
+                && Objects.equals(USD_sell, bank.USD_sell)
+                && Objects.equals(EUR_buy, bank.EUR_buy)
+                && Objects.equals(EUR_sell, bank.EUR_sell)
+                && Objects.equals(PLN_buy, bank.PLN_buy)
+                && Objects.equals(PLN_sell, bank.PLN_sell)
+                && Objects.equals(BTC_buy, bank.BTC_buy)
+                && Objects.equals(BTC_sell, bank.BTC_sell)
+                && Objects.equals(time, bank.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bankName, USD_buy, USD_sell, EUR_buy, EUR_sell, PLN_buy, PLN_sell, time);
+        return Objects.hash(bankName, USD_buy, USD_sell, EUR_buy, EUR_sell, PLN_buy, PLN_sell, BTC_buy, BTC_sell, time);
     }
 
     @Override
     public String toString() {
         return "Bank{" +
-                "bankName='" + bankName + '\'' +
+                "bankName=" + bankName +
                 ", USD_buy=" + USD_buy +
                 ", USD_sell=" + USD_sell +
                 ", EUR_buy=" + EUR_buy +
