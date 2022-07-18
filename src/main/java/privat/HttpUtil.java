@@ -2,6 +2,9 @@ package privat;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import serviceClasses.Bank;
+import settings.Banks;
+
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,9 +23,35 @@ public class HttpUtil {
                 .GET()
                 .build();
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        List<Private> date = GSON.fromJson(response.body(), new TypeToken<List<Private>>() {
+        return GSON.fromJson(response.body(), new TypeToken<List<Private>>() {
         }.getType());
-        return date;
     }
 
+    public static Bank getPrivat(List<Private> date) {
+        Banks bankPrivat = Banks.PRIVAT;
+        Bank bank = new Bank();
+
+        bank.setBankName(bankPrivat);
+        for (Private currency : date) {
+            switch (currency.getCcy()) {
+                case "USD":
+                    bank.setUSD_buy(currency.getBuy());
+                    bank.setUSD_sell(currency.getSale());
+                    break;
+                case "EUR":
+                    bank.setEUR_buy(currency.getBuy());
+                    bank.setEUR_sell(currency.getSale());
+                    break;
+                case "PLZ":
+                    bank.setPLN_buy(currency.getBuy());
+                    bank.setPLN_sell(currency.getSale());
+                    break;
+                case "BTC":
+                    bank.setBTC_buy(currency.getBuy());
+                    bank.setBTC_sell(currency.getSale());
+                    break;
+            }
+        }
+        return bank;
+    }
 }
