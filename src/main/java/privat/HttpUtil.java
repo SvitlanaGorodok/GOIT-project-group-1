@@ -2,6 +2,8 @@ package privat;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import serviceClasses.Bank;
+import settings.Banks;
 
 import java.io.IOException;
 import java.net.URI;
@@ -25,4 +27,26 @@ public class HttpUtil {
         return date;
     }
 
+    public static Bank getPrivat(List<Private> date) throws IOException, InterruptedException {
+        Banks bankPrivat = Banks.PRIVAT;
+        Bank bank = new Bank();
+
+        bank.setBankName(bankPrivat);
+        for (Private currency : date) {
+            if (currency.getCcy().equals("USD")) {
+                bank.setUSD_buy(currency.getBuy());
+                bank.setUSD_sell(currency.getSale());
+            } else if (currency.getCcy().equals("EUR")) {
+                bank.setEUR_buy(currency.getBuy());
+                bank.setEUR_sell(currency.getSale());
+            } else if (currency.getCcy().equals("PLZ")) {
+                bank.setPLN_buy(currency.getBuy());
+                bank.setPLN_sell(currency.getSale());
+            } else if (currency.getCcy().equals("BTC")) {
+                bank.setBTC_buy(currency.getBuy());
+                bank.setBTC_sell(currency.getSale());
+            }
+        }
+        return bank;
+    }
 }
