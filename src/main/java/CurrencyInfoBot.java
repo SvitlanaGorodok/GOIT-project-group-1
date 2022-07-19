@@ -72,7 +72,56 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                         .chatId(chatId)
                         .replyMarkup(keyboardMenuSettings())
                         .build());
+                break;
+            case "Currency":
+                execute(SendMessage.builder()
+                        .text("Вибиріть необхідну валюту:")
+                        .chatId(chatId)
+                        .replyMarkup(keyboardMenuCurrency())
+                        .build());
+                break;
         }
+    }
+    private static InlineKeyboardMarkup keyboardMenuCurrency() {
+        List<List<InlineKeyboardButton>> keyboardMenuCurrency = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency2 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency3 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency4 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency5 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency6 = new ArrayList<>();
+        InlineKeyboardButton buttonGetCurrencyUsd = InlineKeyboardButton.builder()
+                .text("USD")
+                .callbackData("GET_USD")
+                .build();
+        InlineKeyboardButton buttonGetCurrencyEur = InlineKeyboardButton.builder()
+                .text("EUR")
+                .callbackData("GET_EUR")
+                .build();
+        InlineKeyboardButton buttonGetCurrencyPln = InlineKeyboardButton.builder()
+                .text("PLN")
+                .callbackData("GET_PLN")
+                .build();
+        InlineKeyboardButton buttonGetCurrencyBitcoin = InlineKeyboardButton.builder()
+                .text("BITCOIN")
+                .callbackData("GET_BITCOIN")
+                .build();
+        InlineKeyboardButton buttonGoBack = InlineKeyboardButton.builder()
+                .text("Назад")
+                .callbackData("SETTINGS")
+                .build();
+        keyboardMenuCurrency1.add(buttonGetCurrencyUsd);
+        keyboardMenuCurrency2.add(buttonGetCurrencyEur);
+        keyboardMenuCurrency3.add(buttonGetCurrencyPln);
+        keyboardMenuCurrency4.add(buttonGetCurrencyBitcoin);
+        keyboardMenuCurrency5.add(buttonGoBack);
+        keyboardMenuCurrency.add(keyboardMenuCurrency1);
+        keyboardMenuCurrency.add(keyboardMenuCurrency2);
+        keyboardMenuCurrency.add(keyboardMenuCurrency3);
+        keyboardMenuCurrency.add(keyboardMenuCurrency4);
+        keyboardMenuCurrency.add(keyboardMenuCurrency5);
+\
+        return InlineKeyboardMarkup.builder().keyboard(keyboardMenuCurrency).build();
     }
 
     private static InlineKeyboardMarkup keyboardMenuStart() {
