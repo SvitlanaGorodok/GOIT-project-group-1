@@ -1,5 +1,7 @@
 package nbu;
 
+import serviceClasses.Bank;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
@@ -10,5 +12,9 @@ public class ApiNbu {
     public static void main(String[] args) throws IOException, InterruptedException {
         final List<NbuBank> dateNBU = HttpUtil.sendGetBank(URI.create(NBU_URL));
         System.out.println("NBU:\n"+dateNBU);
+
+        Bank bank = HttpUtil.getNbu(dateNBU);
+
+        System.out.println("bank = " + bank);
     }
 }

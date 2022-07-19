@@ -42,7 +42,7 @@ public class HttpUtil {
                     bank.setEUR_buy(currency.getRate());
                     bank.setEUR_sell(currency.getRate());
                     break;
-                case "PLZ":
+                case "PLN":
                     bank.setPLN_buy(currency.getRate());
                     bank.setPLN_sell(currency.getRate());
                 case "BTC":
