@@ -1,3 +1,4 @@
+import keyboards.MenuNumDecimalPlaces;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -65,9 +66,17 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
+        System.out.println("dataButtonQuery "+dataButtonQuery);
         switch (dataButtonQuery) {
             case "SETTINGS":
                 printMenu(chatId, keyboardMenuSettings(), "Налаштування:");
+                break;
+            case "NumberOfDecimalPlaces":
+                printMenu(chatId, MenuNumDecimalPlaces.keyboard(), "Введить кількість знаків після коми:");
+                break;
+            case "BackToSetting":
+                printMenu(chatId, keyboardMenuSettings(), "Налаштування:");
+                break;
         }
     }
 
