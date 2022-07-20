@@ -1,4 +1,11 @@
+
+
+
+
+
 package settings;
+
+import java.util.List;
 
 public class Setting {
 
@@ -9,18 +16,17 @@ public class Setting {
     }
 
 
-
     private NumberOfDecimalPlaces numberOfDecimalPlaces = NumberOfDecimalPlaces.TWO;
     private Banks selectedBank = Banks.PRIVATE;
-    private Currency selectedCurrency = Currency.USD;
+    private List<Currency> selectedCurrency = Currency.getSelectedCurrencyList();
     private NotificationTime notificationTime = NotificationTime.NINE;
 
     public long getChatId() {
         return chatId;
     }
 
-    public NumberOfDecimalPlaces getNumberOfDecimalPlaces() {
-        return numberOfDecimalPlaces;
+    public int getNumberOfDecimalPlaces() {
+        return numberOfDecimalPlaces.getIntNumber();
     }
 
     public void setNumberOfDecimalPlaces(NumberOfDecimalPlaces numberOfDecimalPlaces) {
@@ -35,11 +41,11 @@ public class Setting {
         this.selectedBank = selectedBank;
     }
 
-    public Currency getSelectedCurrency() {
+    public List<Currency> getSelectedCurrency() {
         return selectedCurrency;
     }
 
-    public void setSelectedCurrency(Currency selectedCurrency) {
+    public void setSelectedCurrency(List<Currency> selectedCurrency) {
         this.selectedCurrency = selectedCurrency;
     }
 

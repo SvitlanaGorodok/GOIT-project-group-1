@@ -1,16 +1,13 @@
-import org.jvnet.hk2.internal.Collector;
+package settings;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import settings.Currency;
-import settings.Setting;
-import settings.Settings;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +110,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 .callbackData("SELECTED_NUMBER_OF_DEC_PLACES")
                 .build();
         InlineKeyboardButton BankButton = InlineKeyboardButton.builder()
-                .text("Банк" + " (" + setting.getSelectedBank().getBankName() + ")")
+                .text("Банк" + " (" + setting.getSelectedBank().getBankNameUA() + ")")
                 .callbackData("SELECTED_BANK")
                 .build();
         InlineKeyboardButton CurrencyButton = InlineKeyboardButton.builder()

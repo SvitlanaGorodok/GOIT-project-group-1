@@ -17,15 +17,15 @@ public class MenuBanks {
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         InlineKeyboardButton buttonPrivat = InlineKeyboardButton.builder()
                 .text("Приват Банк")
-                .callbackData(Banks.PRIVATE.getBankName())
+                .callbackData(Banks.PRIVATE.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonNBU = InlineKeyboardButton.builder()
                 .text("Національний Банк України")
-                .callbackData(Banks.NBU.getBankName())
+                .callbackData(Banks.NBU.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonMonobank = InlineKeyboardButton.builder()
                 .text("Монобанк")
-                .callbackData(Banks.MONO.getBankName())
+                .callbackData(Banks.MONO.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
                 .text("↩️")
