@@ -1,3 +1,4 @@
+import keyboards.MenuNumDecimalPlaces;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -65,6 +66,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
+        System.out.println("dataButtonQuery "+dataButtonQuery);
         switch (dataButtonQuery) {
             case "SETTINGS":
                 execute(SendMessage.builder()
@@ -81,7 +83,54 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
             case "Monobank":
                 printMenu(chatId, MenuBanks.keyboard(), "Монобанк");
                 break;
+            case "Currency":
+                execute(SendMessage.builder()
+                        .text("Вибиріть необхідну валюту:")
+                        .chatId(chatId)
+                        .replyMarkup(keyboardMenuCurrency())
+                        .build());
+                break;
         }
+    }
+    private static InlineKeyboardMarkup keyboardMenuCurrency() {
+        List<List<InlineKeyboardButton>> keyboardMenuCurrency = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency2 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency3 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency4 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMenuCurrency5 = new ArrayList<>();
+        InlineKeyboardButton buttonUsd = InlineKeyboardButton.builder()
+                .text("USD")
+                .callbackData("USD")
+                .build();
+        InlineKeyboardButton buttonEur = InlineKeyboardButton.builder()
+                .text("EUR")
+                .callbackData("EUR")
+                .build();
+        InlineKeyboardButton buttonPln = InlineKeyboardButton.builder()
+                .text("PLN")
+                .callbackData("PLN")
+                .build();
+        InlineKeyboardButton buttonBtc = InlineKeyboardButton.builder()
+                .text("BITCOIN")
+                .callbackData("BTC")
+                .build();
+        InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
+                .text("Назад")
+                .callbackData("SETTINGS")
+                .build();
+        keyboardMenuCurrency1.add(buttonUsd);
+        keyboardMenuCurrency2.add(buttonEur);
+        keyboardMenuCurrency3.add(buttonPln);
+        keyboardMenuCurrency4.add(buttonBtc);
+        keyboardMenuCurrency5.add(buttonBack);
+        keyboardMenuCurrency.add(keyboardMenuCurrency1);
+        keyboardMenuCurrency.add(keyboardMenuCurrency2);
+        keyboardMenuCurrency.add(keyboardMenuCurrency3);
+        keyboardMenuCurrency.add(keyboardMenuCurrency4);
+        keyboardMenuCurrency.add(keyboardMenuCurrency5);
+\
+        return InlineKeyboardMarkup.builder().keyboard(keyboardMenuCurrency).build();
     }
 
     private static InlineKeyboardMarkup keyboardMenuStart() {
@@ -136,6 +185,22 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         keyboardMenuSettings.add(keyboardMSetRow4);
 
         return InlineKeyboardMarkup.builder().keyboard(keyboardMenuSettings).build();
+    }
+
+    private void printMenu(Long chatID, InlineKeyboardMarkup keyboard, String text)
+            throws TelegramApiException {
+        execute(SendMessage.builder()
+                .text(text)
+                .chatId(chatID)
+                .replyMarkup(keyboard)
+                .build());
+    }
+
+    private void printMessage(Long chatID, String messageText) throws TelegramApiException {
+        execute(SendMessage.builder()
+                .text(messageText)
+                .chatId(chatID)
+                .build());
     }
 }
 
