@@ -74,6 +74,14 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                         .chatId(chatId)
                         .replyMarkup(keyboardMenuSettings())
                         .build());
+            case "Privat":
+                printMenu(chatId, MenuBanks.keyboard(), "Приват Банк");
+                break;
+            case "NBU":
+                printMenu(chatId, MenuBanks.keyboard(), "Національний Банк України");
+                break;
+            case "Monobank":
+                printMenu(chatId, MenuBanks.keyboard(), "Монобанк");
                 break;
             case "Currency":
                 execute(SendMessage.builder()
