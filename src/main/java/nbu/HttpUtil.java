@@ -2,6 +2,8 @@ package nbu;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import serviceClasses.Bank;
+import settings.Banks;
 
 import java.io.IOException;
 import java.net.URI;
@@ -23,5 +25,32 @@ public class HttpUtil {
         List<NbuBank> date = GSON.fromJson(response.body(), new TypeToken<List<NbuBank>>() {
         }.getType());
         return date;
+    }
+
+    public static Bank getNbu(List<NbuBank> luest) {
+        Bank bank = new Bank();
+
+
+        bank.setBankName(Banks.NBU);
+        for (NbuBank currency : luest) {
+            switch (currency.getCc()) {
+                case "USD":
+                    bank.setUSD_buy(currency.getRate());
+                    bank.setUSD_sell(currency.getRate());
+                    break;
+                case "EUR":
+                    bank.setEUR_buy(currency.getRate());
+                    bank.setEUR_sell(currency.getRate());
+                    break;
+                case "PLN":
+                    bank.setPLN_buy(currency.getRate());
+                    bank.setPLN_sell(currency.getRate());
+                case "BTC":
+                    bank.setBTC_buy(currency.getRate());
+                    bank.setBTC_sell(currency.getRate());
+                    break;
+            }
+        }
+        return bank;
     }
 }

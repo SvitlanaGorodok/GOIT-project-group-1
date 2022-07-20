@@ -1,21 +1,23 @@
 package nbu;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class NbuBank {
     private int r030;
     private String txt;
-    private String rate;
+    private float rate;
     private String cc;
     private String exchangedate ;
+//    private Date exchangedate ;
 
-    public NbuBank(int r030, String txt, String rate, String cc, String exchangedate) {
-        this.r030 = r030;
-        this.txt = txt;
-        this.rate = rate;
-        this.cc = cc;
-        this.exchangedate = exchangedate;
-    }
+//    public NbuBank(int r030, String txt, float rate, String cc, String exchangedate) {
+//        this.r030 = r030;
+//        this.txt = txt;
+//        this.rate = rate;
+//        this.cc = cc;
+//        this.exchangedate = exchangedate;
+//    }
 
     public int getR030() {
         return r030;
@@ -25,7 +27,7 @@ public class NbuBank {
         return txt;
     }
 
-    public String getRate() {
+    public float getRate() {
         return rate;
     }
 

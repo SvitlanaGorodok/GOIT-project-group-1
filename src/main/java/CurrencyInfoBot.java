@@ -1,3 +1,4 @@
+import keyboards.MenuNumDecimalPlaces;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -65,6 +66,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
+        System.out.println("dataButtonQuery "+dataButtonQuery);
         switch (dataButtonQuery) {
             case "SETTINGS":
                 execute(SendMessage.builder()
@@ -175,6 +177,22 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         keyboardMenuSettings.add(keyboardMSetRow4);
 
         return InlineKeyboardMarkup.builder().keyboard(keyboardMenuSettings).build();
+    }
+
+    private void printMenu(Long chatID, InlineKeyboardMarkup keyboard, String text)
+            throws TelegramApiException {
+        execute(SendMessage.builder()
+                .text(text)
+                .chatId(chatID)
+                .replyMarkup(keyboard)
+                .build());
+    }
+
+    private void printMessage(Long chatID, String messageText) throws TelegramApiException {
+        execute(SendMessage.builder()
+                .text(messageText)
+                .chatId(chatID)
+                .build());
     }
 }
 
