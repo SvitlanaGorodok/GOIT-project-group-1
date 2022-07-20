@@ -89,32 +89,31 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> keyboardMenuCurrency3 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMenuCurrency4 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMenuCurrency5 = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardMenuCurrency6 = new ArrayList<>();
-        InlineKeyboardButton buttonGetCurrencyUsd = InlineKeyboardButton.builder()
+        InlineKeyboardButton buttonUsd = InlineKeyboardButton.builder()
                 .text("USD")
-                .callbackData("GET_USD")
+                .callbackData("USD")
                 .build();
-        InlineKeyboardButton buttonGetCurrencyEur = InlineKeyboardButton.builder()
+        InlineKeyboardButton buttonEur = InlineKeyboardButton.builder()
                 .text("EUR")
-                .callbackData("GET_EUR")
+                .callbackData("EUR")
                 .build();
-        InlineKeyboardButton buttonGetCurrencyPln = InlineKeyboardButton.builder()
+        InlineKeyboardButton buttonPln = InlineKeyboardButton.builder()
                 .text("PLN")
-                .callbackData("GET_PLN")
+                .callbackData("PLN")
                 .build();
-        InlineKeyboardButton buttonGetCurrencyBitcoin = InlineKeyboardButton.builder()
+        InlineKeyboardButton buttonBtc = InlineKeyboardButton.builder()
                 .text("BITCOIN")
-                .callbackData("GET_BITCOIN")
+                .callbackData("BTC")
                 .build();
-        InlineKeyboardButton buttonGoBack = InlineKeyboardButton.builder()
+        InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
                 .text("Назад")
                 .callbackData("SETTINGS")
                 .build();
-        keyboardMenuCurrency1.add(buttonGetCurrencyUsd);
-        keyboardMenuCurrency2.add(buttonGetCurrencyEur);
-        keyboardMenuCurrency3.add(buttonGetCurrencyPln);
-        keyboardMenuCurrency4.add(buttonGetCurrencyBitcoin);
-        keyboardMenuCurrency5.add(buttonGoBack);
+        keyboardMenuCurrency1.add(buttonUsd);
+        keyboardMenuCurrency2.add(buttonEur);
+        keyboardMenuCurrency3.add(buttonPln);
+        keyboardMenuCurrency4.add(buttonBtc);
+        keyboardMenuCurrency5.add(buttonBack);
         keyboardMenuCurrency.add(keyboardMenuCurrency1);
         keyboardMenuCurrency.add(keyboardMenuCurrency2);
         keyboardMenuCurrency.add(keyboardMenuCurrency3);
