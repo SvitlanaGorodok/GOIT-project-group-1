@@ -17,7 +17,7 @@ public class MenuBanks {
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         InlineKeyboardButton buttonPrivat = InlineKeyboardButton.builder()
                 .text("Приват Банк")
-                .callbackData(Banks.PRIVAT.getBankName())
+                .callbackData(Banks.PRIVATE.getBankName())
                 .build();
         InlineKeyboardButton buttonNBU = InlineKeyboardButton.builder()
                 .text("Національний Банк України")

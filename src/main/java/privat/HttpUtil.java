@@ -28,7 +28,7 @@ public class HttpUtil {
     }
 
     public static Bank getPrivat(List<Private> date) {
-        Banks bankPrivat = Banks.PRIVAT;
+        Banks bankPrivat = Banks.PRIVATE;
         Bank bank = new Bank();
 
         bank.setBankName(bankPrivat);

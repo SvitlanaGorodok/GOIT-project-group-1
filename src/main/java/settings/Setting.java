@@ -11,7 +11,7 @@ public class Setting {
 
 
     private NumberOfDecimalPlaces numberOfDecimalPlaces = NumberOfDecimalPlaces.TWO;
-    private Banks selectedBank = Banks.PRIVAT;
+    private Banks selectedBank = Banks.PRIVATE;
     private Currency selectedCurrency = Currency.USD;
     private NotificationTime notificationTime = NotificationTime.NINE;
 
