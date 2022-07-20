@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuNumDecimalPlaces implements Keyboard {
+public class MenuNumDecimalPlaces {
     public static InlineKeyboardMarkup keyboard() {
         List<List<InlineKeyboardButton>> keyboard =  new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
@@ -26,8 +26,8 @@ public class MenuNumDecimalPlaces implements Keyboard {
                 .callbackData("NumberOfDecimalPlaces4")
                 .build();
         InlineKeyboardButton buttonBackToSetting = InlineKeyboardButton.builder()
-                .text("Назад")
-                .callbackData("BackToSetting")
+                .text("↩️")
+                .callbackData("BackToSettings")
                 .build();
         keyboardMSetRow1.add(buttonNumberOfDecimalPlaces2);
         keyboardMSetRow2.add(buttonNumberOfDecimalPlaces3);

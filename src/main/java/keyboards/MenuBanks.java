@@ -1,3 +1,5 @@
+package keyboards;
+
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import settings.Banks;
@@ -26,7 +28,7 @@ public class MenuBanks {
                 .callbackData(Banks.MONO.getBankName())
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
-                .text("Повернутись до попереднього меню")
+                .text("↩️")
                 .callbackData("BackToSettings")
                 .build();
         keyboardMSetRow1.add(buttonPrivat);
