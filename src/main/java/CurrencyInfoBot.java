@@ -15,14 +15,12 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-//        return "@CurrencyInfoProjectGroup1Bot";
-        return "@CurrencyInfoProjectGroup1TestBot";
+        return "@CurrencyInfoProjectGroup1Bot";
     }
 
     @Override
     public String getBotToken() {
-//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
-        return "5553351040:AAHugdZyMWm_u8av-bQqsEaP6Et7WXPsOtk";
+        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
 
     @Override
