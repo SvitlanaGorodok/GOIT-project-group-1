@@ -1,6 +1,7 @@
 import keyboards.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
@@ -8,6 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import settings.NotificationTime;
+import settings.NumberOfDecimalPlaces;
 
 import java.util.*;
 
@@ -68,25 +71,23 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 printMessage(chatId, "Bank \n currency buy: \n currency sell:");
                 break;
             case "SETTINGS":
-                printMessage(chatId, MenuSettings.keyboard(), "Налаштування:");
+            case "BackToSettings":
+                printMessage(chatId, MenuSettings.keyboard(), "Виберіть налаштування");
                 break;
             case "BackToStart":
                 printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
                 break;
             case "NumDecimalPlaces":
-                printMessage(chatId, MenuNumDecimalPlaces.keyboard(), "Вибиріть кількість знаків після коми:");
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
                 break;
             case "Bank":
-                printMessage(chatId, MenuBanks.keyboard(), "Вибиріть банк:");
+                updateMessage(buttonQuery, MenuBanks.keyboard());
                 break;
             case "Currency":
-                printMessage(chatId, MenuCurrency.keyboard(), "Вибиріть валюту:");
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
                 break;
             case "Notification":
-                printMessage(chatId, MenuNotification.keyboard(), "Вибиріть час повідомлення:");
-                break;
-            case "BackToSettings":
-                printMessage(chatId, MenuSettings.keyboard(), "Щоб отримати інфо натисність кнопку");
+                updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "Privat":
                 printMessage(chatId, "Приват Банк");
@@ -97,8 +98,28 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
             case "Monobank":
                 printMessage(chatId, "Монобанк");
                 break;
+            case "twoPlaces":
+                NumberOfDecimalPlaces.TWO.setSelect(true);
+                NumberOfDecimalPlaces.THREE.setSelect(false);
+                NumberOfDecimalPlaces.FOUR.setSelect(false);
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "threePlaces":
+                NumberOfDecimalPlaces.TWO.setSelect(false);
+                NumberOfDecimalPlaces.THREE.setSelect(true);
+                NumberOfDecimalPlaces.FOUR.setSelect(false);
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "fourPlaces":
+                NumberOfDecimalPlaces.TWO.setSelect(false);
+                NumberOfDecimalPlaces.THREE.setSelect(false);
+                NumberOfDecimalPlaces.FOUR.setSelect(true);
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+
         }
     }
+
 
     private void printMessage(Long chatID, InlineKeyboardMarkup keyboard, String text)
             throws TelegramApiException {
@@ -115,7 +136,41 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 .chatId(chatID)
                 .build());
     }
-}
 
+    private void updateMessage(CallbackQuery buttonQuery, InlineKeyboardMarkup keyboard)
+            throws TelegramApiException {
+        long chatId = buttonQuery.getMessage().getChatId();
+        int messageId = buttonQuery.getMessage().getMessageId();
+        execute(EditMessageReplyMarkup.builder()
+                .chatId(chatId)
+                .messageId(messageId)
+                .replyMarkup(keyboard)
+                .build());
+    }
+
+//Приклад використання енамів для друкування галочки
+//    public static InlineKeyboardMarkup testKeyboard() {
+//        List<List<InlineKeyboardButton>> keyboardMenuSettings = new ArrayList<>();
+//        List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
+//
+//        InlineKeyboardButton buttonNumOfDecPlaces = InlineKeyboardButton.builder()
+//                .text("Кількість знаків після коми" + Test.getButtonStatus(Test.BUTTON1))
+//                .callbackData("NumDecimalPlaces")
+//                .build();
+//        keyboardMSetRow1.add(buttonNumOfDecPlaces);
+//
+//        keyboardMenuSettings.add(keyboardMSetRow1);
+//
+//        return InlineKeyboardMarkup.builder().keyboard(keyboardMenuSettings).build();
+//    }
+
+    //Приклад методу перевірки статусу кнопки і друкування галочки
+//    public static String getButtonStatus (Test button){
+//        if(button.isStatus()){
+//            return "✅";
+//        }
+//        return "";
+//    }
+}
 
 
