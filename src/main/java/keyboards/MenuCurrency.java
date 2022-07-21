@@ -2,6 +2,8 @@ package keyboards;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import settings.Buttons;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +32,8 @@ public class MenuCurrency {
                 .callbackData("BTC")
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
-                .text("↩️")
-                .callbackData("SETTINGS")
+                .text(Buttons.BACK_TO_SETTINGS.getName())
+                .callbackData(Buttons.BACK_TO_SETTINGS.getNameEN())
                 .build();
         keyboardMenuCurrency1.add(buttonUsd);
         keyboardMenuCurrency2.add(buttonEur);

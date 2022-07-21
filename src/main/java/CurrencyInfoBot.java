@@ -15,14 +15,12 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "@CurrencyInfoProjectGroup1TestBot";
-//        return "@CurrencyInfoProjectGroup1Bot";
+        return "@CurrencyInfoProjectGroup1Bot";
     }
 
     @Override
     public String getBotToken() {
-        return "5553351040:AAHugdZyMWm_u8av-bQqsEaP6Et7WXPsOtk";
-//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
+        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
 
     @Override
@@ -52,7 +50,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
             if (commandEntity.isPresent()) {
                 String command = message.getText()
                         .substring(commandEntity.get().getOffset(), commandEntity.get().getLength());
-                if (command.equals("/start")) {
+                if (command.equals(Buttons.START.getNameEN())) {
                     printMessage(chatId, MenuStart.keyboard(),
                             "Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют.");
                     Setting setting = new Setting(chatId);
@@ -69,14 +67,12 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         String dataButtonQuery = buttonQuery.getData();
         switch (dataButtonQuery) {
             case "GET_INFO":
-//                printMessage(chatId, "Bank \n currency buy: \n currency sell:");
                 printMessage(chatId, Settings.getInfo(chatId));
                 break;
             case "SETTINGS":
-            case "BackToSettings":
-                printMessage(chatId, MenuSettings.keyboard(), "Виберіть налаштування");
+                printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
                 break;
-            case "BackToStart":
+            case "BACK_TO_START":
                 printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
                 break;
             case "NumDecimalPlaces":
@@ -128,30 +124,6 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 .replyMarkup(keyboard)
                 .build());
     }
-
-//Приклад використання енамів для друкування галочки
-//    public static InlineKeyboardMarkup testKeyboard() {
-//        List<List<InlineKeyboardButton>> keyboardMenuSettings = new ArrayList<>();
-//        List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
-//
-//        InlineKeyboardButton buttonNumOfDecPlaces = InlineKeyboardButton.builder()
-//                .text("Кількість знаків після коми" + Test.getButtonStatus(Test.BUTTON1))
-//                .callbackData("NumDecimalPlaces")
-//                .build();
-//        keyboardMSetRow1.add(buttonNumOfDecPlaces);
-//
-//        keyboardMenuSettings.add(keyboardMSetRow1);
-//
-//        return InlineKeyboardMarkup.builder().keyboard(keyboardMenuSettings).build();
-//    }
-
-    //Приклад методу перевірки статусу кнопки і друкування галочки
-//    public static String getButtonStatus (Test button){
-//        if(button.isStatus()){
-//            return "✅";
-//        }
-//        return "";
-//    }
 }
 
 
