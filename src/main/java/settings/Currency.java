@@ -6,7 +6,7 @@ import java.util.List;
 public enum Currency {
     USD("USD", true),
     EUR("EUR", false),
-    PLN("PLN", false),
+    PLN("PLN", true),
     BTC("BTC", false);
 
     private String currencyName;

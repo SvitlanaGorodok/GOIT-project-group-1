@@ -7,21 +7,22 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
+import settings.*;
 import java.util.*;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "@CurrencyInfoProjectGroup1Bot";
+        return "@CurrencyInfoProjectGroup1TestBot";
+//        return "@CurrencyInfoProjectGroup1Bot";
     }
 
     @Override
     public String getBotToken() {
-        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
+        return "5553351040:AAHugdZyMWm_u8av-bQqsEaP6Et7WXPsOtk";
+//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
 
     @Override
@@ -54,6 +55,8 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 if (command.equals("/start")) {
                     printMessage(chatId, MenuStart.keyboard(),
                             "Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют.");
+                    Setting setting = new Setting(chatId);
+                    Settings.settings.put(chatId, setting);
                 }
             }
         } else {
@@ -66,7 +69,8 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         String dataButtonQuery = buttonQuery.getData();
         switch (dataButtonQuery) {
             case "GET_INFO":
-                printMessage(chatId, "Bank \n currency buy: \n currency sell:");
+//                printMessage(chatId, "Bank \n currency buy: \n currency sell:");
+                printMessage(chatId, Settings.getInfo(chatId));
                 break;
             case "SETTINGS":
             case "BackToSettings":

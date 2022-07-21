@@ -4,19 +4,16 @@ import settings.Banks;
 import java.util.HashMap;
 
 public class CurrencyDataBase {
-    private HashMap<Banks, Bank> currentInfo;
-
-    public CurrencyDataBase(HashMap<Banks, Bank> currentInfo){
-        this.currentInfo = currentInfo;
-    }
+    public static HashMap<Banks, Bank> currentInfo = new HashMap<>();
 
     public Bank getCurrentInfo(Banks bankName) {
-        return null;
+        return currentInfo.get(bankName);
     }
 
     public void setCurrentInfo(Banks bankName, Bank bank) {
-        this.currentInfo.put(bankName, bank);
+        currentInfo.put(bankName, bank);
     }
+
     /*
         1) Витягує з мапи значення по ключу для конкретного банку
         2) Зчитує поле Time і:
