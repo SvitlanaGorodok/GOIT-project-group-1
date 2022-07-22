@@ -16,24 +16,16 @@ import java.util.*;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
 
-//    @Override
-//    public String getBotUsername() {
-//        return "@CurrencyInfoProjectGroup1Bot";
-//    }
-//
-//    @Override
-//    public String getBotToken() {
-//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
-//    }
-@Override
-public String getBotUsername() {
-    return "AndrNikNameBot";
-}
+    @Override
+    public String getBotUsername() {
+        return "@CurrencyInfoProjectGroup1Bot";
+    }
 
     @Override
     public String getBotToken() {
-        return "5041766504:AAFn65xA7HvfZ0E_HkNcsBUl-SS8Mym6DwQ";
+        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
+
 
     @Override
     public void onUpdateReceived(Update update) {
