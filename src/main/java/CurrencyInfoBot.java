@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import settings.Banks;
 import settings.NotificationTime;
 import settings.NumberOfDecimalPlaces;
 
@@ -89,13 +90,16 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "Privat":
-                printMessage(chatId, "Приват Банк");
+                saveSelectBanks(Banks.PRIVATE);
+                updateMessage(buttonQuery, MenuBanks.keyboard());
                 break;
             case "NBU":
-                printMessage(chatId, "Національний Банк України");
+                saveSelectBanks(Banks.NBU);
+                updateMessage(buttonQuery, MenuBanks.keyboard());
                 break;
             case "Monobank":
-                printMessage(chatId, "Монобанк");
+                saveSelectBanks(Banks.MONO);
+                updateMessage(buttonQuery, MenuBanks.keyboard());
                 break;
             case "twoPlaces":
                 saveSelectNumDecPlaces(NumberOfDecimalPlaces.TWO);
@@ -168,6 +172,16 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
 
     private void saveSelectNotificationTime(NotificationTime enumDate) {
         for (NotificationTime date : NotificationTime.values()) {
+            if (date.name().equals(enumDate.name())) {
+                enumDate.setSelect(true);
+            } else {
+                date.setSelect(false);
+            }
+        }
+    }
+
+    private void saveSelectBanks(Banks enumDate) {
+        for (Banks date : Banks.values()) {
             if (date.name().equals(enumDate.name())) {
                 enumDate.setSelect(true);
             } else {
