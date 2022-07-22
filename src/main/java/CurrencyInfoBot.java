@@ -63,40 +63,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
-        long chatId = buttonQuery.getMessage().getChatId();
-        String dataButtonQuery = buttonQuery.getData();
-        switch (dataButtonQuery) {
-            case "GET_INFO":
-                printMessage(chatId, Settings.getInfo(chatId));
-                break;
-            case "SETTINGS":
-                printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
-                break;
-            case "BACK_TO_START":
-                printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
-                break;
-            case "NumDecimalPlaces":
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
-                break;
-            case "Bank":
-                updateMessage(buttonQuery, MenuBanks.keyboard());
-                break;
-            case "Currency":
-                updateMessage(buttonQuery, MenuCurrency.keyboard());
-                break;
-            case "Notification":
-                updateMessage(buttonQuery, MenuNotification.keyboard());
-                break;
-            case "Privat":
-                printMessage(chatId, "Приват Банк");
-                break;
-            case "NBU":
-                printMessage(chatId, "Національний Банк України");
-                break;
-            case "Monobank":
-                printMessage(chatId, "Монобанк");
-                break;
-        }
+        checkMainButtons(buttonQuery);
     }
 
     private void printMessage(Long chatID, InlineKeyboardMarkup keyboard, String text)
@@ -123,6 +90,43 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 .messageId(messageId)
                 .replyMarkup(keyboard)
                 .build());
+    }
+
+    private Buttons convertToButtons(String buttonQuery){
+        for (Buttons button: Buttons.values()) {
+            if (button.getNameEN().equals(buttonQuery)){
+                return button;
+            }
+        }
+        return null;
+    }
+
+    public void checkMainButtons (CallbackQuery buttonQuery) throws TelegramApiException {
+        long chatId = buttonQuery.getMessage().getChatId();
+        String dataButtonQuery = buttonQuery.getData();
+            switch (Objects.requireNonNull(convertToButtons(dataButtonQuery))) {
+                case GET_INFO:
+                    printMessage(chatId, Settings.getInfo(chatId));
+                    break;
+                case SETTINGS:
+                    printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
+                    break;
+                case BACK_TO_START:
+                    printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
+                    break;
+                case NUM_DECIMAL_PLACES:
+                    updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                    break;
+                case BANK:
+                    updateMessage(buttonQuery, MenuBanks.keyboard());
+                    break;
+                case CURRENCY:
+                    updateMessage(buttonQuery, MenuCurrency.keyboard());
+                    break;
+                case NOTIFICATION:
+                    updateMessage(buttonQuery, MenuNotification.keyboard());
+                    break;
+            }
     }
 }
 
