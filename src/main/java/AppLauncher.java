@@ -11,4 +11,6 @@ public class AppLauncher  {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(currencyInfoBot);
     }
+
+
 }

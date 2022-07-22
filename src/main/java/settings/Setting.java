@@ -1,8 +1,3 @@
-
-
-
-
-
 package settings;
 
 import java.util.List;
