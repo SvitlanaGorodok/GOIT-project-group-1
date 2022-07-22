@@ -3,6 +3,7 @@ package serviceClasses;
 import settings.Banks;
 import settings.Currency;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Bank {
@@ -16,7 +17,7 @@ public class Bank {
     private Float PLN_sell;
     private Float BTC_buy;
     private Float BTC_sell;
-    private Float time;
+    private LocalDateTime time;
 
     public Enum<Banks> getBankName() {
         return bankName; }
@@ -88,11 +89,11 @@ public class Bank {
         this.BTC_sell = BTC_sell;
     }
 
-    public Float getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(Float time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 

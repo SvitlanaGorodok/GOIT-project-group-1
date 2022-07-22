@@ -3,6 +3,8 @@ package serviceClasses;
 import settings.Banks;
 import settings.Currency;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class CurrencyDataBase {
         bank.setPLN_sell(1.0f);
         bank.setBTC_buy(1.0f);
         bank.setBTC_sell(1.0f);
-        bank.setTime(1.0f);
+        bank.setTime(LocalDateTime.now().plusDays(1));
         return bank;
     }
 
@@ -28,15 +30,14 @@ public class CurrencyDataBase {
         currentInfo.put(bankName, bank);
     }
 
+    public Bank getCurrencyRates (Banks bankName){
+        Bank bank = currentInfo.get(bankName);
+        LocalDateTime currentTime = LocalDateTime.now();
+        long timeDiff = Duration.between(LocalDateTime.now(), bank.getTime()).toMinutes();
+        if (timeDiff>5){
+            setCurrentInfo(bankName, bank);
+        }
+        return currentInfo.get(bankName);
+    }
 
-
-    /*
-        1) Витягує з мапи значення по ключу для конкретного банку
-        2) Зчитує поле Time і:
-        2.1) якщо значення <5 хвилин, то вертає користувачеві актуальне значення отримане з мапи
-        2.2) якщо значення >5 хвилин, то
-             - робить новий запит до конкретного банку
-             - записує результат цього запиту в мапу (перезапис даних, викликає метод запису в мапу hashmap Info)
-             - вертає користувачеві актуальне значення
-    */
 }
