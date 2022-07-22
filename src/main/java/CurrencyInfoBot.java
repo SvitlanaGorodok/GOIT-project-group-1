@@ -7,7 +7,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.NotificationTime;
 import settings.NumberOfDecimalPlaces;
@@ -99,75 +98,79 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 printMessage(chatId, "Монобанк");
                 break;
             case "twoPlaces":
-                NumberOfDecimalPlaces.TWO.setSelect(true);
-                NumberOfDecimalPlaces.THREE.setSelect(false);
-                NumberOfDecimalPlaces.FOUR.setSelect(false);
+                saveSelectNumDecPlaces(NumberOfDecimalPlaces.TWO);
                 updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
                 break;
             case "threePlaces":
-                NumberOfDecimalPlaces.TWO.setSelect(false);
-                NumberOfDecimalPlaces.THREE.setSelect(true);
-                NumberOfDecimalPlaces.FOUR.setSelect(false);
+                saveSelectNumDecPlaces(NumberOfDecimalPlaces.THREE);
                 updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
                 break;
             case "fourPlaces":
-                NumberOfDecimalPlaces.TWO.setSelect(false);
-                NumberOfDecimalPlaces.THREE.setSelect(false);
-                NumberOfDecimalPlaces.FOUR.setSelect(true);
+                saveSelectNumDecPlaces(NumberOfDecimalPlaces.FOUR);
                 updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
                 break;
             case "9":
-                saveSelect(NotificationTime.NINE);
+                saveSelectNotificationTime(NotificationTime.NINE);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "10":
-                saveSelect(NotificationTime.TEN);
+                saveSelectNotificationTime(NotificationTime.TEN);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "11":
-                saveSelect(NotificationTime.ELEVEN);
+                saveSelectNotificationTime(NotificationTime.ELEVEN);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "12":
-                saveSelect(NotificationTime.TWELVE);
+                saveSelectNotificationTime(NotificationTime.TWELVE);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "13":
-                saveSelect(NotificationTime.THIRTEEN);
+                saveSelectNotificationTime(NotificationTime.THIRTEEN);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "14":
-                saveSelect(NotificationTime.FOURTEEN);
+                saveSelectNotificationTime(NotificationTime.FOURTEEN);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "15":
-                saveSelect(NotificationTime.FIFTEEN);
+                saveSelectNotificationTime(NotificationTime.FIFTEEN);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "16":
-                saveSelect(NotificationTime.SIXTEEN);
+                saveSelectNotificationTime(NotificationTime.SIXTEEN);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "17":
-                saveSelect(NotificationTime.SEVENTEEN);
+                saveSelectNotificationTime(NotificationTime.SEVENTEEN);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "18":
-                saveSelect(NotificationTime.EIGHTEEN);
+                saveSelectNotificationTime(NotificationTime.EIGHTEEN);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "0":
-                saveSelect(NotificationTime.SWICH_OFF);
+                saveSelectNotificationTime(NotificationTime.SWICH_OFF);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
         }
     }
 
-   private void saveSelect(NotificationTime enumDate) {
-        for (NotificationTime date : NotificationTime.values()) {
-            if (date.name() == enumDate.name()) {
+    private void saveSelectNumDecPlaces(NumberOfDecimalPlaces enumDate) {
+        for (NumberOfDecimalPlaces date : NumberOfDecimalPlaces.values()) {
+            if (date.name().equals(enumDate.name())) {
                 enumDate.setSelect(true);
-            } else{
+            } else {
+                date.setSelect(false);
+            }
+        }
+    }
+
+    private void saveSelectNotificationTime(NotificationTime enumDate) {
+        for (NotificationTime date : NotificationTime.values()) {
+            if (date.name().equals(enumDate.name())) {
+                enumDate.setSelect(true);
+            } else {
                 date.setSelect(false);
             }
         }
