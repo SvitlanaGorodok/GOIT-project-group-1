@@ -8,21 +8,21 @@ import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import settings.*;
+import settings.NotificationTime;
+import settings.NumberOfDecimalPlaces;
+
 import java.util.*;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "@CurrencyInfoProjectGroup1TestBot";
-//        return "@CurrencyInfoProjectGroup1Bot";
+        return "@CurrencyInfoProjectGroup1Bot";
     }
 
     @Override
     public String getBotToken() {
-        return "5553351040:AAHugdZyMWm_u8av-bQqsEaP6Et7WXPsOtk";
-//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
+        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
 
     @Override
@@ -55,8 +55,6 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 if (command.equals("/start")) {
                     printMessage(chatId, MenuStart.keyboard(),
                             "Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют.");
-                    Setting setting = new Setting(chatId);
-                    Settings.settings.put(chatId, setting);
                 }
             }
         } else {
@@ -69,8 +67,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         String dataButtonQuery = buttonQuery.getData();
         switch (dataButtonQuery) {
             case "GET_INFO":
-//                printMessage(chatId, "Bank \n currency buy: \n currency sell:");
-                printMessage(chatId, Settings.getInfo(chatId));
+                printMessage(chatId, "Bank \n currency buy: \n currency sell:");
                 break;
             case "SETTINGS":
             case "BackToSettings":
@@ -100,6 +97,82 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
             case "Monobank":
                 printMessage(chatId, "Монобанк");
                 break;
+            case "twoPlaces":
+                saveSelectNumDecPlaces(NumberOfDecimalPlaces.TWO);
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "threePlaces":
+                saveSelectNumDecPlaces(NumberOfDecimalPlaces.THREE);
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "fourPlaces":
+                saveSelectNumDecPlaces(NumberOfDecimalPlaces.FOUR);
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "9":
+                saveSelectNotificationTime(NotificationTime.NINE);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "10":
+                saveSelectNotificationTime(NotificationTime.TEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "11":
+                saveSelectNotificationTime(NotificationTime.ELEVEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "12":
+                saveSelectNotificationTime(NotificationTime.TWELVE);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "13":
+                saveSelectNotificationTime(NotificationTime.THIRTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "14":
+                saveSelectNotificationTime(NotificationTime.FOURTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "15":
+                saveSelectNotificationTime(NotificationTime.FIFTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "16":
+                saveSelectNotificationTime(NotificationTime.SIXTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "17":
+                saveSelectNotificationTime(NotificationTime.SEVENTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "18":
+                saveSelectNotificationTime(NotificationTime.EIGHTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "0":
+                saveSelectNotificationTime(NotificationTime.SWICH_OFF);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+        }
+    }
+
+    private void saveSelectNumDecPlaces(NumberOfDecimalPlaces enumDate) {
+        for (NumberOfDecimalPlaces date : NumberOfDecimalPlaces.values()) {
+            if (date.name().equals(enumDate.name())) {
+                enumDate.setSelect(true);
+            } else {
+                date.setSelect(false);
+            }
+        }
+    }
+
+    private void saveSelectNotificationTime(NotificationTime enumDate) {
+        for (NotificationTime date : NotificationTime.values()) {
+            if (date.name().equals(enumDate.name())) {
+                enumDate.setSelect(true);
+            } else {
+                date.setSelect(false);
+            }
         }
     }
 
@@ -118,6 +191,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 .chatId(chatID)
                 .build());
     }
+
     private void updateMessage(CallbackQuery buttonQuery, InlineKeyboardMarkup keyboard)
             throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
@@ -153,6 +227,5 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
 //        return "";
 //    }
 }
-
 
 
