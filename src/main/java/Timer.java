@@ -5,17 +5,16 @@ public class Timer implements Runnable {
 
     public void timer() throws InterruptedException {
         LocalDateTime startTime = LocalDateTime.now();
+        LocalDateTime startDays = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
         LocalDateTime timeSendMessage = LocalDateTime.now().withMinute(0).withSecond(0);
-        System.out.println(timeSendMessage);
         if (timeSendMessage.isBefore(startTime)){
             timeSendMessage = timeSendMessage.plusHours(1);
         }
-        System.out.println(timeSendMessage);
         Duration timeToSendMess = Duration.between(startTime,timeSendMessage);
-        System.out.println(timeToSendMess.toSeconds());
+        Duration hour = Duration.between(startDays,timeSendMessage);
         Thread.sleep(timeToSendMess.toMillis());
-
-
+        GetInfToSendUser getInfToSendUser = new GetInfToSendUser();
+        getInfToSendUser.getUserSett((int)hour.toHours());
     }
 
     @Override

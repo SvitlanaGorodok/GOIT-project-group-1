@@ -7,8 +7,8 @@ public class AppLauncher  {
         Timer timer = new Timer();
         Thread messageInTime = new Thread(timer);
         messageInTime.start();
-//        CurrencyInfoBot currencyInfoBot = new CurrencyInfoBot();
-//        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-//        telegramBotsApi.registerBot(currencyInfoBot);
+        CurrencyInfoBot currencyInfoBot = new CurrencyInfoBot();
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+        telegramBotsApi.registerBot(currencyInfoBot);
     }
 }
