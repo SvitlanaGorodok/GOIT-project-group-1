@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import settings.Currency;
 import settings.NotificationTime;
 import settings.NumberOfDecimalPlaces;
 
@@ -15,14 +16,23 @@ import java.util.*;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
 
-    @Override
-    public String getBotUsername() {
-        return "@CurrencyInfoProjectGroup1Bot";
-    }
+//    @Override
+//    public String getBotUsername() {
+//        return "@CurrencyInfoProjectGroup1Bot";
+//    }
+//
+//    @Override
+//    public String getBotToken() {
+//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
+//    }
+@Override
+public String getBotUsername() {
+    return "AndrNikNameBot";
+}
 
     @Override
     public String getBotToken() {
-        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
+        return "5041766504:AAFn65xA7HvfZ0E_HkNcsBUl-SS8Mym6DwQ";
     }
 
     @Override
@@ -88,7 +98,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
             case "Notification":
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
-            case "Privat":
+            case "Private":
                 printMessage(chatId, "Приват Банк");
                 break;
             case "NBU":
@@ -153,9 +163,32 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 saveSelectNotificationTime(NotificationTime.SWICH_OFF);
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
+            case "USD":
+                saveSelectionCurrency(Currency.USD);
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+            case "EUR":
+                saveSelectionCurrency(Currency.EUR);
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+            case "PLN":
+                saveSelectionCurrency(Currency.PLN);
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+            case "BTC":
+                saveSelectionCurrency(Currency.BTC);
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
         }
     }
 
+    private void saveSelectionCurrency (Currency currencys) {
+    for (Currency cerrency:Currency.values()){
+        if (cerrency.name().equals(currencys.name())) {
+            currencys.setCurrencySelect(!currencys.isCurrencySelect());
+        }
+    }
+    }
     private void saveSelectNumDecPlaces(NumberOfDecimalPlaces enumDate) {
         for (NumberOfDecimalPlaces date : NumberOfDecimalPlaces.values()) {
             if (date.name().equals(enumDate.name())) {
