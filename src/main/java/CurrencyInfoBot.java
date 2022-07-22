@@ -116,10 +116,62 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 NumberOfDecimalPlaces.FOUR.setSelect(true);
                 updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
                 break;
-
+            case "9":
+                saveSelect(NotificationTime.NINE);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "10":
+                saveSelect(NotificationTime.TEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "11":
+                saveSelect(NotificationTime.ELEVEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "12":
+                saveSelect(NotificationTime.TWELVE);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "13":
+                saveSelect(NotificationTime.THIRTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "14":
+                saveSelect(NotificationTime.FOURTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "15":
+                saveSelect(NotificationTime.FIFTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "16":
+                saveSelect(NotificationTime.SIXTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "17":
+                saveSelect(NotificationTime.SEVENTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "18":
+                saveSelect(NotificationTime.EIGHTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "0":
+                saveSelect(NotificationTime.SWICH_OFF);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
         }
     }
 
+   private void saveSelect(NotificationTime enumDate) {
+        for (NotificationTime date : NotificationTime.values()) {
+            if (date.name() == enumDate.name()) {
+                enumDate.setSelect(true);
+            } else{
+                date.setSelect(false);
+            }
+        }
+    }
 
     private void printMessage(Long chatID, InlineKeyboardMarkup keyboard, String text)
             throws TelegramApiException {
