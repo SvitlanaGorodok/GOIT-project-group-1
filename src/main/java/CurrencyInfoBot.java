@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import settings.Setting;
+import settings.Settings;
 
 import java.util.*;
 
@@ -53,6 +55,8 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 if (command.equals("/start")) {
                     printMessage(chatId, MenuStart.keyboard(),
                             "Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют.");
+                    Setting setting = new Setting(chatId);
+                    Settings.settings.put(chatId, setting);
                 }
             }
         } else {
