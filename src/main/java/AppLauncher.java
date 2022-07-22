@@ -4,8 +4,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 public class AppLauncher  {
     public static void main(String[] args) throws TelegramApiException {
-        CurrencyInfoBot currencyInfoBot = new CurrencyInfoBot();
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(currencyInfoBot);
+        Timer timer = new Timer();
+        Thread messageInTime = new Thread(timer);
+        messageInTime.start();
+//        CurrencyInfoBot currencyInfoBot = new CurrencyInfoBot();
+//        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+//        telegramBotsApi.registerBot(currencyInfoBot);
     }
 }
