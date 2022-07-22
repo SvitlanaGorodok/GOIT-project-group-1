@@ -1,6 +1,7 @@
 package serviceClasses;
 
 import settings.Banks;
+import settings.Currency;
 
 import java.util.Objects;
 
@@ -131,5 +132,33 @@ public class Bank {
                 ", BTC_sell=" + BTC_sell +
                 ", time=" + time +
                 '}';
+    }
+
+    public Float getBuyRate (Currency currency){
+        switch (currency){
+            case EUR:
+                return this.EUR_buy;
+            case USD:
+                return this.USD_buy;
+            case PLN:
+                return this.PLN_buy;
+            case BTC:
+                return this.BTC_buy;
+        }
+        return null;
+    }
+
+    public Float getSellRate (Currency currency){
+        switch (currency){
+            case EUR:
+                return this.EUR_sell;
+            case USD:
+                return this.USD_sell;
+            case PLN:
+                return this.PLN_sell;
+            case BTC:
+                return this.BTC_sell;
+        }
+        return null;
     }
 }

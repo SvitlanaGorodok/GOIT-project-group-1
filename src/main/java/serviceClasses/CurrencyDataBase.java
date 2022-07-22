@@ -1,18 +1,34 @@
 package serviceClasses;
 
 import settings.Banks;
+import settings.Currency;
+
 import java.util.HashMap;
+import java.util.List;
 
 public class CurrencyDataBase {
     public static HashMap<Banks, Bank> currentInfo = new HashMap<>();
 
-    public Bank getCurrentInfo(Banks bankName) {
-        return currentInfo.get(bankName);
+    public static Bank getCurrentInfo(Banks bankName) {
+        Bank bank = new Bank();
+        bank.setBankName(bankName);
+        bank.setEUR_buy(1.0f);
+        bank.setEUR_sell(1.0f);
+        bank.setUSD_buy(1.0f);
+        bank.setUSD_sell(1.0f);
+        bank.setPLN_buy(1.0f);
+        bank.setPLN_sell(1.0f);
+        bank.setBTC_buy(1.0f);
+        bank.setBTC_sell(1.0f);
+        bank.setTime(1.0f);
+        return bank;
     }
 
     public void setCurrentInfo(Banks bankName, Bank bank) {
         currentInfo.put(bankName, bank);
     }
+
+
 
     /*
         1) Витягує з мапи значення по ключу для конкретного банку
