@@ -3,6 +3,7 @@ package keyboards;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import settings.Banks;
+import settings.Buttons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,8 @@ public class MenuBanks {
                 .callbackData(Banks.MONO.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
-                .text("↩️")
-                .callbackData("BackToSettings")
+                .text(Buttons.BACK_TO_SETTINGS.getName())
+                .callbackData(Buttons.BACK_TO_SETTINGS.getNameEN())
                 .build();
         keyboardMSetRow1.add(buttonPrivat);
         keyboardMSetRow2.add(buttonNBU);

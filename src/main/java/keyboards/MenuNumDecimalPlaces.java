@@ -2,13 +2,12 @@ package keyboards;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import settings.NumberOfDecimalPlaces;
+import settings.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuNumDecimalPlaces {
-
     public static InlineKeyboardMarkup keyboard() {
         List<List<InlineKeyboardButton>> keyboard =  new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
@@ -28,8 +27,8 @@ public class MenuNumDecimalPlaces {
                 .callbackData(NumberOfDecimalPlaces.FOUR.getNameDecPlaces())
                 .build();
         InlineKeyboardButton buttonBackToSetting = InlineKeyboardButton.builder()
-                .text("↩️")
-                .callbackData("BackToSettings")
+                .text(Buttons.BACK_TO_SETTINGS.getName())
+                .callbackData(Buttons.BACK_TO_SETTINGS.getNameEN())
                 .build();
         keyboardMSetRow1.add(buttonNumberOfDecimalPlaces2);
         keyboardMSetRow2.add(buttonNumberOfDecimalPlaces3);
@@ -42,6 +41,5 @@ public class MenuNumDecimalPlaces {
 
         return InlineKeyboardMarkup.builder().keyboard(keyboard).build();
     }
-
 }
 
