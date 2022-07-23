@@ -1,11 +1,13 @@
 package keyboards;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import settings.Setting;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuSettings {
-    public static InlineKeyboardMarkup keyboard() {
+    public static InlineKeyboardMarkup keyboard(Setting setting) {
         List<List<InlineKeyboardButton>> keyboardMenuSettings = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow2 = new ArrayList<>();

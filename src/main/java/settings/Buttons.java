@@ -7,7 +7,9 @@ public enum Buttons {
     NUM_DECIMAL_PLACES ("Кількість знаків після коми","NumDecimalPlaces"),
     BANK("Банк","Bank"),
     CURRENCY ("Валюта","Currency"),
-    NOTIFICATION ("Час сповіщення","Notification");
+    NOTIFICATION ("Час сповіщення","Notification"),
+    BACK_TO_SETTINGS("↩️","SETTINGS"),
+    BACK_TO_START ("↩️","BACK_TO_START");
 
     private String buttonsName;
     private String buttonsNameEN;

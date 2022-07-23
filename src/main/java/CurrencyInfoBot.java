@@ -1,16 +1,14 @@
 import keyboards.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import settings.Setting;
-import settings.Settings;
-
+import settings.*;
 import java.util.*;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
@@ -52,7 +50,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
             if (commandEntity.isPresent()) {
                 String command = message.getText()
                         .substring(commandEntity.get().getOffset(), commandEntity.get().getLength());
-                if (command.equals("/start")) {
+                if (command.equals(Buttons.START.getNameEN())) {
                     printMessage(chatId, MenuStart.keyboard(),
                             "Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют.");
                     Setting setting = new Setting(chatId);
@@ -65,43 +63,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
-        long chatId = buttonQuery.getMessage().getChatId();
-        String dataButtonQuery = buttonQuery.getData();
-        switch (dataButtonQuery) {
-            case "GET_INFO":
-                printMessage(chatId, "Bank \n currency buy: \n currency sell:");
-                break;
-            case "SETTINGS":
-                printMessage(chatId, MenuSettings.keyboard(), "Налаштування:");
-                break;
-            case "BackToStart":
-                printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
-                break;
-            case "NumDecimalPlaces":
-                printMessage(chatId, MenuNumDecimalPlaces.keyboard(), "Вибиріть кількість знаків після коми:");
-                break;
-            case "Bank":
-                printMessage(chatId, MenuBanks.keyboard(), "Вибиріть банк:");
-                break;
-            case "Currency":
-                printMessage(chatId, MenuCurrency.keyboard(), "Вибиріть валюту:");
-                break;
-            case "Notification":
-                printMessage(chatId, MenuNotification.keyboard(), "Вибиріть час повідомлення:");
-                break;
-            case "BackToSettings":
-                printMessage(chatId, MenuSettings.keyboard(), "Щоб отримати інфо натисність кнопку");
-                break;
-            case "Privat":
-                printMessage(chatId, "Приват Банк");
-                break;
-            case "NBU":
-                printMessage(chatId, "Національний Банк України");
-                break;
-            case "Monobank":
-                printMessage(chatId, "Монобанк");
-                break;
-        }
+        checkMainButtons(buttonQuery);
     }
 
     private void printMessage(Long chatID, InlineKeyboardMarkup keyboard, String text)
@@ -113,13 +75,57 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 .build());
     }
 
-    private void printMessage(Long chatID, String messageText) throws TelegramApiException {
+    public void printMessage(Long chatID, String messageText) throws TelegramApiException {
         execute(SendMessage.builder()
                 .text(messageText)
                 .chatId(chatID)
                 .build());
     }
+    private void updateMessage(CallbackQuery buttonQuery, InlineKeyboardMarkup keyboard)
+            throws TelegramApiException {
+        long chatId = buttonQuery.getMessage().getChatId();
+        int messageId = buttonQuery.getMessage().getMessageId();
+        execute(EditMessageReplyMarkup.builder()
+                .chatId(chatId)
+                .messageId(messageId)
+                .replyMarkup(keyboard)
+                .build());
+    }
+
+    private Buttons convertToButtons(String buttonQuery){
+        for (Buttons button: Buttons.values()) {
+            if (button.getNameEN().equals(buttonQuery)){
+                return button;
+            }
+        }
+        return null;
+    }
+
+    public void checkMainButtons (CallbackQuery buttonQuery) throws TelegramApiException {
+        long chatId = buttonQuery.getMessage().getChatId();
+        String dataButtonQuery = buttonQuery.getData();
+        switch (Objects.requireNonNull(convertToButtons(dataButtonQuery))) {
+            case GET_INFO:
+                printMessage(chatId, Settings.getInfo(chatId));
+                break;
+            case SETTINGS:
+                printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
+                break;
+            case BACK_TO_START:
+                printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
+                break;
+            case NUM_DECIMAL_PLACES:
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case BANK:
+                updateMessage(buttonQuery, MenuBanks.keyboard());
+                break;
+            case CURRENCY:
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+            case NOTIFICATION:
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+        }
+    }
 }
-
-
-
