@@ -7,29 +7,42 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.*;
 import settings.Currency;
-
 import java.util.*;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
+    private static CurrencyInfoBot instance;
+    public String value;
+
+    private CurrencyInfoBot(String value) {
+        // The following code emulates slow initialization.
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+        this.value = value;
+    }
+
+    public static CurrencyInfoBot getInstance(String value) {
+        if (instance == null) {
+            instance = new CurrencyInfoBot(value);
+        }
+        return instance;
+    }
 
     @Override
     public String getBotUsername() {
         return "@CurrencyInfoProjectGroup1Bot";
     }
-//    public String getBotUsername() {
-//        return "TestKabaBOT";
-//    }
 
     @Override
     public String getBotToken() {
         return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
-//    public String getBotToken() {
-//        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
-//    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -229,7 +242,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 .build());
     }
 
-    private void printMessage(Long chatID, String messageText) throws TelegramApiException {
+    public void printMessage(Long chatID, String messageText) throws TelegramApiException {
         execute(SendMessage.builder()
                 .text(messageText)
                 .chatId(chatID)

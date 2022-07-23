@@ -22,7 +22,7 @@ public class CurrencyDataBase {
         bank.setPLN_sell(1.0f);
         bank.setBTC_buy(1.0f);
         bank.setBTC_sell(1.0f);
-        bank.setTime(LocalDateTime.now().plusDays(1));
+//        bank.setTime(LocalDateTime.now().plusDays(1));
         return bank;
     }
 
