@@ -1,7 +1,7 @@
 package settings;
 
 public enum NotificationTime {
-    NINE (11),
+    NINE (9),
     TEN (10),
     ELEVEN (11),
     TWELVE (12),
