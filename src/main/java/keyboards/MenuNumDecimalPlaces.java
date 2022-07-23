@@ -2,7 +2,7 @@ package keyboards;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import settings.Buttons;
+import settings.*;
 
 import java.util.ArrayList;
 import java.util.List;
