@@ -33,7 +33,7 @@ public enum Currency {
         this.currencySelect = currencySelect;
     }
 
-    public static String getCurencyButtonsStatus(Currency button) {
+    public static String getCurrencyButtonsStatus(Currency button) {
         if (button.isCurrencySelect()) {
             return "✅";
         }
