@@ -19,11 +19,17 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     public String getBotUsername() {
         return "@CurrencyInfoProjectGroup1Bot";
     }
+//    public String getBotUsername() {
+//        return "TestKabaBOT";
+//    }
 
     @Override
     public String getBotToken() {
         return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
+//    public String getBotToken() {
+//        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
+//    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -65,10 +71,31 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
-        checkMainButtons(buttonQuery);
+
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
         switch (dataButtonQuery) {
+            case "GET_INFO":
+                printMessage(chatId, Settings.getInfo(chatId));
+                break;
+            case "SETTINGS":
+                printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
+                break;
+            case "BACK_TO_START":
+                printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
+                break;
+            case "NumDecimalPlaces":
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "Bank":
+                updateMessage(buttonQuery, MenuBanks.keyboard());
+                break;
+            case "Currency":
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+            case "Notification":
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
             case "Private":
                 saveSelectBanks(Banks.PRIVATE);
                 updateMessage(buttonQuery, MenuBanks.keyboard());
