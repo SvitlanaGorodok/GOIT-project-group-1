@@ -2,6 +2,7 @@ package serviceClasses;
 
 import settings.Banks;
 
+import java.time.temporal.Temporal;
 import java.util.Objects;
 
 public class Bank {
@@ -87,7 +88,7 @@ public class Bank {
         this.BTC_sell = BTC_sell;
     }
 
-    public Float getTime() {
+    public Temporal getTime() {
         return time;
     }
 

@@ -1,29 +1,43 @@
 package serviceClasses;
 
 import settings.Banks;
+import settings.Currency;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 public class CurrencyDataBase {
-    private HashMap<Banks, Bank> currentInfo;
+    public static HashMap<Banks, Bank> currentInfo = new HashMap<>();
 
-    public CurrencyDataBase(HashMap<Banks, Bank> currentInfo){
-        this.currentInfo = currentInfo;
-    }
-
-    public Bank getCurrentInfo(Banks bankName) {
-        return null;
+    public static Bank getCurrentInfo(Banks bankName) {
+        Bank bank = new Bank();
+        bank.setBankName(bankName);
+        bank.setEUR_buy(1.0f);
+        bank.setEUR_sell(1.0f);
+        bank.setUSD_buy(1.0f);
+        bank.setUSD_sell(1.0f);
+        bank.setPLN_buy(1.0f);
+        bank.setPLN_sell(1.0f);
+        bank.setBTC_buy(1.0f);
+        bank.setBTC_sell(1.0f);
+//        bank.setTime(LocalDateTime.now().plusDays(1));
+        return bank;
     }
 
     public void setCurrentInfo(Banks bankName, Bank bank) {
-        this.currentInfo.put(bankName, bank);
+        currentInfo.put(bankName, bank);
     }
-    /*
-        1) Витягує з мапи значення по ключу для конкретного банку
-        2) Зчитує поле Time і:
-        2.1) якщо значення <5 хвилин, то вертає користувачеві актуальне значення отримане з мапи
-        2.2) якщо значення >5 хвилин, то
-             - робить новий запит до конкретного банку
-             - записує результат цього запиту в мапу (перезапис даних, викликає метод запису в мапу hashmap Info)
-             - вертає користувачеві актуальне значення
-    */
+
+    public Bank getCurrencyRates (Banks bankName){
+        Bank bank = currentInfo.get(bankName);
+        LocalDateTime currentTime = LocalDateTime.now();
+        long timeDiff = Duration.between(LocalDateTime.now(), bank.getTime()).toMinutes();
+        if (timeDiff>5){
+            setCurrentInfo(bankName, bank);
+        }
+        return currentInfo.get(bankName);
+    }
+
 }
