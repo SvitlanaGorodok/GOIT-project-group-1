@@ -1,17 +1,18 @@
 package settings;
 
 public enum Banks {
-    PRIVATE("ПриватБанк", "Private"),
-    MONO("МоноБанк", "Monobank"),
-    NBU("НБУ", "NBU");
+    PRIVATE("ПриватБанк", "Private", false),
+    MONO("МоноБанк", "Monobank", false),
+    NBU("НБУ", "NBU", false);
 
     private String bankNameUA;
-
     private String bankNameEN;
+    private boolean select;
 
-    Banks(String bankNameUA, String bankNameEN) {
+    Banks(String bankNameUA, String bankNameEN, boolean select) {
         this.bankNameUA = bankNameUA;
         this.bankNameEN = bankNameEN;
+        this.select = select;
     }
 
     public String getBankNameEN() {
@@ -28,5 +29,16 @@ public enum Banks {
 
     public void setBankNameUA(String bankNameUA) {
         this.bankNameUA = bankNameUA;
+    }
+
+    public boolean isSelect() { return select; }
+
+    public void setSelect(boolean select) { this.select = select; }
+
+    public static String getButtonStatus(Banks button){
+        if(button.isSelect()){
+            return "✅";
+        }
+        return "";
     }
 }

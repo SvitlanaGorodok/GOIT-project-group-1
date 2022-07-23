@@ -1,18 +1,18 @@
 package settings;
 
 public enum NumberOfDecimalPlaces {
-    TWO (2, "twoPlaces"),
-    THREE (3, "threePlaces"),
-    FOUR (4, "fourPlaces");
+    TWO (2, "twoPlaces",false),
+    THREE (3, "threePlaces",false),
+    FOUR (4, "fourPlaces",false);
 
     private String nameDecPlaces;
     private int intNumber;
+    private boolean select;
 
-    NumberOfDecimalPlaces(int intNumber, String nameDecPlaces) {
-
+    NumberOfDecimalPlaces(int intNumber, String nameDecPlaces, boolean select) {
         this.intNumber = intNumber;
         this.nameDecPlaces = nameDecPlaces;
-
+        this.select = select;
     }
 
     public int getIntNumber() {
@@ -29,5 +29,20 @@ public enum NumberOfDecimalPlaces {
 
     public void setNameDecPlaces(String nameDecPlaces) {
         this.nameDecPlaces = nameDecPlaces;
+    }
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
+
+    public static String getButtonStatus (NumberOfDecimalPlaces button){
+        if(button.isSelect()){
+            return "✅";
+       }
+        return "";
     }
 }

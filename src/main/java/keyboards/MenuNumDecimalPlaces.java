@@ -15,16 +15,16 @@ public class MenuNumDecimalPlaces {
         List<InlineKeyboardButton> keyboardMSetRow3 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         InlineKeyboardButton buttonNumberOfDecimalPlaces2 = InlineKeyboardButton.builder()
-                .text("2")
-                .callbackData("NumberOfDecimalPlaces2")
+                .text(NumberOfDecimalPlaces.TWO.getIntNumber()+NumberOfDecimalPlaces.getButtonStatus(NumberOfDecimalPlaces.TWO))
+                .callbackData(NumberOfDecimalPlaces.TWO.getNameDecPlaces())
                 .build();
         InlineKeyboardButton buttonNumberOfDecimalPlaces3 = InlineKeyboardButton.builder()
-                .text("3")
-                .callbackData("NumberOfDecimalPlaces3")
+                .text(NumberOfDecimalPlaces.THREE.getIntNumber()+NumberOfDecimalPlaces.getButtonStatus(NumberOfDecimalPlaces.THREE))
+                .callbackData(NumberOfDecimalPlaces.THREE.getNameDecPlaces())
                 .build();
         InlineKeyboardButton buttonNumberOfDecimalPlaces4 = InlineKeyboardButton.builder()
-                .text("4")
-                .callbackData("NumberOfDecimalPlaces4")
+                .text(NumberOfDecimalPlaces.FOUR.getIntNumber()+NumberOfDecimalPlaces.getButtonStatus(NumberOfDecimalPlaces.FOUR))
+                .callbackData(NumberOfDecimalPlaces.FOUR.getNameDecPlaces())
                 .build();
         InlineKeyboardButton buttonBackToSetting = InlineKeyboardButton.builder()
                 .text(Buttons.BACK_TO_SETTINGS.getName())
