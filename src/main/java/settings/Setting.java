@@ -3,14 +3,10 @@ package settings;
 import java.util.List;
 
 public class Setting {
-
     private final long chatId;
-
     public Setting(long chatId) {
         this.chatId = chatId;
     }
-
-
     private NumberOfDecimalPlaces numberOfDecimalPlaces = NumberOfDecimalPlaces.TWO;
     private Banks selectedBank = Banks.PRIVATE;
     private List<Currency> selectedCurrency = Currency.getSelectedCurrencyList();
@@ -50,5 +46,15 @@ public class Setting {
 
     public void setNotificationTime(NotificationTime notificationTime) {
         this.notificationTime = notificationTime;
+    }
+
+    @Override
+    public String toString() {
+        return "chatId=" + chatId +
+                ", numberOfDecimalPlaces=" + numberOfDecimalPlaces +
+                ", selectedBank=" + selectedBank +
+                ", selectedCurrency=" + selectedCurrency +
+                ", notificationTime=" + notificationTime +
+                '}';
     }
 }

@@ -2,6 +2,7 @@ package keyboards;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import settings.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,52 +15,52 @@ public class MenuNotification {
         List<InlineKeyboardButton> keyboardMSetRow3 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         InlineKeyboardButton buttonNotificationTime9 = InlineKeyboardButton.builder()
-                .text("9")
-                .callbackData("NotificationTime9")
+                .text(NotificationTime.NINE.getTime()+NotificationTime.getButtonStatus(NotificationTime.NINE))
+                .callbackData(String.valueOf(NotificationTime.NINE.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime10 = InlineKeyboardButton.builder()
-                .text("10")
-                .callbackData("NotificationTime10")
+                .text(NotificationTime.TEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.TEN))
+                .callbackData(String.valueOf(NotificationTime.TEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime11 = InlineKeyboardButton.builder()
-                .text("11")
-                .callbackData("NotificationTime11")
+                .text(NotificationTime.ELEVEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.ELEVEN))
+                .callbackData(String.valueOf(NotificationTime.ELEVEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime12 = InlineKeyboardButton.builder()
-                .text("12")
-                .callbackData("NotificationTime12")
+                .text(NotificationTime.TWELVE.getTime()+NotificationTime.getButtonStatus(NotificationTime.TWELVE))
+                .callbackData(String.valueOf(NotificationTime.TWELVE.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime13 = InlineKeyboardButton.builder()
-                .text("13")
-                .callbackData("NotificationTime13")
+                .text(NotificationTime.THIRTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.THIRTEEN))
+                .callbackData(String.valueOf(NotificationTime.THIRTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime14 = InlineKeyboardButton.builder()
-                .text("14")
-                .callbackData("NotificationTime14")
+                .text(NotificationTime.FOURTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.FOURTEEN))
+                .callbackData(String.valueOf(NotificationTime.FOURTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime15 = InlineKeyboardButton.builder()
-                .text("15")
-                .callbackData("NotificationTime15")
+                .text(NotificationTime.FIFTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.FIFTEEN))
+                .callbackData(String.valueOf(NotificationTime.FIFTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime16 = InlineKeyboardButton.builder()
-                .text("16")
-                .callbackData("NotificationTime16")
+                .text(NotificationTime.SIXTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.SIXTEEN))
+                .callbackData(String.valueOf(NotificationTime.SIXTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime17 = InlineKeyboardButton.builder()
-                .text("17")
-                .callbackData("NotificationTime17")
+                .text(NotificationTime.SEVENTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.SEVENTEEN))
+                .callbackData(String.valueOf(NotificationTime.SEVENTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime18 = InlineKeyboardButton.builder()
-                .text("18")
-                .callbackData("NotificationTime18")
+                .text(NotificationTime.EIGHTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.EIGHTEEN))
+                .callbackData(String.valueOf(NotificationTime.EIGHTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonTurnOfNotification = InlineKeyboardButton.builder()
-                .text("Вимкнути сповіщення")
-                .callbackData("TurnOfNotification")
+                .text("Вимкнути сповіщення"+NotificationTime.getButtonStatus(NotificationTime.SWICH_OFF))
+                .callbackData(String.valueOf(NotificationTime.SWICH_OFF.getTime()))
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
-                .text("↩️")
-                .callbackData("BackToSettings")
+                .text(Buttons.BACK_TO_SETTINGS.getName())
+                .callbackData(Buttons.BACK_TO_SETTINGS.getNameEN())
                 .build();
         keyboardMSetRow1.add(buttonNotificationTime9);
         keyboardMSetRow1.add(buttonNotificationTime10);

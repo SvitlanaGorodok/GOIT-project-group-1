@@ -1,13 +1,20 @@
 package keyboards;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import settings.Buttons;
+import settings.Currency;
 import settings.Setting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MenuSettings {
     public static InlineKeyboardMarkup keyboard(Setting setting) {
+        String selectedCurr = setting.getSelectedCurrency().stream()
+                .map(Currency::getCurrencyName)
+                .collect(Collectors.joining(", ", "(", ")"));
+
         List<List<InlineKeyboardButton>> keyboardMenuSettings = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow2 = new ArrayList<>();
@@ -15,25 +22,26 @@ public class MenuSettings {
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow5 = new ArrayList<>();
         InlineKeyboardButton buttonNumOfDecPlaces = InlineKeyboardButton.builder()
-                .text("Кількість знаків після коми")
-                .callbackData("NumDecimalPlaces")
+                .text(Buttons.NUM_DECIMAL_PLACES.getName() + " (" + setting.getNumberOfDecimalPlaces() + ")")
+                .callbackData(Buttons.NUM_DECIMAL_PLACES.getNameEN())
                 .build();
         InlineKeyboardButton buttonBank = InlineKeyboardButton.builder()
-                .text("Банк")
-                .callbackData("Bank")
+                .text(Buttons.BANK.getName() + " (" + setting.getSelectedBank().getBankNameUA() + ")")
+                .callbackData(Buttons.BANK.getNameEN())
                 .build();
         InlineKeyboardButton buttonCurrency = InlineKeyboardButton.builder()
-                .text("Валюта")
-                .callbackData("Currency")
+                .text(Buttons.CURRENCY.getName() + selectedCurr)
+                .callbackData(Buttons.CURRENCY.getNameEN())
                 .build();
         InlineKeyboardButton buttonNotificationTime = InlineKeyboardButton.builder()
-                .text("Час сповіщення")
-                .callbackData("Notification")
+                .text(Buttons.NOTIFICATION.getName() + " (" + setting.getNotificationTime().getTime() + ")")
+                .callbackData(Buttons.NOTIFICATION.getNameEN())
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
-                .text("↩️")
-                .callbackData("BackToStart")
+                .text(Buttons.BACK_TO_START.getName())
+                .callbackData(Buttons.BACK_TO_START.getNameEN())
                 .build();
+
         keyboardMSetRow1.add(buttonNumOfDecPlaces);
         keyboardMSetRow2.add(buttonBank);
         keyboardMSetRow3.add(buttonCurrency);

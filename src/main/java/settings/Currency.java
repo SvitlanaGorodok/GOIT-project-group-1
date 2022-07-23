@@ -33,6 +33,13 @@ public enum Currency {
         this.currencySelect = currencySelect;
     }
 
+    public static String getCurrencyButtonsStatus(Currency button) {
+        if (button.isCurrencySelect()) {
+            return "✅";
+        }
+        return "";
+    }
+
     public static List<Currency> getSelectedCurrencyList() {
         List<Currency> selectedCurrency = new ArrayList<>();
         for (Currency curr : Currency.values()) {

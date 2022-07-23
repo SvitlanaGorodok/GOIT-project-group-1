@@ -3,6 +3,7 @@ package keyboards;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import settings.Banks;
+import settings.Buttons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,20 +17,20 @@ public class MenuBanks {
         List<InlineKeyboardButton> keyboardMSetRow3 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         InlineKeyboardButton buttonPrivat = InlineKeyboardButton.builder()
-                .text("Приват Банк")
+                .text(Banks.PRIVATE.getBankNameEN() + Banks.getButtonStatus(Banks.PRIVATE))
                 .callbackData(Banks.PRIVATE.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonNBU = InlineKeyboardButton.builder()
-                .text("Національний Банк України")
+                .text(Banks.NBU.getBankNameEN() + Banks.getButtonStatus(Banks.NBU))
                 .callbackData(Banks.NBU.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonMonobank = InlineKeyboardButton.builder()
-                .text("Монобанк")
+                .text(Banks.MONO.getBankNameEN() + Banks.getButtonStatus(Banks.MONO))
                 .callbackData(Banks.MONO.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
-                .text("↩️")
-                .callbackData("BackToSettings")
+                .text(Buttons.BACK_TO_SETTINGS.getName())
+                .callbackData(Buttons.BACK_TO_SETTINGS.getNameEN())
                 .build();
         keyboardMSetRow1.add(buttonPrivat);
         keyboardMSetRow2.add(buttonNBU);

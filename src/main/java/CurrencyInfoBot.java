@@ -7,8 +7,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.*;
+import settings.Currency;
 import java.util.*;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
@@ -82,7 +84,153 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
-        checkMainButtons(buttonQuery);
+
+        long chatId = buttonQuery.getMessage().getChatId();
+        String dataButtonQuery = buttonQuery.getData();
+        switch (dataButtonQuery) {
+            case "GET_INFO":
+                printMessage(chatId, Settings.getInfo(chatId));
+                break;
+            case "SETTINGS":
+                printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
+                break;
+            case "BACK_TO_START":
+                printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
+                break;
+            case "NumDecimalPlaces":
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "Bank":
+                updateMessage(buttonQuery, MenuBanks.keyboard());
+                break;
+            case "Currency":
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+            case "Notification":
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "Private":
+                saveSelectBanks(Banks.PRIVATE);
+                updateMessage(buttonQuery, MenuBanks.keyboard());
+                break;
+            case "NBU":
+                saveSelectBanks(Banks.NBU);
+                updateMessage(buttonQuery, MenuBanks.keyboard());
+                break;
+            case "Monobank":
+                saveSelectBanks(Banks.MONO);
+                updateMessage(buttonQuery, MenuBanks.keyboard());
+                break;
+            case "twoPlaces":
+                saveSelectNumDecPlaces(NumberOfDecimalPlaces.TWO);
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "threePlaces":
+                saveSelectNumDecPlaces(NumberOfDecimalPlaces.THREE);
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "fourPlaces":
+                saveSelectNumDecPlaces(NumberOfDecimalPlaces.FOUR);
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                break;
+            case "9":
+                saveSelectNotificationTime(NotificationTime.NINE);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "10":
+                saveSelectNotificationTime(NotificationTime.TEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "11":
+                saveSelectNotificationTime(NotificationTime.ELEVEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "12":
+                saveSelectNotificationTime(NotificationTime.TWELVE);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "13":
+                saveSelectNotificationTime(NotificationTime.THIRTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "14":
+                saveSelectNotificationTime(NotificationTime.FOURTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "15":
+                saveSelectNotificationTime(NotificationTime.FIFTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "16":
+                saveSelectNotificationTime(NotificationTime.SIXTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "17":
+                saveSelectNotificationTime(NotificationTime.SEVENTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "18":
+                saveSelectNotificationTime(NotificationTime.EIGHTEEN);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "0":
+                saveSelectNotificationTime(NotificationTime.SWICH_OFF);
+                updateMessage(buttonQuery, MenuNotification.keyboard());
+                break;
+            case "USD":
+                saveSelectionCurrency(Currency.USD);
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+            case "EUR":
+                saveSelectionCurrency(Currency.EUR);
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+            case "PLN":
+                saveSelectionCurrency(Currency.PLN);
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+            case "BTC":
+                saveSelectionCurrency(Currency.BTC);
+                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                break;
+        }
+    }
+
+    private void saveSelectionCurrency (Currency currencys) {
+    for (Currency cerrency:Currency.values()){
+        if (cerrency.name().equals(currencys.name())) {
+            currencys.setCurrencySelect(!currencys.isCurrencySelect());
+        }
+    }
+    }
+    private void saveSelectNumDecPlaces(NumberOfDecimalPlaces enumDate) {
+        for (NumberOfDecimalPlaces date : NumberOfDecimalPlaces.values()) {
+            if (date.name().equals(enumDate.name())) {
+                enumDate.setSelect(true);
+            } else {
+                date.setSelect(false);
+            }
+        }
+    }
+
+    private void saveSelectNotificationTime(NotificationTime enumDate) {
+        for (NotificationTime date : NotificationTime.values()) {
+            if (date.name().equals(enumDate.name())) {
+                enumDate.setSelect(true);
+            } else {
+                date.setSelect(false);
+            }
+        }
+    }
+
+    private void saveSelectBanks(Banks enumDate) {
+        for (Banks date : Banks.values()) {
+            if (date.name().equals(enumDate.name())) {
+                enumDate.setSelect(true);
+            } else {
+                date.setSelect(false);
+            }
+        }
     }
 
     private void printMessage(Long chatID, InlineKeyboardMarkup keyboard, String text)
@@ -123,28 +271,31 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     public void checkMainButtons (CallbackQuery buttonQuery) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        switch (Objects.requireNonNull(convertToButtons(dataButtonQuery))) {
-            case GET_INFO:
-                printMessage(chatId, Settings.getInfo(chatId));
-                break;
-            case SETTINGS:
-                printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
-                break;
-            case BACK_TO_START:
-                printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
-                break;
-            case NUM_DECIMAL_PLACES:
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
-                break;
-            case BANK:
-                updateMessage(buttonQuery, MenuBanks.keyboard());
-                break;
-            case CURRENCY:
-                updateMessage(buttonQuery, MenuCurrency.keyboard());
-                break;
-            case NOTIFICATION:
-                updateMessage(buttonQuery, MenuNotification.keyboard());
-                break;
-        }
+            switch (Objects.requireNonNull(convertToButtons(dataButtonQuery))) {
+                case GET_INFO:
+                    printMessage(chatId, Settings.getInfo(chatId));
+                    break;
+                case SETTINGS:
+                    printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
+                    break;
+                case BACK_TO_START:
+                    printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
+                    break;
+                case NUM_DECIMAL_PLACES:
+                    updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                    break;
+                case BANK:
+                    updateMessage(buttonQuery, MenuBanks.keyboard());
+                    break;
+                case CURRENCY:
+                    updateMessage(buttonQuery, MenuCurrency.keyboard());
+                    break;
+                case NOTIFICATION:
+                    updateMessage(buttonQuery, MenuNotification.keyboard());
+                    break;
+            }
     }
 }
+
+
+
