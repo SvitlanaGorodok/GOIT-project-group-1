@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import settings.Banks;
 import settings.Currency;
 import settings.NotificationTime;
 import settings.NumberOfDecimalPlaces;
@@ -25,7 +26,6 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     public String getBotToken() {
         return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
-
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -91,13 +91,16 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "Private":
-                printMessage(chatId, "Приват Банк");
+                saveSelectBanks(Banks.PRIVATE);
+                updateMessage(buttonQuery, MenuBanks.keyboard());
                 break;
             case "NBU":
-                printMessage(chatId, "Національний Банк України");
+                saveSelectBanks(Banks.NBU);
+                updateMessage(buttonQuery, MenuBanks.keyboard());
                 break;
             case "Monobank":
-                printMessage(chatId, "Монобанк");
+                saveSelectBanks(Banks.MONO);
+                updateMessage(buttonQuery, MenuBanks.keyboard());
                 break;
             case "twoPlaces":
                 saveSelectNumDecPlaces(NumberOfDecimalPlaces.TWO);
@@ -201,6 +204,16 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         }
     }
 
+    private void saveSelectBanks(Banks enumDate) {
+        for (Banks date : Banks.values()) {
+            if (date.name().equals(enumDate.name())) {
+                enumDate.setSelect(true);
+            } else {
+                date.setSelect(false);
+            }
+        }
+    }
+
     private void printMessage(Long chatID, InlineKeyboardMarkup keyboard, String text)
             throws TelegramApiException {
         execute(SendMessage.builder()
@@ -227,30 +240,6 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 .replyMarkup(keyboard)
                 .build());
     }
-
-//Приклад використання енамів для друкування галочки
-//    public static InlineKeyboardMarkup testKeyboard() {
-//        List<List<InlineKeyboardButton>> keyboardMenuSettings = new ArrayList<>();
-//        List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
-//
-//        InlineKeyboardButton buttonNumOfDecPlaces = InlineKeyboardButton.builder()
-//                .text("Кількість знаків після коми" + Test.getButtonStatus(Test.BUTTON1))
-//                .callbackData("NumDecimalPlaces")
-//                .build();
-//        keyboardMSetRow1.add(buttonNumOfDecPlaces);
-//
-//        keyboardMenuSettings.add(keyboardMSetRow1);
-//
-//        return InlineKeyboardMarkup.builder().keyboard(keyboardMenuSettings).build();
-//    }
-
-    //Приклад методу перевірки статусу кнопки і друкування галочки
-//    public static String getButtonStatus (Test button){
-//        if(button.isStatus()){
-//            return "✅";
-//        }
-//        return "";
-//    }
 }
 
 
