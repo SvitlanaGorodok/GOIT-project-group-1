@@ -1,8 +1,9 @@
 package serviceClasses;
 
 import settings.Banks;
+import settings.Currency;
 
-import java.time.temporal.Temporal;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Bank {
@@ -16,7 +17,7 @@ public class Bank {
     private Float PLN_sell;
     private Float BTC_buy;
     private Float BTC_sell;
-    private Float time;
+    private LocalDateTime time;
 
     public Enum<Banks> getBankName() {
         return bankName; }
@@ -88,11 +89,11 @@ public class Bank {
         this.BTC_sell = BTC_sell;
     }
 
-    public Temporal getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(Float time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 
@@ -132,5 +133,33 @@ public class Bank {
                 ", BTC_sell=" + BTC_sell +
                 ", time=" + time +
                 '}';
+    }
+
+    public Float getBuyRate (Currency currency){
+        switch (currency){
+            case EUR:
+                return this.EUR_buy;
+            case USD:
+                return this.USD_buy;
+            case PLN:
+                return this.PLN_buy;
+            case BTC:
+                return this.BTC_buy;
+        }
+        return null;
+    }
+
+    public Float getSellRate (Currency currency){
+        switch (currency){
+            case EUR:
+                return this.EUR_sell;
+            case USD:
+                return this.USD_sell;
+            case PLN:
+                return this.PLN_sell;
+            case BTC:
+                return this.BTC_sell;
+        }
+        return null;
     }
 }

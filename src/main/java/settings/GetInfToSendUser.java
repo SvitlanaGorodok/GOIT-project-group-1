@@ -1,3 +1,5 @@
+package settings;
+
 import settings.Banks;
 import settings.Currency;
 import settings.Settings;
@@ -5,7 +7,7 @@ import settings.Settings;
 import java.util.List;
 import java.util.Map;
 
-public class GetInfToSendUser extends CurrencyInfoBot{
+public class GetInfToSendUser {
     public void getUserSett(int checkTime){
         for (Map.Entry userSet : Settings.settings.entrySet()){
             Long key = (Long) userSet.getKey();
