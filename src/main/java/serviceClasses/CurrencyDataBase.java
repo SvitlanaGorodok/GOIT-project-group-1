@@ -25,7 +25,7 @@ public class CurrencyDataBase {
             }
             Bank bank = currentInfo.get(bankName);
             long timeDiff = Duration.between(LocalDateTime.now(), bank.getTime()).toMinutes();
-            if (timeDiff > 5) {
+            if (timeDiff > 30) {
                 try {
                     setCurrentInfo(bankName);
                 } catch (IOException | InterruptedException e) {

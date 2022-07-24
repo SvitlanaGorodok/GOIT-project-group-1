@@ -264,7 +264,6 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
             throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         int messageId = buttonQuery.getMessage().getMessageId();
-        System.out.println(messageId);
         execute(EditMessageReplyMarkup.builder()
                 .chatId(chatId)
                 .messageId(messageId)

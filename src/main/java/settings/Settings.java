@@ -18,7 +18,6 @@ public class Settings {
         String bankName = userSetting.getSelectedBank().getBankNameUA();
         messageToUser.append(bankName).append("\n");
         int numberDecPlaces = userSetting.getNumberOfDecimalPlaces();
-        int notificationHour = userSetting.getNotificationTime().getTime();
         List<Currency> currencies = userSetting.getSelectedCurrency();
         Bank bankInfo = CurrencyDataBase.getCurrentInfo(userSetting.getSelectedBank());
         for (Currency currency: currencies){

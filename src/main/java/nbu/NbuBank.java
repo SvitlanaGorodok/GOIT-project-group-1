@@ -9,15 +9,7 @@ public class NbuBank {
     private float rate;
     private String cc;
     private String exchangedate ;
-//    private Date exchangedate ;
 
-//    public NbuBank(int r030, String txt, float rate, String cc, String exchangedate) {
-//        this.r030 = r030;
-//        this.txt = txt;
-//        this.rate = rate;
-//        this.cc = cc;
-//        this.exchangedate = exchangedate;
-//    }
 
     public int getR030() {
         return r030;

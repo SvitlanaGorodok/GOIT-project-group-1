@@ -19,8 +19,6 @@ public class APIPrivat {
                 break;
             }
         }
-        System.out.println("API Privat " + date);
         return HttpUtil.getPrivat(date);
-
     }
 }

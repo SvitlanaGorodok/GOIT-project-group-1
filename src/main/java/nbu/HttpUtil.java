@@ -24,15 +24,17 @@ public class HttpUtil {
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         List<NbuBank> date = GSON.fromJson(response.body(), new TypeToken<List<NbuBank>>() {
         }.getType());
+
+        System.out.println(date);
         return date;
     }
 
-    public static Bank getNbu(List<NbuBank> luest) {
+    public static Bank getNbu(List<NbuBank> listCurr) {
         Bank bank = new Bank();
 
 
         bank.setBankName(Banks.NBU);
-        for (NbuBank currency : luest) {
+        for (NbuBank currency : listCurr) {
             switch (currency.getCc()) {
                 case "USD":
                     bank.setUSD_buy(currency.getRate());
@@ -45,6 +47,7 @@ public class HttpUtil {
                 case "PLN":
                     bank.setPLN_buy(currency.getRate());
                     bank.setPLN_sell(currency.getRate());
+                    break;
                 case "BTC":
                     bank.setBTC_buy(currency.getRate());
                     bank.setBTC_sell(currency.getRate());

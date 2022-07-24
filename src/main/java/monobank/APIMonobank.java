@@ -13,7 +13,6 @@ public class APIMonobank {
 
     public static Bank getMonoAPI() throws IOException, InterruptedException {
         final List<Monobank> monobankList = HttpUtil.sendGetBank(URI.create(MONOBANK_URL));
-        System.out.println("API Mono " + monobankList);
         return HttpUtil.getMonobank(monobankList);
     }
 }

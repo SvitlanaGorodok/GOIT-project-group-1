@@ -9,14 +9,14 @@ import java.util.Objects;
 public class Bank {
 
     private Enum<Banks> bankName;
-    private Float USD_buy;
-    private Float USD_sell;
-    private Float EUR_buy;
-    private Float EUR_sell;
-    private Float PLN_buy;
-    private Float PLN_sell;
-    private Float BTC_buy;
-    private Float BTC_sell;
+    private Float USD_buy = 0.0f;
+    private Float USD_sell = 0.0f;
+    private Float EUR_buy = 0.0f;
+    private Float EUR_sell = 0.0f;
+    private Float PLN_buy = 0.0f;
+    private Float PLN_sell = 0.0f;
+    private Float BTC_buy = 0.0f;
+    private Float BTC_sell = 0.0f;
     private LocalDateTime time;
 
     public Enum<Banks> getBankName() {
