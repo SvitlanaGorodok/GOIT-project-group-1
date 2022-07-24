@@ -3,15 +3,15 @@ package settings;
 import serviceClasses.Bank;
 import serviceClasses.CurrencyDataBase;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Settings {
     public static Map<Long, Setting> settings = new HashMap<>();
+
+
+
     public static String getInfo (Long chatId) {
         StringBuilder messageToUser = new StringBuilder();
         Setting userSetting = settings.get(chatId);

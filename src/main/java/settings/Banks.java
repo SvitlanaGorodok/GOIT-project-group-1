@@ -35,10 +35,4 @@ public enum Banks {
 
     public void setSelect(boolean select) { this.select = select; }
 
-    public static String getButtonStatus(Banks button){
-        if(button.isSelect()){
-            return "✅";
-        }
-        return "";
-    }
 }

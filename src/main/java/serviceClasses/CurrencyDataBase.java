@@ -21,6 +21,16 @@ public class CurrencyDataBase {
                 e.printStackTrace();
             }
         }
+        Bank bank = currentInfo.get(bankName);
+        long timeDiff = Duration.between(LocalDateTime.now(), bank.getTime()).toMinutes();
+        if (timeDiff > 5) {
+            try {
+                setCurrentInfo(bankName);
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         return currentInfo.get(bankName);
     }
 
@@ -47,15 +57,5 @@ public class CurrencyDataBase {
         }
 
     }
-
-    public Bank getCurrencyRates(Banks bankName) throws IOException, InterruptedException {
-        Bank bank = currentInfo.get(bankName);
-        long timeDiff = Duration.between(LocalDateTime.now(), bank.getTime()).toMinutes();
-        if (timeDiff > 5) {
-            setCurrentInfo(bankName);
-        }
-        return currentInfo.get(bankName);
-    }
-
 
 }

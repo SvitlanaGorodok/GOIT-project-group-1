@@ -4,28 +4,33 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import settings.Banks;
 import settings.Buttons;
+import settings.Setting;
+import settings.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MenuBanks {
-    public static InlineKeyboardMarkup keyboard() {
+
+    public static InlineKeyboardMarkup keyboard(long chatId) {
+        Setting userSetting = Settings.settings.get(chatId);
+        Banks selectedBank = userSetting.getSelectedBank();
         List<List<InlineKeyboardButton>> keyboardMenuBanks = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow2 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow3 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         InlineKeyboardButton buttonPrivat = InlineKeyboardButton.builder()
-                .text(Banks.PRIVATE.getBankNameEN() + Banks.getButtonStatus(Banks.PRIVATE))
+                .text(Banks.PRIVATE.getBankNameEN() + getButtonStatus(Banks.PRIVATE, selectedBank))
                 .callbackData(Banks.PRIVATE.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonNBU = InlineKeyboardButton.builder()
-                .text(Banks.NBU.getBankNameEN() + Banks.getButtonStatus(Banks.NBU))
+                .text(Banks.NBU.getBankNameEN() + getButtonStatus(Banks.NBU, selectedBank))
                 .callbackData(Banks.NBU.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonMonobank = InlineKeyboardButton.builder()
-                .text(Banks.MONO.getBankNameEN() + Banks.getButtonStatus(Banks.MONO))
+                .text(Banks.MONO.getBankNameEN() + getButtonStatus(Banks.MONO, selectedBank))
                 .callbackData(Banks.MONO.getBankNameEN())
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
@@ -43,4 +48,12 @@ public class MenuBanks {
 
         return InlineKeyboardMarkup.builder().keyboard(keyboardMenuBanks).build();
     }
+
+    private static String getButtonStatus(Banks currentBank, Banks selectedBank) {
+        if (currentBank == selectedBank) {
+            return "✅";
+        }
+        return "";
+    }
+
 }
