@@ -8,56 +8,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuNotification {
-    public static InlineKeyboardMarkup keyboard() {
-
-
+    public static InlineKeyboardMarkup keyboard(long chatId) {
+        Setting userSetting = Settings.settings.get(chatId);
+        NotificationTime selectedNotificationTime = userSetting.getNotificationTime();
         List<List<InlineKeyboardButton>> keyboardMenuNotification = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow2 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow3 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         InlineKeyboardButton buttonNotificationTime9 = InlineKeyboardButton.builder()
-                .text(NotificationTime.NINE.getTime()+NotificationTime.getButtonStatus(NotificationTime.NINE))
+                .text(NotificationTime.NINE.getTime() + getButtonStatus(NotificationTime.NINE, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.NINE.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime10 = InlineKeyboardButton.builder()
-                .text(NotificationTime.TEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.TEN))
+                .text(NotificationTime.TEN.getTime() + getButtonStatus(NotificationTime.TEN, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.TEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime11 = InlineKeyboardButton.builder()
-                .text(NotificationTime.ELEVEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.ELEVEN))
+                .text(NotificationTime.ELEVEN.getTime() + getButtonStatus(NotificationTime.ELEVEN, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.ELEVEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime12 = InlineKeyboardButton.builder()
-                .text(NotificationTime.TWELVE.getTime()+NotificationTime.getButtonStatus(NotificationTime.TWELVE))
+                .text(NotificationTime.TWELVE.getTime() + getButtonStatus(NotificationTime.TWELVE, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.TWELVE.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime13 = InlineKeyboardButton.builder()
-                .text(NotificationTime.THIRTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.THIRTEEN))
+                .text(NotificationTime.THIRTEEN.getTime() + getButtonStatus(NotificationTime.THIRTEEN, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.THIRTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime14 = InlineKeyboardButton.builder()
-                .text(NotificationTime.FOURTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.FOURTEEN))
+                .text(NotificationTime.FOURTEEN.getTime() + getButtonStatus(NotificationTime.FOURTEEN, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.FOURTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime15 = InlineKeyboardButton.builder()
-                .text(NotificationTime.FIFTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.FIFTEEN))
+                .text(NotificationTime.FIFTEEN.getTime() + getButtonStatus(NotificationTime.FIFTEEN, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.FIFTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime16 = InlineKeyboardButton.builder()
-                .text(NotificationTime.SIXTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.SIXTEEN))
+                .text(NotificationTime.SIXTEEN.getTime() + getButtonStatus(NotificationTime.SIXTEEN, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.SIXTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime17 = InlineKeyboardButton.builder()
-                .text(NotificationTime.SEVENTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.SEVENTEEN))
+                .text(NotificationTime.SEVENTEEN.getTime() + getButtonStatus(NotificationTime.SEVENTEEN, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.SEVENTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonNotificationTime18 = InlineKeyboardButton.builder()
-                .text(NotificationTime.EIGHTEEN.getTime()+NotificationTime.getButtonStatus(NotificationTime.EIGHTEEN))
+                .text(NotificationTime.EIGHTEEN.getTime() + getButtonStatus(NotificationTime.EIGHTEEN, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.EIGHTEEN.getTime()))
                 .build();
         InlineKeyboardButton buttonTurnOfNotification = InlineKeyboardButton.builder()
-                .text("Вимкнути сповіщення"+NotificationTime.getButtonStatus(NotificationTime.SWICH_OFF))
+                .text("Вимкнути сповіщення" + getButtonStatus(NotificationTime.SWICH_OFF, selectedNotificationTime))
                 .callbackData(String.valueOf(NotificationTime.SWICH_OFF.getTime()))
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
@@ -82,5 +82,12 @@ public class MenuNotification {
         keyboardMenuNotification.add(keyboardMSetRow4);
 
         return InlineKeyboardMarkup.builder().keyboard(keyboardMenuNotification).build();
+    }
+
+    private static String getButtonStatus(NotificationTime currentNotificationTime, NotificationTime selectedNotificationTime) {
+        if (currentNotificationTime == selectedNotificationTime) {
+            return "✅";
+        }
+        return "";
     }
 }

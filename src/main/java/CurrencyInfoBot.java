@@ -134,7 +134,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 updateMessage(buttonQuery, MenuCurrency.keyboard());
                 break;
             case "Notification":
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "Private":
                 saveSelectBanks(Banks.PRIVATE);
@@ -162,47 +162,47 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 break;
             case "9":
                 saveSelectNotificationTime(NotificationTime.NINE);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "10":
                 saveSelectNotificationTime(NotificationTime.TEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "11":
                 saveSelectNotificationTime(NotificationTime.ELEVEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "12":
                 saveSelectNotificationTime(NotificationTime.TWELVE);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "13":
                 saveSelectNotificationTime(NotificationTime.THIRTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "14":
                 saveSelectNotificationTime(NotificationTime.FOURTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "15":
                 saveSelectNotificationTime(NotificationTime.FIFTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "16":
                 saveSelectNotificationTime(NotificationTime.SIXTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "17":
                 saveSelectNotificationTime(NotificationTime.SEVENTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "18":
                 saveSelectNotificationTime(NotificationTime.EIGHTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "0":
                 saveSelectNotificationTime(NotificationTime.SWICH_OFF);
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "USD":
                 saveSelectionCurrency(Currency.USD);
@@ -242,13 +242,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void saveSelectNotificationTime(NotificationTime enumDate) {
-        for (NotificationTime date : NotificationTime.values()) {
-            if (date.name().equals(enumDate.name())) {
-                enumDate.setSelect(true);
-            } else {
-                date.setSelect(false);
-            }
-        }
+        userSettings.setNotificationTime(enumDate);
     }
 
     private void saveSelectBanks(Banks enumDate) {
@@ -315,7 +309,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 updateMessage(buttonQuery, MenuCurrency.keyboard());
                 break;
             case NOTIFICATION:
-                updateMessage(buttonQuery, MenuNotification.keyboard());
+                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
         }
     }
