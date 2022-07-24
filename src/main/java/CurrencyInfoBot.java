@@ -117,7 +117,6 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         switch (dataButtonQuery) {
             case "GET_INFO":
                 printMessage(chatId, Settings.getInfo(chatId));
-                Settings.settings.put(chatId, userSettings);
                 break;
             case "SETTINGS":
                 printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
