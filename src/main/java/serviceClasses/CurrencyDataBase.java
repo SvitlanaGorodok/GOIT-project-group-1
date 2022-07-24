@@ -12,22 +12,25 @@ import java.util.HashMap;
 
 public class CurrencyDataBase {
     public static HashMap<Banks, Bank> currentInfo = new HashMap<>();
+    private static final Object monitor = new Object();
 
     public static Bank getCurrentInfo(Banks bankName) {
-        if (currentInfo.get(bankName) == null) {
-            try {
-                setCurrentInfo(bankName);
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
+        synchronized (monitor) {
+            if (currentInfo.get(bankName) == null) {
+                try {
+                    setCurrentInfo(bankName);
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        Bank bank = currentInfo.get(bankName);
-        long timeDiff = Duration.between(LocalDateTime.now(), bank.getTime()).toMinutes();
-        if (timeDiff > 5) {
-            try {
-                setCurrentInfo(bankName);
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+            Bank bank = currentInfo.get(bankName);
+            long timeDiff = Duration.between(LocalDateTime.now(), bank.getTime()).toMinutes();
+            if (timeDiff > 5) {
+                try {
+                    setCurrentInfo(bankName);
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
