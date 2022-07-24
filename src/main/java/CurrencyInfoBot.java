@@ -2,10 +2,7 @@ import keyboards.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.MessageEntity;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.*;
@@ -117,6 +114,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         switch (dataButtonQuery) {
             case "GET_INFO":
                 printMessage(chatId, Settings.getInfo(chatId));
+                printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
                 break;
             case "SETTINGS":
                 printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
@@ -137,72 +135,106 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
             case "Private":
-                saveSelectBanks(Banks.PRIVATE);
-                updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
+                if (!userSettings.getSelectedBank().getBankNameEN().equals("Private")) {
+                    saveSelectBanks(Banks.PRIVATE);
+                    updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
+                }
                 break;
             case "NBU":
-                saveSelectBanks(Banks.NBU);
-                updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
+                if (!userSettings.getSelectedBank().getBankNameEN().equals("NBU")) {
+                    saveSelectBanks(Banks.NBU);
+                    updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
+                }
                 break;
             case "Monobank":
-                saveSelectBanks(Banks.MONO);
-                updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
+                if (!userSettings.getSelectedBank().getBankNameEN().equals("Monobank")) {
+                    saveSelectBanks(Banks.MONO);
+                    updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
+                }
                 break;
             case "twoPlaces":
-                saveSelectNumDecPlaces(NumberOfDecimalPlaces.TWO);
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
+                if (userSettings.getNumberOfDecimalPlaces() != 2) {
+                    saveSelectNumDecPlaces(NumberOfDecimalPlaces.TWO);
+                    updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
+                }
                 break;
             case "threePlaces":
-                saveSelectNumDecPlaces(NumberOfDecimalPlaces.THREE);
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
+                if (userSettings.getNumberOfDecimalPlaces() != 3) {
+                    saveSelectNumDecPlaces(NumberOfDecimalPlaces.THREE);
+                    updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
+                }
                 break;
             case "fourPlaces":
-                saveSelectNumDecPlaces(NumberOfDecimalPlaces.FOUR);
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
+                if (userSettings.getNumberOfDecimalPlaces() != 4) {
+                    saveSelectNumDecPlaces(NumberOfDecimalPlaces.FOUR);
+                    updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
+                }
                 break;
             case "9":
-                saveSelectNotificationTime(NotificationTime.NINE);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 9) {
+                    saveSelectNotificationTime(NotificationTime.NINE);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "10":
-                saveSelectNotificationTime(NotificationTime.TEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 10) {
+                    saveSelectNotificationTime(NotificationTime.TEN);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "11":
-                saveSelectNotificationTime(NotificationTime.ELEVEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 11) {
+                    saveSelectNotificationTime(NotificationTime.ELEVEN);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "12":
-                saveSelectNotificationTime(NotificationTime.TWELVE);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 12) {
+                    saveSelectNotificationTime(NotificationTime.TWELVE);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "13":
-                saveSelectNotificationTime(NotificationTime.THIRTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 13) {
+                    saveSelectNotificationTime(NotificationTime.THIRTEEN);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "14":
-                saveSelectNotificationTime(NotificationTime.FOURTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 14) {
+                    saveSelectNotificationTime(NotificationTime.FOURTEEN);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "15":
-                saveSelectNotificationTime(NotificationTime.FIFTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 15) {
+                    saveSelectNotificationTime(NotificationTime.FIFTEEN);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "16":
-                saveSelectNotificationTime(NotificationTime.SIXTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 16) {
+                    saveSelectNotificationTime(NotificationTime.SIXTEEN);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "17":
-                saveSelectNotificationTime(NotificationTime.SEVENTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 17) {
+                    saveSelectNotificationTime(NotificationTime.SEVENTEEN);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "18":
-                saveSelectNotificationTime(NotificationTime.EIGHTEEN);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 18) {
+                    saveSelectNotificationTime(NotificationTime.EIGHTEEN);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "0":
-                saveSelectNotificationTime(NotificationTime.SWICH_OFF);
-                updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                if (userSettings.getNotificationTime().getTime() != 0) {
+                    saveSelectNotificationTime(NotificationTime.SWICH_OFF);
+                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                }
                 break;
             case "USD":
                 saveSelectCurrency(Currency.USD);

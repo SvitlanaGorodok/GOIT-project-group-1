@@ -24,15 +24,11 @@ public class HttpUtil {
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         List<NbuBank> date = GSON.fromJson(response.body(), new TypeToken<List<NbuBank>>() {
         }.getType());
-
-        System.out.println(date);
         return date;
     }
 
     public static Bank getNbu(List<NbuBank> listCurr) {
         Bank bank = new Bank();
-
-
         bank.setBankName(Banks.NBU);
         for (NbuBank currency : listCurr) {
             switch (currency.getCc()) {

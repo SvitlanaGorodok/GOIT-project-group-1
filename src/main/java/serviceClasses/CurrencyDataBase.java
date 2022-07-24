@@ -24,7 +24,7 @@ public class CurrencyDataBase {
                 }
             }
             Bank bank = currentInfo.get(bankName);
-            long timeDiff = Duration.between(LocalDateTime.now(), bank.getTime()).toMinutes();
+            long timeDiff = Duration.between(bank.getTime(), LocalDateTime.now()).toMinutes();
             if (timeDiff > 30) {
                 try {
                     setCurrentInfo(bankName);
@@ -43,19 +43,16 @@ public class CurrencyDataBase {
                 Bank bankPrivate = APIPrivat.getPrivatAPI();
                 bankPrivate.setTime(LocalDateTime.now());
                 currentInfo.put(bankName, bankPrivate);
-                System.out.println("HashMap " + currentInfo + " розмір " + currentInfo.size());
                 break;
             case MONO:
                 Bank bankMono = APIMonobank.getMonoAPI();
                 bankMono.setTime(LocalDateTime.now());
                 currentInfo.put(bankName, bankMono);
-                System.out.println("HashMap " + currentInfo + " розмір " + currentInfo.size());
                 break;
             case NBU:
                 Bank bankNBU = APINbu.getNBUAPI();
                 bankNBU.setTime(LocalDateTime.now());
                 currentInfo.put(bankName, bankNBU);
-                System.out.println("HashMap " + currentInfo + " розмір " + currentInfo.size());
                 break;
         }
 
