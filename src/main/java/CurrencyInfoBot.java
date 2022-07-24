@@ -39,21 +39,14 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     @Override
-//    public String getBotUsername() {
-//        return "@CurrencyInfoProjectGroup1Bot";
-//    }
-
     public String getBotUsername() {
-        return "TestKabaBOT";
+        return "@CurrencyInfoProjectGroup1Bot";
     }
 
-    @Override
-//    public String getBotToken() {
-//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
-//    }
 
+    @Override
     public String getBotToken() {
-        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
+        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
 
     @Override
@@ -104,7 +97,6 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
-
         long chatId = buttonQuery.getMessage().getChatId();
         synchronized (monitor) {
             if (Settings.settings.get(chatId) == null) {
@@ -131,7 +123,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
                 break;
             case "Currency":
-                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                updateMessage(buttonQuery, MenuCurrency.keyboard(chatId));
                 break;
             case "Notification":
                 updateMessage(buttonQuery, MenuNotification.keyboard());
@@ -205,29 +197,30 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 updateMessage(buttonQuery, MenuNotification.keyboard());
                 break;
             case "USD":
-                saveSelectionCurrency(Currency.USD);
-                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                saveSelectCurrency(Currency.USD);
+                updateMessage(buttonQuery, MenuCurrency.keyboard(chatId));
                 break;
             case "EUR":
-                saveSelectionCurrency(Currency.EUR);
-                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                saveSelectCurrency(Currency.EUR);
+                updateMessage(buttonQuery, MenuCurrency.keyboard(chatId));
                 break;
             case "PLN":
-                saveSelectionCurrency(Currency.PLN);
-                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                saveSelectCurrency(Currency.PLN);
+                updateMessage(buttonQuery, MenuCurrency.keyboard(chatId));
                 break;
             case "BTC":
-                saveSelectionCurrency(Currency.BTC);
-                updateMessage(buttonQuery, MenuCurrency.keyboard());
+                saveSelectCurrency(Currency.BTC);
+                updateMessage(buttonQuery, MenuCurrency.keyboard(chatId));
                 break;
         }
     }
 
-    private void saveSelectionCurrency(Currency currencys) {
-        for (Currency cerrency : Currency.values()) {
-            if (cerrency.name().equals(currencys.name())) {
-                currencys.setCurrencySelect(!currencys.isCurrencySelect());
-            }
+    private void saveSelectCurrency(Currency currency) {
+        List<Currency> currentCurrencies = userSettings.getSelectedCurrency();
+        if (currentCurrencies.contains(currency)){
+            currentCurrencies.remove(currency);
+        } else {
+            currentCurrencies.add(currency);
         }
     }
 
@@ -283,42 +276,42 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 .build());
     }
 
-    private Buttons convertToButtons(String buttonQuery) {
-        for (Buttons button : Buttons.values()) {
-            if (button.getNameEN().equals(buttonQuery)) {
-                return button;
-            }
-        }
-        return null;
-    }
-
-    public void checkMainButtons(CallbackQuery buttonQuery) throws TelegramApiException {
-        long chatId = buttonQuery.getMessage().getChatId();
-        String dataButtonQuery = buttonQuery.getData();
-        switch (Objects.requireNonNull(convertToButtons(dataButtonQuery))) {
-            case GET_INFO:
-                printMessage(chatId, Settings.getInfo(chatId));
-                break;
-            case SETTINGS:
-                printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
-                break;
-            case BACK_TO_START:
-                printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
-                break;
-            case NUM_DECIMAL_PLACES:
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
-                break;
-            case BANK:
-                updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
-                break;
-            case CURRENCY:
-                updateMessage(buttonQuery, MenuCurrency.keyboard());
-                break;
-            case NOTIFICATION:
-                updateMessage(buttonQuery, MenuNotification.keyboard());
-                break;
-        }
-    }
+//    private Buttons convertToButtons(String buttonQuery) {
+//        for (Buttons button : Buttons.values()) {
+//            if (button.getNameEN().equals(buttonQuery)) {
+//                return button;
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public void checkMainButtons(CallbackQuery buttonQuery) throws TelegramApiException {
+//        long chatId = buttonQuery.getMessage().getChatId();
+//        String dataButtonQuery = buttonQuery.getData();
+//        switch (Objects.requireNonNull(convertToButtons(dataButtonQuery))) {
+//            case GET_INFO:
+//                printMessage(chatId, Settings.getInfo(chatId));
+//                break;
+//            case SETTINGS:
+//                printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
+//                break;
+//            case BACK_TO_START:
+//                printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
+//                break;
+//            case NUM_DECIMAL_PLACES:
+//                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+//                break;
+//            case BANK:
+//                updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
+//                break;
+//            case CURRENCY:
+//                updateMessage(buttonQuery, MenuCurrency.keyboard());
+//                break;
+//            case NOTIFICATION:
+//                updateMessage(buttonQuery, MenuNotification.keyboard());
+//                break;
+//        }
+//    }
 }
 
 

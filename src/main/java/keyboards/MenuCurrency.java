@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuCurrency {
-    public static InlineKeyboardMarkup keyboard() {
+    public static InlineKeyboardMarkup keyboard(long chatId) {
+        Setting userSetting = Settings.settings.get(chatId);
+        List<Currency> selectedCurrencies = userSetting.getSelectedCurrency();
         List<List<InlineKeyboardButton>> keyboardMenuCurrency = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMenuCurrency1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMenuCurrency2 = new ArrayList<>();
@@ -16,19 +18,19 @@ public class MenuCurrency {
         List<InlineKeyboardButton> keyboardMenuCurrency4 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMenuCurrency5 = new ArrayList<>();
         InlineKeyboardButton buttonUsd = InlineKeyboardButton.builder()
-                .text(Currency.USD.getCurrencyName() + Currency.getCurrencyButtonsStatus(Currency.USD))
+                .text(Currency.USD.getCurrencyName() + getButtonStatus(Currency.USD, selectedCurrencies))
                 .callbackData(Currency.USD.getCurrencyName())
                 .build();
         InlineKeyboardButton buttonEur = InlineKeyboardButton.builder()
-                .text(Currency.EUR.getCurrencyName() + Currency.getCurrencyButtonsStatus(Currency.EUR))
+                .text(Currency.EUR.getCurrencyName() + getButtonStatus(Currency.EUR, selectedCurrencies))
                 .callbackData(Currency.EUR.getCurrencyName())
                 .build();
         InlineKeyboardButton buttonPln = InlineKeyboardButton.builder()
-                .text(Currency.PLN.getCurrencyName() + Currency.getCurrencyButtonsStatus(Currency.PLN))
+                .text(Currency.PLN.getCurrencyName() + getButtonStatus(Currency.PLN, selectedCurrencies))
                 .callbackData(Currency.PLN.getCurrencyName())
                 .build();
         InlineKeyboardButton buttonBtc = InlineKeyboardButton.builder()
-                .text(Currency.BTC.getCurrencyName() + Currency.getCurrencyButtonsStatus(Currency.BTC))
+                .text(Currency.BTC.getCurrencyName() + getButtonStatus(Currency.BTC, selectedCurrencies))
                 .callbackData(Currency.BTC.getCurrencyName())
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
@@ -47,5 +49,12 @@ public class MenuCurrency {
         keyboardMenuCurrency.add(keyboardMenuCurrency5);
 
         return InlineKeyboardMarkup.builder().keyboard(keyboardMenuCurrency).build();
+    }
+
+    private static String getButtonStatus(Currency currency, List<Currency> selectedCurrencies) {
+        if (selectedCurrencies.contains(currency)) {
+            return "✅";
+        }
+        return "";
     }
 }
