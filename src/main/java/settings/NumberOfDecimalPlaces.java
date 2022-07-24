@@ -39,11 +39,6 @@ public enum NumberOfDecimalPlaces {
         this.select = select;
     }
 
-    public static String getButtonStatus (NumberOfDecimalPlaces button){
-        if(button.isSelect()){
-            return "✅";
-       }
-        return "";
-    }
+
 }
 

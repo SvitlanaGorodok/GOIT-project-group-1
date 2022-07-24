@@ -8,22 +8,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuNumDecimalPlaces {
-    public static InlineKeyboardMarkup keyboard() {
+    public static InlineKeyboardMarkup keyboard(long chatId) {
+        Setting userSetting = Settings.settings.get(chatId);
+        int selectedNumDecPlaces = userSetting.getNumberOfDecimalPlaces();
+
         List<List<InlineKeyboardButton>> keyboard =  new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow2 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow3 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         InlineKeyboardButton buttonNumberOfDecimalPlaces2 = InlineKeyboardButton.builder()
-                .text(NumberOfDecimalPlaces.TWO.getIntNumber()+NumberOfDecimalPlaces.getButtonStatus(NumberOfDecimalPlaces.TWO))
+                .text(NumberOfDecimalPlaces.TWO.getIntNumber()+ getButtonStatus(NumberOfDecimalPlaces.TWO.getIntNumber(), selectedNumDecPlaces))
                 .callbackData(NumberOfDecimalPlaces.TWO.getNameDecPlaces())
                 .build();
         InlineKeyboardButton buttonNumberOfDecimalPlaces3 = InlineKeyboardButton.builder()
-                .text(NumberOfDecimalPlaces.THREE.getIntNumber()+NumberOfDecimalPlaces.getButtonStatus(NumberOfDecimalPlaces.THREE))
+                .text(NumberOfDecimalPlaces.THREE.getIntNumber()+getButtonStatus(NumberOfDecimalPlaces.THREE.getIntNumber(), selectedNumDecPlaces))
                 .callbackData(NumberOfDecimalPlaces.THREE.getNameDecPlaces())
                 .build();
         InlineKeyboardButton buttonNumberOfDecimalPlaces4 = InlineKeyboardButton.builder()
-                .text(NumberOfDecimalPlaces.FOUR.getIntNumber()+NumberOfDecimalPlaces.getButtonStatus(NumberOfDecimalPlaces.FOUR))
+                .text(NumberOfDecimalPlaces.FOUR.getIntNumber()+getButtonStatus(NumberOfDecimalPlaces.FOUR.getIntNumber(), selectedNumDecPlaces))
                 .callbackData(NumberOfDecimalPlaces.FOUR.getNameDecPlaces())
                 .build();
         InlineKeyboardButton buttonBackToSetting = InlineKeyboardButton.builder()
@@ -40,6 +43,12 @@ public class MenuNumDecimalPlaces {
         keyboard.add(keyboardMSetRow4);
 
         return InlineKeyboardMarkup.builder().keyboard(keyboard).build();
+    }
+    private static String getButtonStatus(int currentNumDecPlaces, int selectedNumDecPlaces) {
+        if (currentNumDecPlaces == selectedNumDecPlaces) {
+            return "✅";
+        }
+        return "";
     }
 }
 
