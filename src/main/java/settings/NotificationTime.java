@@ -38,10 +38,4 @@ public enum NotificationTime {
         this.select = select;
     }
 
-    public static String getButtonStatus (NotificationTime button){
-        if(button.isSelect()){
-            return "✅";
-        }
-        return "";
-    }
 }
