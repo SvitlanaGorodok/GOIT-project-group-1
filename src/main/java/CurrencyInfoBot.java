@@ -39,22 +39,22 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     @Override
-//    public String getBotUsername() {
-//        return "@CurrencyInfoProjectGroup1Bot";
-//    }
-
     public String getBotUsername() {
-        return "TestKabaBOT";
+        return "@CurrencyInfoProjectGroup1Bot";
     }
+
+//    public String getBotUsername() {
+//        return "TestKabaBOT";
+//    }
 
     @Override
-//    public String getBotToken() {
-//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
-//    }
-
     public String getBotToken() {
-        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
+        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
+
+//    public String getBotToken() {
+//        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
+//    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -125,7 +125,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
                 break;
             case "NumDecimalPlaces":
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
                 break;
             case "Bank":
                 updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
@@ -150,15 +150,15 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 break;
             case "twoPlaces":
                 saveSelectNumDecPlaces(NumberOfDecimalPlaces.TWO);
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
                 break;
             case "threePlaces":
                 saveSelectNumDecPlaces(NumberOfDecimalPlaces.THREE);
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
                 break;
             case "fourPlaces":
                 saveSelectNumDecPlaces(NumberOfDecimalPlaces.FOUR);
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
                 break;
             case "9":
                 saveSelectNotificationTime(NotificationTime.NINE);
@@ -232,13 +232,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void saveSelectNumDecPlaces(NumberOfDecimalPlaces enumDate) {
-        for (NumberOfDecimalPlaces date : NumberOfDecimalPlaces.values()) {
-            if (date.name().equals(enumDate.name())) {
-                enumDate.setSelect(true);
-            } else {
-                date.setSelect(false);
-            }
-        }
+        userSettings.setNumberOfDecimalPlaces(enumDate);
     }
 
     private void saveSelectNotificationTime(NotificationTime enumDate) {
@@ -300,7 +294,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
                 break;
             case NUM_DECIMAL_PLACES:
-                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard());
+                updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
                 break;
             case BANK:
                 updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
