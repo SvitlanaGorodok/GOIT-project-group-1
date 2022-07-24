@@ -2,13 +2,15 @@ package keyboards;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import settings.NotificationTime;
+import settings.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuNotification {
     public static InlineKeyboardMarkup keyboard() {
+
+
         List<List<InlineKeyboardButton>> keyboardMenuNotification = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow2 = new ArrayList<>();
@@ -59,8 +61,8 @@ public class MenuNotification {
                 .callbackData(String.valueOf(NotificationTime.SWICH_OFF.getTime()))
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
-                .text("↩️")
-                .callbackData("BackToSettings")
+                .text(Buttons.BACK_TO_SETTINGS.getName())
+                .callbackData(Buttons.BACK_TO_SETTINGS.getNameEN())
                 .build();
         keyboardMSetRow1.add(buttonNotificationTime9);
         keyboardMSetRow1.add(buttonNotificationTime10);

@@ -6,7 +6,7 @@ import java.util.List;
 public enum Currency {
     USD("USD", true),
     EUR("EUR", false),
-    PLN("PLN", true),
+    PLN("PLN", false),
     BTC("BTC", false);
 
     private String currencyName;
@@ -31,6 +31,13 @@ public enum Currency {
 
     public void setCurrencySelect(boolean currencySelect) {
         this.currencySelect = currencySelect;
+    }
+
+    public static String getCurrencyButtonsStatus(Currency button) {
+        if (button.isCurrencySelect()) {
+            return "✅";
+        }
+        return "";
     }
 
     public static List<Currency> getSelectedCurrencyList() {

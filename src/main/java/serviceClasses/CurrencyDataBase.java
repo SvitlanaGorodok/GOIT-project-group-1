@@ -1,26 +1,61 @@
 package serviceClasses;
 
+import monobank.APIMonobank;
+import nbu.APINbu;
+import privat.APIPrivat;
 import settings.Banks;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class CurrencyDataBase {
     public static HashMap<Banks, Bank> currentInfo = new HashMap<>();
 
-    public Bank getCurrentInfo(Banks bankName) {
+    public static Bank getCurrentInfo(Banks bankName) {
+        if (currentInfo.get(bankName) == null) {
+            try {
+                setCurrentInfo(bankName);
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Bank bank = currentInfo.get(bankName);
+        long timeDiff = Duration.between(LocalDateTime.now(), bank.getTime()).toMinutes();
+        if (timeDiff > 5) {
+            try {
+                setCurrentInfo(bankName);
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         return currentInfo.get(bankName);
     }
 
-    public void setCurrentInfo(Banks bankName, Bank bank) {
-        currentInfo.put(bankName, bank);
+    public static void setCurrentInfo(Banks bankName) throws IOException, InterruptedException {
+        switch (bankName) {
+            case PRIVATE:
+                Bank bankPrivate = APIPrivat.getPrivatAPI();
+                bankPrivate.setTime(LocalDateTime.now());
+                currentInfo.put(bankName, bankPrivate);
+                System.out.println("HashMap " + currentInfo + " розмір " + currentInfo.size());
+                break;
+            case MONO:
+                Bank bankMono = APIMonobank.getMonoAPI();
+                bankMono.setTime(LocalDateTime.now());
+                currentInfo.put(bankName, bankMono);
+                System.out.println("HashMap " + currentInfo + " розмір " + currentInfo.size());
+                break;
+            case NBU:
+                Bank bankNBU = APINbu.getNBUAPI();
+                bankNBU.setTime(LocalDateTime.now());
+                currentInfo.put(bankName, bankNBU);
+                System.out.println("HashMap " + currentInfo + " розмір " + currentInfo.size());
+                break;
+        }
+
     }
 
-    /*
-        1) Витягує з мапи значення по ключу для конкретного банку
-        2) Зчитує поле Time і:
-        2.1) якщо значення <5 хвилин, то вертає користувачеві актуальне значення отримане з мапи
-        2.2) якщо значення >5 хвилин, то
-             - робить новий запит до конкретного банку
-             - записує результат цього запиту в мапу (перезапис даних, викликає метод запису в мапу hashmap Info)
-             - вертає користувачеві актуальне значення
-    */
 }

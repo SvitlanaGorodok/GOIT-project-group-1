@@ -2,6 +2,8 @@ package keyboards;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import settings.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,24 +16,24 @@ public class MenuCurrency {
         List<InlineKeyboardButton> keyboardMenuCurrency4 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMenuCurrency5 = new ArrayList<>();
         InlineKeyboardButton buttonUsd = InlineKeyboardButton.builder()
-                .text("USD")
-                .callbackData("USD")
+                .text(Currency.USD.getCurrencyName() + Currency.getCurrencyButtonsStatus(Currency.USD))
+                .callbackData(Currency.USD.getCurrencyName())
                 .build();
         InlineKeyboardButton buttonEur = InlineKeyboardButton.builder()
-                .text("EUR")
-                .callbackData("EUR")
+                .text(Currency.EUR.getCurrencyName() + Currency.getCurrencyButtonsStatus(Currency.EUR))
+                .callbackData(Currency.EUR.getCurrencyName())
                 .build();
         InlineKeyboardButton buttonPln = InlineKeyboardButton.builder()
-                .text("PLN")
-                .callbackData("PLN")
+                .text(Currency.PLN.getCurrencyName() + Currency.getCurrencyButtonsStatus(Currency.PLN))
+                .callbackData(Currency.PLN.getCurrencyName())
                 .build();
         InlineKeyboardButton buttonBtc = InlineKeyboardButton.builder()
-                .text("BITCOIN")
-                .callbackData("BTC")
+                .text(Currency.BTC.getCurrencyName() + Currency.getCurrencyButtonsStatus(Currency.BTC))
+                .callbackData(Currency.BTC.getCurrencyName())
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
-                .text("↩️")
-                .callbackData("SETTINGS")
+                .text(Buttons.BACK_TO_SETTINGS.getName())
+                .callbackData(Buttons.BACK_TO_SETTINGS.getNameEN())
                 .build();
         keyboardMenuCurrency1.add(buttonUsd);
         keyboardMenuCurrency2.add(buttonEur);
