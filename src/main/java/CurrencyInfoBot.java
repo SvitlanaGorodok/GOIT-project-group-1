@@ -134,9 +134,9 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
             case "Notification":
                 updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
                 break;
-            case "Private":
-                if (!userSettings.getSelectedBank().getBankNameEN().equals("Private")) {
-                    saveSelectBanks(Banks.PRIVATE);
+            case "Privat":
+                if (!userSettings.getSelectedBank().getBankNameEN().equals("Privat")) {
+                    saveSelectBanks(Banks.PRIVAT);
                     updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
                 }
                 break;
