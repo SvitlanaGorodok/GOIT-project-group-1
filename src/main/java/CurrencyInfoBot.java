@@ -36,23 +36,23 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     @Override
-//    public String getBotUsername() {
-//        return "@CurrencyInfoProjectGroup1Bot";
-//    }
-
     public String getBotUsername() {
-        return "TestKabaBOT";
+        return "@CurrencyInfoProjectGroup1Bot";
     }
+
+//    public String getBotUsername() {
+//        return "TestKabaBOT";
+//    }
 
 
     @Override
-//    public String getBotToken() {
-//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
-//    }
-
     public String getBotToken() {
-        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
+        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
+
+//    public String getBotToken() {
+//        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
+//    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -133,6 +133,9 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 break;
             case "Notification":
                 updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                break;
+            case "ZoneId":
+                updateMessage(buttonQuery, MenuZoneId.keyboard());
                 break;
             case "Private":
                 if (!userSettings.getSelectedBank().getBankNameEN().equals("Private")) {
@@ -372,6 +375,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 date.setSelect(false);
             }
         }
+        userSettings.setZoneId(enumDate);
     }
 
     private void saveSelectNumDecPlaces(NumberOfDecimalPlaces enumDate) {
