@@ -36,23 +36,23 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     @Override
-    public String getBotUsername() {
-        return "@CurrencyInfoProjectGroup1Bot";
-    }
-
 //    public String getBotUsername() {
-//        return "TestKabaBOT";
+//        return "@CurrencyInfoProjectGroup1Bot";
 //    }
+
+    public String getBotUsername() {
+        return "TestKabaBOT";
+    }
 
 
     @Override
-    public String getBotToken() {
-        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
-    }
-
 //    public String getBotToken() {
-//        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
+//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
 //    }
+
+    public String getBotToken() {
+        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
+    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -66,6 +66,11 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         if (update.hasCallbackQuery()) {
             try {
                 handleQuery(update.getCallbackQuery());
+                Settings.save();
+                Settings.load();
+                Settings.converter();
+                System.out.println("--------------");
+                System.out.println(Settings.settings);
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
@@ -77,7 +82,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         synchronized (monitor) {
             if (Settings.settings.get(chatId) == null) {
                 userSettings = new Setting(chatId, NumberOfDecimalPlaces.TWO, Banks.PRIVAT,
-                        Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTCTHREE);
+                        Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTC_THREE);
             } else {
                 userSettings = Settings.settings.get(chatId);
             }
@@ -107,7 +112,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         synchronized (monitor) {
             if (Settings.settings.get(chatId) == null) {
                 userSettings = new Setting(chatId, NumberOfDecimalPlaces.TWO, Banks.PRIVAT,
-                        Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTCTHREE);
+                        Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTC_THREE);
             } else {
                 userSettings = Settings.settings.get(chatId);
             }
@@ -259,103 +264,103 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 updateMessage(buttonQuery, MenuCurrency.keyboard(chatId));
                 break;
             case "UTC +1":
-                saveSelectZoneId(ZoneId.UTCONE);
+                saveSelectZoneId(ZoneId.UTC_ONE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +2":
-                saveSelectZoneId(ZoneId.UTCTWO);
+                saveSelectZoneId(ZoneId.UTC_TWO);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +3":
-                saveSelectZoneId(ZoneId.UTCTHREE);
+                saveSelectZoneId(ZoneId.UTC_THREE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +4":
-                saveSelectZoneId(ZoneId.UTCFOUR);
+                saveSelectZoneId(ZoneId.UTC_FOUR);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +5":
-                saveSelectZoneId(ZoneId.UTCFIVE);
+                saveSelectZoneId(ZoneId.UTC_FIVE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +6":
-                saveSelectZoneId(ZoneId.UTCSIX);
+                saveSelectZoneId(ZoneId.UTC_SIX);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +7":
-                saveSelectZoneId(ZoneId.UTCSEVEN);
+                saveSelectZoneId(ZoneId.UTC_SEVEN);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +8":
-                saveSelectZoneId(ZoneId.UTCEIGHT);
+                saveSelectZoneId(ZoneId.UTC_EIGHT);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +9":
-                saveSelectZoneId(ZoneId.UTCNINE);
+                saveSelectZoneId(ZoneId.UTC_NINE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +10":
-                saveSelectZoneId(ZoneId.UTCTEN);
+                saveSelectZoneId(ZoneId.UTC_TEN);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +11":
-                saveSelectZoneId(ZoneId.UTCELEVEN);
+                saveSelectZoneId(ZoneId.UTC_ELEVEN);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC +12":
-                saveSelectZoneId(ZoneId.UTCTWELVE);
+                saveSelectZoneId(ZoneId.UTC_TWELVE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -1":
-                saveSelectZoneId(ZoneId.UTCMINUSONE);
+                saveSelectZoneId(ZoneId.UTC_MINUS_ONE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -2":
-                saveSelectZoneId(ZoneId.UTCMINUSTWO);
+                saveSelectZoneId(ZoneId.UTC_MINUS_TWO);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -3":
-                saveSelectZoneId(ZoneId.UTCMINUSTHREE);
+                saveSelectZoneId(ZoneId.UTC_MINUS_THREE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -4":
-                saveSelectZoneId(ZoneId.UTCMINUSFOUR);
+                saveSelectZoneId(ZoneId.UTC_MINUS_FOUR);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -5":
-                saveSelectZoneId(ZoneId.UTCMINUSFIVE);
+                saveSelectZoneId(ZoneId.UTC_MINUS_FIVE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -6":
-                saveSelectZoneId(ZoneId.UTCMINUSSIX);
+                saveSelectZoneId(ZoneId.UTC_MINUS_SIX);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -7":
-                saveSelectZoneId(ZoneId.UTCMINUSSEVEN);
+                saveSelectZoneId(ZoneId.UTC_MINUS_SEVEN);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -8":
-                saveSelectZoneId(ZoneId.UTCMINUSEIGHT);
+                saveSelectZoneId(ZoneId.UTC_MINUS_EIGHT);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -9":
-                saveSelectZoneId(ZoneId.UTCMINUSNINE);
+                saveSelectZoneId(ZoneId.UTC_MINUS_NINE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -10":
-                saveSelectZoneId(ZoneId.UTCMINUSTEN);
+                saveSelectZoneId(ZoneId.UTC_MINUS_TEN);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -11":
-                saveSelectZoneId(ZoneId.UTCMINUSELEVEN);
+                saveSelectZoneId(ZoneId.UTC_MINUS_ELEVEN);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC -12":
-                saveSelectZoneId(ZoneId.UTCMINUSTWELVE);
+                saveSelectZoneId(ZoneId.UTC_MINUS_TWELVE);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
             case "UTC 0":
-                saveSelectZoneId(ZoneId.UTCZERO);
+                saveSelectZoneId(ZoneId.UTC_ZERO);
                 updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
                 break;
         }
