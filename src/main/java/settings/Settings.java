@@ -40,13 +40,13 @@ public class Settings {
                     .append(currency.getCurrencyName())
                     .append(" - ")
                     .append(bankInfo.getBuyRate(currency) == 0 ? "немає купівлі" :
-                            format("%." + numberDecPlaces + "f" , bankInfo.getBuyRate(currency)))
+                            format("%." + numberDecPlaces + "f" , bankInfo.getBuyRate(currency)) + addCurName(currency))
                     .append("\n");
             messageToUser.append("Курс продажу ")
                     .append(currency.getCurrencyName())
                     .append(" - ")
                     .append(bankInfo.getSellRate(currency) == 0 ? "немає продажу" :
-                            format("%." + numberDecPlaces + "f" , bankInfo.getSellRate(currency)))
+                            format("%." + numberDecPlaces + "f" , bankInfo.getSellRate(currency))+ addCurName(currency))
                     .append("\n");
         }
         return messageToUser.toString();
@@ -155,5 +155,16 @@ public class Settings {
         return null;
     }
 
+    private static String addCurName (Currency currency){
+        switch (currency){
+            case USD:
+            case EUR:
+            case PLN:
+                return " грн";
+            case BTC:
+                return " дол";
+        }
+        return "";
+    }
 
 }
