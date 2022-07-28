@@ -9,6 +9,8 @@ import settings.*;
 import settings.Currency;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
     private static CurrencyInfoBot instance;
@@ -17,6 +19,8 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     private Setting userSettings;
 
     private final static Object monitor = new Object();
+
+    private static final ExecutorService service = Executors.newSingleThreadExecutor();
 
     private CurrencyInfoBot(String value) {
         // The following code emulates slow initialization.
@@ -175,6 +179,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         if (Buttons.convertToEnum(dataButtonQuery) != null){
             switch (Buttons.convertToEnum(dataButtonQuery)) {
                 case GET_INFO:
+                    service.execute(new SaveSettings());
                     printMessage(chatId, Settings.getInfo(chatId));
                     printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
                     break;

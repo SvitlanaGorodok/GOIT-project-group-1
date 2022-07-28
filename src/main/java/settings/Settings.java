@@ -23,11 +23,10 @@ public class Settings {
 
     private static final Object monitor = new Object();
 
-    static ExecutorService service = Executors.newSingleThreadExecutor();
+
 
 
     public static String getInfo (Long chatId) {
-        service.execute(new SaveSettings());
         StringBuilder messageToUser = new StringBuilder();
         Setting userSetting = settings.get(chatId);
         String bankName = userSetting.getSelectedBank().getBankNameUA();
