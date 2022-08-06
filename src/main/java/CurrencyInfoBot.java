@@ -13,7 +13,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
-    private static CurrencyInfoBot instance;
+
+    private MenuBanks menuBanks;
+    private MenuCurrency menuCurrency;
+    private MenuNotification menuNotification;
+    private MenuNumDecimalPlaces menuNumDecimalPlaces;
+    private MenuSettings menuSettings;
+    private MenuStart menuStart;
+    private MenuZoneId menuZoneId;
+
     public String value;
 
     private Setting userSettings;
@@ -32,12 +40,13 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         this.value = value;
     }
 
-    public static CurrencyInfoBot getInstance(String value) {
-        if (instance == null) {
-            instance = new CurrencyInfoBot(value);
-        }
-        return instance;
-    }
+
+    public CurrencyInfoBot (String value, MenuBanks menuBanks, MenuCurrency menuCurrency, MenuNotification menuNotification,
+                            MenuNumDecimalPlaces menuNumDecimalPlaces, MenuSettings menuSettings, MenuStart menuStart,
+                            MenuZoneId menuZoneId) {
+        this(value);
+
+    };
 
     @Override
     public String getBotUsername() {
