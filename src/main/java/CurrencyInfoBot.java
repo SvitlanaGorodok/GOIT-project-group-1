@@ -19,6 +19,8 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
 
     private Setting userSettings;
 
+    private Menu menu = new MenuUA();
+
     private final static Object monitor = new Object();
 
     private static final ExecutorService service = Executors.newSingleThreadExecutor();
@@ -88,7 +90,6 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 String command = message.getText()
                         .substring(commandEntity.get().getOffset(), commandEntity.get().getLength());
                 if (command.equals(Buttons.START.getNameEN())) {
-                    Menu menu = new MenuUA();
                     printMessage(chatId, menu.keyboardLanguage(chatId),
                             "Please select language.\nБудь ласка оберіть мову");
                     synchronized (monitor) {

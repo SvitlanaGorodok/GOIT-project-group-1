@@ -13,7 +13,6 @@ public class AppLauncher {
         messageInTime.start();
 
         Settings.load();
-        Settings.converter();
 
         CurrencyInfoBot currencyInfoBot = CurrencyInfoBot.getInstance("currencyInfoBot");
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);

@@ -393,8 +393,6 @@ public abstract class Menu {
         return InlineKeyboardMarkup.builder().keyboard(keyboardMZoneId).build();
     }
     public InlineKeyboardMarkup keyboardLanguage(long chatId) {
-        Setting userSetting = Settings.settings.get(chatId);
-        Language selectedLang = userSetting.getSelectedLanguage();
         List<List<InlineKeyboardButton>> keyboardMenuLang = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow2 = new ArrayList<>();

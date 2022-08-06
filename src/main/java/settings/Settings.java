@@ -25,7 +25,15 @@ public class Settings {
         StringBuilder messageToUser = new StringBuilder();
         Setting userSetting = settings.get(chatId);
         Language language = userSetting.getSelectedLanguage();
-        String bankName = userSetting.getSelectedBank().getBankNameUA();
+        String bankName;
+        switch (language) {
+            case UA:
+                bankName = userSetting.getSelectedBank().getBankNameUA();
+                break;
+            default:
+                bankName = userSetting.getSelectedBank().getBankNameEN();
+                break;
+        }
         messageToUser.append(bankName).append("\n");
         int numberDecPlaces = userSetting.getNumberOfDecimalPlaces();
         List<Currency> currencies = userSetting.getSelectedCurrency();
@@ -35,13 +43,13 @@ public class Settings {
                     .append(currency.getCurrencyName())
                     .append(" - ")
                     .append(bankInfo.getBuyRate(currency) == 0 ? Language.translate("немає купівлі", language) :
-                            format("%." + numberDecPlaces + "f" , bankInfo.getBuyRate(currency)) + addCurName(currency))
+                            format("%." + numberDecPlaces + "f", bankInfo.getBuyRate(currency)) + addCurName(currency))
                     .append("\n");
             messageToUser.append(Language.translate("Курс продажу ", language))
                     .append(currency.getCurrencyName())
                     .append(" - ")
                     .append(bankInfo.getSellRate(currency) == 0 ? Language.translate("немає продажу", language) :
-                            format("%." + numberDecPlaces + "f" , bankInfo.getSellRate(currency))+ addCurName(currency))
+                            format("%." + numberDecPlaces + "f", bankInfo.getSellRate(currency)) + addCurName(currency))
                     .append("\n");
         }
         return messageToUser.toString();
@@ -56,6 +64,7 @@ public class Settings {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+            System.out.println(settingGsonFile.length());
         }
         return settingGsonFile;
     }
@@ -63,12 +72,17 @@ public class Settings {
 
     public static void load() {
         synchronized (monitor) {
-            try {
-                IntermediateSettings.intermediateSettings = new ObjectMapper().readValue(fileSettingsGsonCheck(),
-                        new TypeReference<Map<Long, IntermediateSetting>>() {
-                        });
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+            File file = fileSettingsGsonCheck();
+            if (file.length() != 0) {
+                try {
+                    IntermediateSettings.intermediateSettings = new ObjectMapper().readValue(file,
+                            new TypeReference<Map<Long, IntermediateSetting>>() {
+                            });
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                converter();
             }
         }
     }
@@ -83,7 +97,7 @@ public class Settings {
         }
     }
 
-    public static void converter() {
+    private static void converter() {
         synchronized (monitor) {
             Map<Long, IntermediateSetting> inputMap = IntermediateSettings.intermediateSettings;
             Map<Long, Setting> outputMap = Settings.settings;
@@ -160,8 +174,8 @@ public class Settings {
         return null;
     }
 
-    private static String addCurName (Currency currency){
-        switch (currency){
+    private static String addCurName(Currency currency) {
+        switch (currency) {
             case USD:
             case EUR:
             case PLN:
