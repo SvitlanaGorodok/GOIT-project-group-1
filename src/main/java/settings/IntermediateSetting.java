@@ -9,6 +9,7 @@ public class IntermediateSetting {
     private List<String> selectedCurrency;
     private String notificationTime;
     private String zoneId;
+    private String language;
 
     public void setChatId(Long chatId) {
         this.chatId = chatId;
@@ -56,5 +57,13 @@ public class IntermediateSetting {
 
     public String getZoneId() {
         return zoneId;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getLanguage() {
+        return language;
     }
 }

@@ -2,16 +2,15 @@ package keyboards;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import settings.Buttons;
-import settings.Currency;
-import settings.Setting;
+import settings.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MenuSettings {
-    public static InlineKeyboardMarkup keyboard(Setting setting) {
+public class MenuUA extends Menu{
+    @Override
+    public InlineKeyboardMarkup keyboardSettings(Setting setting) {
         String selectedCurr = setting.getSelectedCurrency().stream()
                 .map(Currency::getCurrencyName)
                 .collect(Collectors.joining(", ", "(", ")"));
@@ -64,5 +63,25 @@ public class MenuSettings {
         keyboardMenuSettings.add(keyboardMSetRow6);
 
         return InlineKeyboardMarkup.builder().keyboard(keyboardMenuSettings).build();
+    }
+
+    @Override
+    public InlineKeyboardMarkup keyboardStart() {
+        List<List<InlineKeyboardButton>> keyboardMenuStart = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMSRow1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMSRow2 = new ArrayList<>();
+        InlineKeyboardButton buttonGetInfo = InlineKeyboardButton.builder()
+                .text(Buttons.GET_INFO.getNameUA())
+                .callbackData(Buttons.GET_INFO.getNameEN())
+                .build();
+        InlineKeyboardButton buttonSettings = InlineKeyboardButton.builder()
+                .text(Buttons.SETTINGS.getNameUA())
+                .callbackData(Buttons.SETTINGS.getNameEN())
+                .build();
+        keyboardMSRow1.add(buttonGetInfo);
+        keyboardMSRow2.add(buttonSettings);
+        keyboardMenuStart.add(keyboardMSRow1);
+        keyboardMenuStart.add(keyboardMSRow2);
+        return InlineKeyboardMarkup.builder().keyboard(keyboardMenuStart).build();
     }
 }
