@@ -22,6 +22,7 @@ public class MenuUA extends Menu{
         List<InlineKeyboardButton> keyboardMSetRow4 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow5 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow6 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardMSetRow7 = new ArrayList<>();
         InlineKeyboardButton buttonNumOfDecPlaces = InlineKeyboardButton.builder()
                 .text(Buttons.NUM_DECIMAL_PLACES.getNameUA() + " (" + setting.getNumberOfDecimalPlaces() + ")")
                 .callbackData(Buttons.NUM_DECIMAL_PLACES.getNameEN())
@@ -44,6 +45,10 @@ public class MenuUA extends Menu{
                 .text(Buttons.ZONEID.getNameUA() + " (" + setting.getZoneId().getNameZone() + ")")
                 .callbackData(Buttons.ZONEID.getNameEN())
                 .build();
+        InlineKeyboardButton buttonLang = InlineKeyboardButton.builder()
+                .text(Buttons.LANGUAGE.getNameUA() + " (" + setting.getSelectedLanguage().getLangFlag() + ")")
+                .callbackData(Buttons.LANGUAGE.getNameEN())
+                .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
                 .text(Buttons.BACK_TO_START.getNameUA())
                 .callbackData(Buttons.BACK_TO_START.getNameEN())
@@ -54,13 +59,15 @@ public class MenuUA extends Menu{
         keyboardMSetRow3.add(buttonCurrency);
         keyboardMSetRow4.add(buttonNotificationTime);
         keyboardMSetRow5.add(buttonZoneId);
-        keyboardMSetRow6.add(buttonBack);
+        keyboardMSetRow6.add(buttonLang);
+        keyboardMSetRow7.add(buttonBack);
         keyboardMenuSettings.add(keyboardMSetRow1);
         keyboardMenuSettings.add(keyboardMSetRow2);
         keyboardMenuSettings.add(keyboardMSetRow3);
         keyboardMenuSettings.add(keyboardMSetRow4);
         keyboardMenuSettings.add(keyboardMSetRow5);
         keyboardMenuSettings.add(keyboardMSetRow6);
+        keyboardMenuSettings.add(keyboardMSetRow7);
 
         return InlineKeyboardMarkup.builder().keyboard(keyboardMenuSettings).build();
     }
