@@ -18,6 +18,8 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
 
     private Setting userSettings;
 
+    private Menu menu = new MenuUA();
+
     private final static Object monitor = new Object();
 
     private static final ExecutorService service = Executors.newSingleThreadExecutor();
@@ -41,12 +43,14 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "@CurrencyInfoProjectGroup1Bot";
+        return "@CurrencyInfoProjectGroup1TestBot";
+//        return "@CurrencyInfoProjectGroup1Bot";
     }
 
     @Override
     public String getBotToken() {
-        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
+        return "5553351040:AAHugdZyMWm_u8av-bQqsEaP6Et7WXPsOtk";
+//        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
 
     @Override
@@ -72,7 +76,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         synchronized (monitor) {
             if (Settings.settings.get(chatId) == null) {
                 userSettings = new Setting(chatId, NumberOfDecimalPlaces.TWO, Banks.PRIVAT,
-                        Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTC_THREE);
+                        Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTC_THREE, Language.UA);
             } else {
                 userSettings = Settings.settings.get(chatId);
             }
@@ -85,15 +89,18 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 String command = message.getText()
                         .substring(commandEntity.get().getOffset(), commandEntity.get().getLength());
                 if (command.equals(Buttons.START.getNameEN())) {
-                    printMessage(chatId, MenuStart.keyboard(),
-                            "Ласкаво просимо.Цей бот дозволить відслідкувати актуальні курси валют.");
+                    printMessage(chatId, menu.keyboardLanguage(chatId),
+                            "Будь ласка оберіть мову. Please select language.\n" +
+                                    "Proszę wybrać język. Prosím vyberte jazyk.\n" +
+                                    "Выбери пожалуйста язык.");
                     synchronized (monitor) {
                         Settings.settings.put(chatId, userSettings);
                     }
                 }
             }
         } else {
-            printMessage(chatId, "Будь ласка впишіть /start або натисніть кнопку.");
+            printMessage(chatId, Language.translate("Будь ласка впишіть /start або натисніть кнопку.",
+                    userSettings.getSelectedLanguage()));
         }
     }
 
@@ -102,11 +109,12 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         synchronized (monitor) {
             if (Settings.settings.get(chatId) == null) {
                 userSettings = new Setting(chatId, NumberOfDecimalPlaces.TWO, Banks.PRIVAT,
-                        Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTC_THREE);
+                        Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTC_THREE, Language.UA);
             } else {
                 userSettings = Settings.settings.get(chatId);
             }
         }
+        checkStartLanguageMenu(buttonQuery);
         checkMainMenu(buttonQuery);
         checkBanksMenu(buttonQuery);
         checkDecimalPlacesMenu(buttonQuery);
@@ -146,7 +154,14 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         userSettings.setSelectedBank(enumData);
         updateMessage(buttonQuery, MenuBanks.keyboard(buttonQuery.getMessage().getChatId()));
     }
-
+    private void saveSelectLanguage(CallbackQuery buttonQuery, Language enumData) throws TelegramApiException {
+        Long chatId = buttonQuery.getMessage().getChatId();
+        userSettings.setSelectedLanguage(enumData);
+        printMessage(chatId, new MenuUA().keyboardStart(),
+                Language.translate("Ласкаво просимо. Цей бот дозволить відслідкувати актуальні курси валют.",
+                        Settings.settings.get(chatId).getSelectedLanguage())
+        );
+    }
     private void printMessage(Long chatID, InlineKeyboardMarkup keyboard, String text)
             throws TelegramApiException {
         execute(SendMessage.builder()
@@ -181,13 +196,19 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 case GET_INFO:
                     service.execute(new SaveSettings());
                     printMessage(chatId, Settings.getInfo(chatId));
-                    printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
+                    printMessage(chatId, MenuStart.keyboard(),
+                            Language.translate("Щоб отримати інфо натисність кнопку",
+                                    Settings.settings.get(chatId).getSelectedLanguage()));
                     break;
                 case SETTINGS:
-                    printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)), "Виберіть налаштування");
+                    printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)),
+                            Language.translate("Виберіть налаштування",
+                            Settings.settings.get(chatId).getSelectedLanguage()));
                     break;
                 case BACK_TO_START:
-                    printMessage(chatId, MenuStart.keyboard(), "Щоб отримати інфо натисність кнопку");
+                    printMessage(chatId, MenuStart.keyboard(),
+                            Language.translate("Щоб отримати інфо натисність кнопку",
+                            Settings.settings.get(chatId).getSelectedLanguage()));
                     break;
                 case NUM_DECIMAL_PLACES:
                     updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
@@ -203,6 +224,9 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                     break;
                 case ZONEID:
                     updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
+                    break;
+                case LANGUAGE:
+                    updateMessage(buttonQuery, menu.keyboardLanguageSet(chatId));
                     break;
             }
         }
@@ -467,6 +491,59 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                         saveSelectZoneId(buttonQuery, ZoneId.UTC_ZERO);
                     }
                     break;
+            }
+        }
+    }
+
+    private void checkStartLanguageMenu(CallbackQuery buttonQuery) throws TelegramApiException {
+        long chatId = buttonQuery.getMessage().getChatId();
+        String dataButtonQuery = buttonQuery.getData();
+        if (Language.convertToEnum(dataButtonQuery) != null){
+            switch (Language.convertToEnum(dataButtonQuery)) {
+                case UA:
+                    saveSelectLanguage(buttonQuery, Language.UA);
+                    break;
+                case EN:
+                    saveSelectLanguage(buttonQuery, Language.EN);
+                    break;
+                case PL:
+                    saveSelectLanguage(buttonQuery, Language.PL);
+                    break;
+                case CZ:
+                    saveSelectLanguage(buttonQuery, Language.CZ);
+                    break;
+                case RU:
+                    printMessage(chatId, "Русский военный корабль, иди на ***. " +
+                            "СЛАВА УКРАЇНІ! \uD83C\uDDFA\uD83C\uDDE6");
+                    printMessage(chatId, menu.keyboardLanguage(chatId),
+                            "Будь ласка оберіть мову. Please select language.\n" +
+                                    "Proszę wybrać język. Prosím vyberte jazyk.\n" +
+                                    "Выбери пожалуйста язык.");
+                    break;
+            }
+        }
+    }
+
+    private void checkStartLanguage(CallbackQuery buttonQuery) throws TelegramApiException {
+        long chatId = buttonQuery.getMessage().getChatId();
+        String dataButtonQuery = buttonQuery.getData();
+        if (Language.convertToEnum(dataButtonQuery) != null){
+            switch (Language.convertToEnum(dataButtonQuery)) {
+                case UA:
+                    saveSelectLanguage(buttonQuery, Language.UA);
+                    break;
+                case EN:
+                    saveSelectLanguage(buttonQuery, Language.EN);
+                    break;
+                case PL:
+                    saveSelectLanguage(buttonQuery, Language.PL);
+                    break;
+                case CZ:
+                    saveSelectLanguage(buttonQuery, Language.CZ);
+                    break;
+                case RU:
+                    printMessage(chatId, "Русский военный корабль, иди на ***. " +
+                            "СЛАВА УКРАЇНІ! \uD83C\uDDFA\uD83C\uDDE6");
             }
         }
     }

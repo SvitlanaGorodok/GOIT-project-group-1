@@ -13,11 +13,11 @@ public class MenuStart {
         List<InlineKeyboardButton> keyboardMSRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSRow2 = new ArrayList<>();
         InlineKeyboardButton buttonGetInfo = InlineKeyboardButton.builder()
-                .text(Buttons.GET_INFO.getName())
+                .text(Buttons.GET_INFO.getNameUA())
                 .callbackData(Buttons.GET_INFO.getNameEN())
                 .build();
         InlineKeyboardButton buttonSettings = InlineKeyboardButton.builder()
-                .text(Buttons.SETTINGS.getName())
+                .text(Buttons.SETTINGS.getNameUA())
                 .callbackData(Buttons.SETTINGS.getNameEN())
                 .build();
         keyboardMSRow1.add(buttonGetInfo);

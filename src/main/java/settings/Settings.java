@@ -11,8 +11,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static java.lang.String.format;
 
@@ -23,29 +21,35 @@ public class Settings {
 
     private static final Object monitor = new Object();
 
-
-
-
-    public static String getInfo (Long chatId) {
+    public static String getInfo(Long chatId) {
         StringBuilder messageToUser = new StringBuilder();
         Setting userSetting = settings.get(chatId);
-        String bankName = userSetting.getSelectedBank().getBankNameUA();
+        Language language = userSetting.getSelectedLanguage();
+        String bankName;
+        switch (language) {
+            case UA:
+                bankName = userSetting.getSelectedBank().getBankNameUA();
+                break;
+            default:
+                bankName = userSetting.getSelectedBank().getBankNameEN();
+                break;
+        }
         messageToUser.append(bankName).append("\n");
         int numberDecPlaces = userSetting.getNumberOfDecimalPlaces();
         List<Currency> currencies = userSetting.getSelectedCurrency();
         Bank bankInfo = CurrencyDataBase.getCurrentInfo(userSetting.getSelectedBank());
         for (Currency currency : currencies) {
-            messageToUser.append("Курс купівлі ")
+            messageToUser.append(Language.translate("Курс купівлі ", language))
                     .append(currency.getCurrencyName())
                     .append(" - ")
-                    .append(bankInfo.getBuyRate(currency) == 0 ? "немає купівлі" :
-                            format("%." + numberDecPlaces + "f" , bankInfo.getBuyRate(currency)) + addCurName(currency))
+                    .append(bankInfo.getBuyRate(currency) == 0 ? Language.translate("немає купівлі", language) :
+                            format("%." + numberDecPlaces + "f", bankInfo.getBuyRate(currency)) + addCurName(currency))
                     .append("\n");
-            messageToUser.append("Курс продажу ")
+            messageToUser.append(Language.translate("Курс продажу ", language))
                     .append(currency.getCurrencyName())
                     .append(" - ")
-                    .append(bankInfo.getSellRate(currency) == 0 ? "немає продажу" :
-                            format("%." + numberDecPlaces + "f" , bankInfo.getSellRate(currency))+ addCurName(currency))
+                    .append(bankInfo.getSellRate(currency) == 0 ? Language.translate("немає продажу", language) :
+                            format("%." + numberDecPlaces + "f", bankInfo.getSellRate(currency)) + addCurName(currency))
                     .append("\n");
         }
         return messageToUser.toString();
@@ -60,6 +64,7 @@ public class Settings {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+            System.out.println(settingGsonFile.length());
         }
         return settingGsonFile;
     }
@@ -67,12 +72,17 @@ public class Settings {
 
     public static void load() {
         synchronized (monitor) {
-            try {
-                IntermediateSettings.intermediateSettings = new ObjectMapper().readValue(fileSettingsGsonCheck(),
-                        new TypeReference<Map<Long, IntermediateSetting>>() {
-                        });
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+            File file = fileSettingsGsonCheck();
+            if (file.length() != 0) {
+                try {
+                    IntermediateSettings.intermediateSettings = new ObjectMapper().readValue(file,
+                            new TypeReference<Map<Long, IntermediateSetting>>() {
+                            });
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                converter();
             }
         }
     }
@@ -87,7 +97,7 @@ public class Settings {
         }
     }
 
-    public static void converter() {
+    private static void converter() {
         synchronized (monitor) {
             Map<Long, IntermediateSetting> inputMap = IntermediateSettings.intermediateSettings;
             Map<Long, Setting> outputMap = Settings.settings;
@@ -100,6 +110,7 @@ public class Settings {
                 outputSetting.setSelectedCurrency(parseCurrency(v.getSelectedCurrency()));
                 outputSetting.setNotificationTime(parseNotificationTime(v.getNotificationTime()));
                 outputSetting.setZoneId(parseZoneId(v.getZoneId()));
+                outputSetting.setSelectedLanguage(parseLanguage(v.getLanguage()));
                 outputMap.put(v.getChatId(), outputSetting);
             });
         }
@@ -154,16 +165,24 @@ public class Settings {
         return null;
     }
 
-    private static String addCurName (Currency currency){
-        switch (currency){
+    private static Language parseLanguage(String inputStrLang) {
+        for (Language value : Language.values()) {
+            if (inputStrLang.equals(value.name())) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    private static String addCurName(Currency currency) {
+        switch (currency) {
             case USD:
             case EUR:
             case PLN:
-                return " грн";
+                return " UAH";
             case BTC:
-                return " дол";
+                return " USD";
         }
         return "";
     }
-
 }

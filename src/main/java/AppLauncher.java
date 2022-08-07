@@ -1,4 +1,6 @@
 
+import keyboards.Menu;
+import keyboards.MenuUA;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
@@ -11,7 +13,6 @@ public class AppLauncher {
         messageInTime.start();
 
         Settings.load();
-        Settings.converter();
 
         CurrencyInfoBot currencyInfoBot = CurrencyInfoBot.getInstance("currencyInfoBot");
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);

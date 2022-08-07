@@ -61,11 +61,11 @@ public class MenuNotification {
                 .callbackData(String.valueOf(NotificationTime.SWICH_OFF.getTime()))
                 .build();
         InlineKeyboardButton buttonHome = InlineKeyboardButton.builder()
-                .text(Buttons.BACK_TO_START.getName())
+                .text(Buttons.BACK_TO_START.getNameUA())
                 .callbackData(Buttons.BACK_TO_START.getNameEN())
                 .build();
         InlineKeyboardButton buttonBack = InlineKeyboardButton.builder()
-                .text(Buttons.BACK_TO_SETTINGS.getName())
+                .text(Buttons.BACK_TO_SETTINGS.getNameUA())
                 .callbackData(Buttons.BACK_TO_SETTINGS.getNameEN())
                 .build();
         keyboardMSetRow1.add(buttonNotificationTime9);
