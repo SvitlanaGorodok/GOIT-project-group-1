@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MenuUA extends Menu{
+    public MenuUA(Settings settings) {
+        super(settings);
+    }
+
     @Override
     public InlineKeyboardMarkup keyboardSettings(Setting setting) {
         String selectedCurr = setting.getSelectedCurrency().stream()

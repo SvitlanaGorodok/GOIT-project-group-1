@@ -15,12 +15,12 @@ import java.util.List;
 
 public class BanksUtil {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
-    private static final Gson GSON = new Gson();
+    private final Gson GSON = new Gson();
 
-    private static final String PRIVAT_URL = "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=11";
-    private static final String PRIVAT_PLZ_URL = "https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=12";
-    private static final String NBU_URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json";
-    private static final String MONOBANK_URL = "https://api.monobank.ua/bank/currency";
+    private final String PRIVAT_URL = "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=11";
+    private final String PRIVAT_PLZ_URL = "https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=12";
+    private final String NBU_URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json";
+    private final String MONOBANK_URL = "https://api.monobank.ua/bank/currency";
 
 
     static Type typePrivat = new TypeToken<List<Privat>>() {
@@ -30,7 +30,7 @@ public class BanksUtil {
     static Type typeMono = new TypeToken<List<Monobank>>() {
     }.getType();
 
-    public static Bank getPrivatAPI() throws IOException, InterruptedException {
+    public Bank getPrivatAPI() throws IOException, InterruptedException {
         final List<Privat> datePrivat = sendGetBank(URI.create(PRIVAT_URL),typePrivat);
         final List<Privat> datePrivatPlz = sendGetBank(URI.create(PRIVAT_PLZ_URL),typePrivat);
         for (Privat currency : datePrivatPlz) {
@@ -42,17 +42,17 @@ public class BanksUtil {
         return getPrivat(datePrivat);
     }
 
-    public static Bank getMonoAPI() throws IOException, InterruptedException {
+    public Bank getMonoAPI() throws IOException, InterruptedException {
         final List<Monobank> dateMono = sendGetBank(URI.create(MONOBANK_URL),typeMono);
         return getMonobank(dateMono);
     }
 
-    public static Bank getNBUAPI() throws IOException, InterruptedException {
+    public Bank getNBUAPI() throws IOException, InterruptedException {
         final List<NbuBank> dateNBU = sendGetBank(URI.create(NBU_URL),typeNBU);
         return getNbu(dateNBU);
     }
 
-    public static <T> List<T> sendGetBank(URI uri,Type typeBank) throws IOException, InterruptedException {
+    public <T> List<T> sendGetBank(URI uri,Type typeBank) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
                 .GET()
@@ -61,7 +61,7 @@ public class BanksUtil {
         return GSON.fromJson(response.body(), typeBank);
     }
 
-    public static Bank getPrivat(List<Privat> date) {
+    public Bank getPrivat(List<Privat> date) {
         Bank bank = new Bank();
         for (Privat currency : date) {
             switch (currency.getCcy()) {
@@ -86,7 +86,7 @@ public class BanksUtil {
         return bank;
     }
 
-    public static Bank getMonobank(List<Monobank> monobankList) {
+    public Bank getMonobank(List<Monobank> monobankList) {
         Bank bank = new Bank();
         for (Monobank currency : monobankList) {
             if (currency.getCurrencyCodeA() == 840 && currency.getCurrencyCodeB() == 980) {
@@ -103,7 +103,7 @@ public class BanksUtil {
         return bank;
     }
 
-    public static Bank getNbu(List<NbuBank> listCurr) {
+    public Bank getNbu(List<NbuBank> listCurr) {
         Bank bank = new Bank();
         for (NbuBank currency : listCurr) {
             switch (currency.getCc()) {

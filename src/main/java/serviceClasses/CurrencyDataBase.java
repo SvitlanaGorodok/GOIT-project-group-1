@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class CurrencyDataBase {
-    public static HashMap<Banks, Bank> currentInfo = new HashMap<>();
-    private static final Object monitor = new Object();
+    public HashMap<Banks, Bank> currentInfo = new HashMap<>();
+    private final Object monitor = new Object();
 
-    public static Bank getCurrentInfo(Banks bankName) {
+    public Bank getCurrentInfo(Banks bankName) {
         synchronized (monitor) {
             if (currentInfo.get(bankName) == null) {
                 try {
@@ -34,20 +34,21 @@ public class CurrencyDataBase {
         return currentInfo.get(bankName);
     }
 
-    public static void setCurrentInfo(Banks bankName) throws IOException, InterruptedException {
+    public void setCurrentInfo(Banks bankName) throws IOException, InterruptedException {
+        BanksUtil banksUtil = new BanksUtil();
         switch (bankName) {
             case PRIVAT:
-                Bank bankPrivat = BanksUtil.getPrivatAPI();
+                Bank bankPrivat = banksUtil.getPrivatAPI();
                 bankPrivat.setTime(LocalDateTime.now());
                 currentInfo.put(bankName, bankPrivat);
                 break;
             case MONO:
-                Bank bankMono = BanksUtil.getMonoAPI();
+                Bank bankMono = banksUtil.getMonoAPI();
                 bankMono.setTime(LocalDateTime.now());
                 currentInfo.put(bankName, bankMono);
                 break;
             case NBU:
-                Bank bankNBU = BanksUtil.getNBUAPI();
+                Bank bankNBU = banksUtil.getNBUAPI();
                 bankNBU.setTime(LocalDateTime.now());
                 currentInfo.put(bankName, bankNBU);
                 break;

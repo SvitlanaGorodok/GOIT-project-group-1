@@ -15,15 +15,19 @@ import java.util.*;
 import static java.lang.String.format;
 
 public class Settings {
-    public static Map<Long, Setting> settings = new HashMap<>();
-    private static final Gson settingGson = new Gson();
-    private static final String SETTING_GSON_PATH = "src/main/resources/settings.json";
 
-    private static final Object monitor = new Object();
+    private CurrencyDataBase currencyDataBase;
+    public  Map<Long, Setting> settingsAllUsers = new HashMap<>();
+    private  final Gson settingGson = new Gson();
+    private final Object monitor = new Object();
 
-    public static String getInfo(Long chatId) {
+    public Settings(CurrencyDataBase currencyDataBase) {
+        this.currencyDataBase = currencyDataBase;
+    }
+
+    public String getInfo(Long chatId) {
         StringBuilder messageToUser = new StringBuilder();
-        Setting userSetting = settings.get(chatId);
+        Setting userSetting = settingsAllUsers.get(chatId);
         Language language = userSetting.getSelectedLanguage();
         String bankName;
         switch (language) {
@@ -37,7 +41,7 @@ public class Settings {
         messageToUser.append(bankName).append("\n");
         int numberDecPlaces = userSetting.getNumberOfDecimalPlaces();
         List<Currency> currencies = userSetting.getSelectedCurrency();
-        Bank bankInfo = CurrencyDataBase.getCurrentInfo(userSetting.getSelectedBank());
+        Bank bankInfo = currencyDataBase.getCurrentInfo(userSetting.getSelectedBank());
         for (Currency currency : currencies) {
             messageToUser.append(Language.translate("Курс купівлі ", language))
                     .append(currency.getCurrencyName())
@@ -55,7 +59,8 @@ public class Settings {
         return messageToUser.toString();
     }
 
-    public static File fileSettingsGsonCheck() {
+    public File fileSettingsGsonCheck() {
+        String SETTING_GSON_PATH = "src/main/resources/settings.json";
         File settingGsonFile = new File(SETTING_GSON_PATH);
         if (!settingGsonFile.exists()) {
             System.out.println("Create Path for Gson file Settings - " + settingGsonFile.getParentFile().mkdirs());
@@ -70,37 +75,38 @@ public class Settings {
     }
 
 
-    public static void load() {
+    public void load() {
+        IntermediateSettings intermediateSettings = new IntermediateSettings();
         synchronized (monitor) {
 
             File file = fileSettingsGsonCheck();
             if (file.length() != 0) {
                 try {
-                    IntermediateSettings.intermediateSettings = new ObjectMapper().readValue(file,
+                    intermediateSettings.intermediateSettings = new ObjectMapper().readValue(file,
                             new TypeReference<Map<Long, IntermediateSetting>>() {
                             });
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                converter();
+                converter(intermediateSettings);
             }
         }
     }
 
-    public static void save() {
+    public void save() {
         synchronized (monitor) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileSettingsGsonCheck()))) {
-                writer.write(settingGson.toJson(Settings.settings));
+                writer.write(settingGson.toJson(settingsAllUsers));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private static void converter() {
+    private void converter(IntermediateSettings intermediateSettings) {
         synchronized (monitor) {
-            Map<Long, IntermediateSetting> inputMap = IntermediateSettings.intermediateSettings;
-            Map<Long, Setting> outputMap = Settings.settings;
+            Map<Long, IntermediateSetting> inputMap = intermediateSettings.intermediateSettings;
+            Map<Long, Setting> outputMap = settingsAllUsers;
             inputMap.forEach((k, v) -> {
                 Setting outputSetting = new Setting();
 
@@ -116,7 +122,7 @@ public class Settings {
         }
     }
 
-    private static NumberOfDecimalPlaces parseNumOfDecPlaces(String inputStrNumOfDec) {
+    private NumberOfDecimalPlaces parseNumOfDecPlaces(String inputStrNumOfDec) {
         for (NumberOfDecimalPlaces value : NumberOfDecimalPlaces.values()) {
             if (inputStrNumOfDec.equals(value.name())) {
                 return value;
@@ -125,7 +131,7 @@ public class Settings {
         return null;
     }
 
-    private static Banks parseSelectedBank(String inputStrBank) {
+    private Banks parseSelectedBank(String inputStrBank) {
         for (Banks value : Banks.values()) {
             if (inputStrBank.equals(value.name())) {
                 return value;
@@ -134,7 +140,7 @@ public class Settings {
         return null;
     }
 
-    private static List<Currency> parseCurrency(List<String> inputListStrCurrency) {
+    private List<Currency> parseCurrency(List<String> inputListStrCurrency) {
         List<Currency> result = new ArrayList<>();
         for (Currency value : Currency.values()) {
             for (String oneCurrency : inputListStrCurrency) {
@@ -147,7 +153,7 @@ public class Settings {
         return result;
     }
 
-    private static NotificationTime parseNotificationTime(String inputStrNotificationTime) {
+    private NotificationTime parseNotificationTime(String inputStrNotificationTime) {
         for (NotificationTime value : NotificationTime.values()) {
             if (inputStrNotificationTime.equals(value.name())) {
                 return value;
@@ -156,7 +162,7 @@ public class Settings {
         return null;
     }
 
-    private static ZoneId parseZoneId(String inputStrZoneId) {
+    private ZoneId parseZoneId(String inputStrZoneId) {
         for (ZoneId value : ZoneId.values()) {
             if (inputStrZoneId.equals(value.name())) {
                 return value;
@@ -165,7 +171,7 @@ public class Settings {
         return null;
     }
 
-    private static Language parseLanguage(String inputStrLang) {
+    private Language parseLanguage(String inputStrLang) {
         for (Language value : Language.values()) {
             if (inputStrLang.equals(value.name())) {
                 return value;
@@ -174,7 +180,7 @@ public class Settings {
         return null;
     }
 
-    private static String addCurName(Currency currency) {
+    private String addCurName(Currency currency) {
         switch (currency) {
             case USD:
             case EUR:

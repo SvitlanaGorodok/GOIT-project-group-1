@@ -5,12 +5,17 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import settings.Buttons;
 import settings.Currency;
 import settings.Setting;
+import settings.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MenuEN extends Menu{
+    public MenuEN(Settings settings) {
+        super(settings);
+    }
+
     @Override
     public InlineKeyboardMarkup keyboardSettings(Setting setting) {
         String selectedCurr = setting.getSelectedCurrency().stream()
