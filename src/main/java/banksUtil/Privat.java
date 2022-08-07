@@ -29,8 +29,8 @@ public class Privat {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Privat)) return false;
-        Privat aPrivat = (Privat) o;
-        return Objects.equals(ccy, aPrivat.ccy) && Objects.equals(base_ccy, aPrivat.base_ccy);
+        Privat privat = (Privat) o;
+        return Objects.equals(ccy, privat.ccy) && Objects.equals(base_ccy, privat.base_ccy);
     }
 
     @Override

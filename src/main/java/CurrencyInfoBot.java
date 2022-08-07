@@ -14,41 +14,45 @@ import java.util.concurrent.Executors;
 
 public class CurrencyInfoBot extends TelegramLongPollingBot {
     private static CurrencyInfoBot instance;
-    public String value;
-
-
-    private Menu menu = new MenuUA();
-
-    private final static Object monitor = new Object();
-
     private static final ExecutorService service = Executors.newSingleThreadExecutor();
 
-    private CurrencyInfoBot(String value) {
+    private Settings settings;
+    private String value;
+    private Menu menu;
+    private final static Object monitor = new Object();
+
+
+
+    private CurrencyInfoBot(String value, Settings settings) {
         // The following code emulates slow initialization.
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
+        this.menu = new MenuUA(settings);
         this.value = value;
+        this.settings = settings;
     }
 
-    public static CurrencyInfoBot getInstance(String value) {
+    public static CurrencyInfoBot getInstance(String value, Settings settings) {
         if (instance == null) {
-            instance = new CurrencyInfoBot(value);
+            instance = new CurrencyInfoBot(value, settings);
         }
         return instance;
     }
 
     @Override
     public String getBotUsername() {
-        return "@CurrencyInfoProjectGroup1TestBot";
+        return "TestKabaBOT";
+//        return "@CurrencyInfoProjectGroup1TestBot";
 //        return "@CurrencyInfoProjectGroup1Bot";
     }
 
     @Override
     public String getBotToken() {
-        return "5553351040:AAHugdZyMWm_u8av-bQqsEaP6Et7WXPsOtk";
+        return "5110494726:AAHvvtZ2yxM8dnzpR730WBz4eeG7haGp9Kw";
+//        return "5553351040:AAHugdZyMWm_u8av-bQqsEaP6Et7WXPsOtk";
 //        return "5416117406:AAE1XHQxbn8TIY2perQrAAiQsNcxlcth9Wo";
     }
 
@@ -74,11 +78,11 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         Setting userSettings;
         long chatId = message.getChatId();
         synchronized (monitor) {
-            if (Settings.settings.get(chatId) == null) {
+            if (settings.settingsAllUsers.get(chatId) == null) {
                 userSettings = new Setting(chatId, NumberOfDecimalPlaces.TWO, Banks.PRIVAT,
                         Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTC_THREE, Language.UA);
             } else {
-                userSettings = Settings.settings.get(chatId);
+                userSettings = settings.settingsAllUsers.get(chatId);
             }
         }
         if (message.hasText() && message.hasEntities()) {
@@ -94,7 +98,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                                     "Proszę wybrać język. Prosím vyberte jazyk.\n" +
                                     "Выбери пожалуйста язык.");
                     synchronized (monitor) {
-                        Settings.settings.put(chatId, userSettings);
+                        settings.settingsAllUsers.put(chatId, userSettings);
                     }
                 }
             }
@@ -108,11 +112,11 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         Setting userSettings;
         long chatId = buttonQuery.getMessage().getChatId();
         synchronized (monitor) {
-            if (Settings.settings.get(chatId) == null) {
+            if (settings.settingsAllUsers.get(chatId) == null) {
                 userSettings = new Setting(chatId, NumberOfDecimalPlaces.TWO, Banks.PRIVAT,
                         Currency.getSelectedCurrencyList(), NotificationTime.NINE, ZoneId.UTC_THREE, Language.UA);
             } else {
-                userSettings = Settings.settings.get(chatId);
+                userSettings = settings.settingsAllUsers.get(chatId);
             }
         }
         menu = getMenu(userSettings);
@@ -149,8 +153,10 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
 
     private void saveSelectNotificationTime(CallbackQuery buttonQuery, NotificationTime enumData, Setting userSettings)
             throws TelegramApiException {
-        userSettings.setNotificationTime(enumData);
-        updateMessage(buttonQuery, menu.keyboardNotification(buttonQuery.getMessage().getChatId()));
+        if (userSettings.getNotificationTime().getTime() != enumData.getTime()) {
+            userSettings.setNotificationTime(enumData);
+            updateMessage(buttonQuery, menu.keyboardNotification(buttonQuery.getMessage().getChatId()));
+        }
     }
 
     private void saveSelectBanks(CallbackQuery buttonQuery, Banks enumData, Setting userSettings) throws TelegramApiException {
@@ -164,7 +170,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         menu = getMenu(userSettings);
         printMessage(chatId, menu.keyboardStart(),
                 Language.translate("Ласкаво просимо. Цей бот дозволить відслідкувати актуальні курси валют.",
-                        Settings.settings.get(chatId).getSelectedLanguage())
+                        userSettings.getSelectedLanguage())
         );
     }
 
@@ -201,21 +207,21 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         if (Buttons.convertToEnum(dataButtonQuery) != null) {
             switch (Buttons.convertToEnum(dataButtonQuery)) {
                 case GET_INFO:
-                    service.execute(new SaveSettings());
-                    printMessage(chatId, Settings.getInfo(chatId));
+                    service.execute(new SaveSettings(settings));
+                    printMessage(chatId, settings.getInfo(chatId));
                     printMessage(chatId, menu.keyboardStart(),
                             Language.translate("Щоб отримати інфо натисність кнопку",
-                                    Settings.settings.get(chatId).getSelectedLanguage()));
+                                    settings.settingsAllUsers.get(chatId).getSelectedLanguage()));
                     break;
                 case SETTINGS:
-                    printMessage(chatId, menu.keyboardSettings(Settings.settings.get(chatId)),
+                    printMessage(chatId, menu.keyboardSettings(settings.settingsAllUsers.get(chatId)),
                             Language.translate("Виберіть налаштування",
-                                    Settings.settings.get(chatId).getSelectedLanguage()));
+                                    settings.settingsAllUsers.get(chatId).getSelectedLanguage()));
                     break;
                 case BACK_TO_START:
                     printMessage(chatId, menu.keyboardStart(),
                             Language.translate("Щоб отримати інфо натисність кнопку",
-                                    Settings.settings.get(chatId).getSelectedLanguage()));
+                                    settings.settingsAllUsers.get(chatId).getSelectedLanguage()));
                     break;
                 case NUM_DECIMAL_PLACES:
                     updateMessage(buttonQuery, menu.keyboardNumDecPlaces(chatId));
@@ -240,22 +246,23 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     public void checkBanksMenu(CallbackQuery buttonQuery, Setting userSettings) throws TelegramApiException {
+        Banks selectedBank = userSettings.getSelectedBank();
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
         if (Banks.convertToEnum(dataButtonQuery) != null) {
             switch (Banks.convertToEnum(dataButtonQuery)) {
                 case PRIVAT:
-                    if (!userSettings.getSelectedBank().equals(Banks.PRIVAT)) {
+                    if (!selectedBank.equals(Banks.PRIVAT)) {
                         saveSelectBanks(buttonQuery, Banks.PRIVAT, userSettings);
                     }
                     break;
                 case NBU:
-                    if (!userSettings.getSelectedBank().equals(Banks.NBU)) {
+                    if (!selectedBank.equals(Banks.NBU)) {
                         saveSelectBanks(buttonQuery, Banks.NBU, userSettings);
                     }
                     break;
                 case MONO:
-                    if (!userSettings.getSelectedBank().equals(Banks.MONO)) {
+                    if (!selectedBank.equals(Banks.MONO)) {
                         saveSelectBanks(buttonQuery, Banks.MONO, userSettings);
                     }
                     break;
@@ -293,59 +300,37 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         if (NotificationTime.convertToEnum(dataButtonQuery) != null) {
             switch (NotificationTime.convertToEnum(dataButtonQuery)) {
                 case NINE:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.NINE.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.NINE, userSettings);
-                    }
                     break;
                 case TEN:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.TEN.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.TEN, userSettings);
-                    }
                     break;
                 case ELEVEN:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.ELEVEN.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.ELEVEN, userSettings);
-                    }
                     break;
                 case TWELVE:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.TWELVE.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.TWELVE, userSettings);
-                    }
                     break;
                 case THIRTEEN:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.THIRTEEN.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.THIRTEEN, userSettings);
-                    }
                     break;
                 case FOURTEEN:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.FOURTEEN.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.FOURTEEN, userSettings);
-                    }
                     break;
                 case FIFTEEN:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.FIFTEEN.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.FIFTEEN, userSettings);
-                    }
                     break;
                 case SIXTEEN:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.SIXTEEN.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.SIXTEEN, userSettings);
-                    }
                     break;
                 case SEVENTEEN:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.SEVENTEEN.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.SEVENTEEN, userSettings);
-                    }
                     break;
                 case EIGHTEEN:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.EIGHTEEN.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.EIGHTEEN, userSettings);
-                    }
                     break;
                 case SWICH_OFF:
-                    if (userSettings.getNotificationTime().getTime() != NotificationTime.SWICH_OFF.getTime()) {
                         saveSelectNotificationTime(buttonQuery, NotificationTime.SWICH_OFF, userSettings);
-                    }
                     break;
             }
         }
@@ -560,10 +545,10 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private Menu getMenu(Setting userSettings) {
-        menu = userSettings.getSelectedLanguage() == Language.EN ? new MenuEN() :
-                userSettings.getSelectedLanguage() == Language.CZ ? new MenuEN() :                         // Виправити!
-                        userSettings.getSelectedLanguage() == Language.PL ? new MenuEN() :                 // Виправити!
-                                userSettings.getSelectedLanguage() == Language.UA ? new MenuUA() : menu;   // Виправити!
+        menu = userSettings.getSelectedLanguage() == Language.EN ? new MenuEN(settings) :
+                userSettings.getSelectedLanguage() == Language.CZ ? new MenuEN(settings) :                         // Виправити!
+                        userSettings.getSelectedLanguage() == Language.PL ? new MenuEN(settings) :                 // Виправити!
+                                userSettings.getSelectedLanguage() == Language.UA ? new MenuUA(settings) : menu;   // Виправити!
         return menu;
     }
 }

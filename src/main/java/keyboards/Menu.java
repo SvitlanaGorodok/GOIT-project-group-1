@@ -8,12 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Menu {
+
+    private Settings settings;
     public abstract InlineKeyboardMarkup keyboardSettings(Setting setting);
 
     public abstract InlineKeyboardMarkup keyboardStart();
 
+    public Menu(Settings settings) {
+        this.settings = settings;
+    }
+
     public InlineKeyboardMarkup keyboardBanks(long chatId) {
-        Setting userSetting = Settings.settings.get(chatId);
+        Setting userSetting = settings.settingsAllUsers.get(chatId);
         Banks selectedBank = userSetting.getSelectedBank();
         List<List<InlineKeyboardButton>> keyboardMenuBanks = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
@@ -54,7 +60,7 @@ public abstract class Menu {
     }
 
     public InlineKeyboardMarkup keyboardCurrency(long chatId) {
-        Setting userSetting = Settings.settings.get(chatId);
+        Setting userSetting = settings.settingsAllUsers.get(chatId);
         List<Currency> selectedCurrencies = userSetting.getSelectedCurrency();
         List<List<InlineKeyboardButton>> keyboardMenuCurrency = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMenuCurrency1 = new ArrayList<>();
@@ -102,7 +108,7 @@ public abstract class Menu {
     }
 
     public InlineKeyboardMarkup keyboardNotification(long chatId) {
-        Setting userSetting = Settings.settings.get(chatId);
+        Setting userSetting = settings.settingsAllUsers.get(chatId);
         NotificationTime selectedNotificationTime = userSetting.getNotificationTime();
         List<List<InlineKeyboardButton>> keyboardMenuNotification = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMSetRow1 = new ArrayList<>();
@@ -183,7 +189,7 @@ public abstract class Menu {
     }
 
     public InlineKeyboardMarkup keyboardNumDecPlaces(long chatId) {
-        Setting userSetting = Settings.settings.get(chatId);
+        Setting userSetting = settings.settingsAllUsers.get(chatId);
         int selectedNumDecPlaces = userSetting.getNumberOfDecimalPlaces();
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
@@ -225,7 +231,7 @@ public abstract class Menu {
     }
 
     public InlineKeyboardMarkup keyboardZoneId(long chatId) {
-        Setting userSetting = Settings.settings.get(chatId);
+        Setting userSetting = settings.settingsAllUsers.get(chatId);
         ZoneId selectedZoneID = userSetting.getZoneId();
         List<List<InlineKeyboardButton>> keyboardMZoneId = new ArrayList<>();
         List<InlineKeyboardButton> keyboardMZoneIdRow1 = new ArrayList<>();
