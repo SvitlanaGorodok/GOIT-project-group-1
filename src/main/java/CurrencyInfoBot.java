@@ -16,7 +16,6 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     private static CurrencyInfoBot instance;
     public String value;
 
-    private Setting userSettings;
 
     private Menu menu = new MenuUA();
 
@@ -72,6 +71,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void handleMessage(Message message) throws TelegramApiException {
+        Setting userSettings;
         long chatId = message.getChatId();
         synchronized (monitor) {
             if (Settings.settings.get(chatId) == null) {
@@ -105,6 +105,7 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
     }
 
     private void handleQuery(CallbackQuery buttonQuery) throws TelegramApiException {
+        Setting userSettings;
         long chatId = buttonQuery.getMessage().getChatId();
         synchronized (monitor) {
             if (Settings.settings.get(chatId) == null) {
@@ -114,54 +115,59 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 userSettings = Settings.settings.get(chatId);
             }
         }
-        checkStartLanguageMenu(buttonQuery);
+        menu = getMenu(userSettings);
+
+        checkStartLanguageMenu(buttonQuery, userSettings);
         checkMainMenu(buttonQuery);
-        checkBanksMenu(buttonQuery);
-        checkDecimalPlacesMenu(buttonQuery);
-        checkNotificationMenu(buttonQuery);
-        checkCurrencyMenu(buttonQuery);
-        checkZoneIdMenu(buttonQuery);
+        checkBanksMenu(buttonQuery, userSettings);
+        checkDecimalPlacesMenu(buttonQuery, userSettings);
+        checkNotificationMenu(buttonQuery, userSettings);
+        checkCurrencyMenu(buttonQuery, userSettings);
+        checkZoneIdMenu(buttonQuery, userSettings);
     }
 
-    private void saveSelectCurrency(CallbackQuery buttonQuery, Currency enumData) throws TelegramApiException {
+    private void saveSelectCurrency(CallbackQuery buttonQuery, Currency enumData, Setting userSettings) throws TelegramApiException {
         List<Currency> currentCurrencies = userSettings.getSelectedCurrency();
         if (currentCurrencies.contains(enumData)) {
             currentCurrencies.remove(enumData);
         } else {
             currentCurrencies.add(enumData);
         }
-        updateMessage(buttonQuery, MenuCurrency.keyboard(buttonQuery.getMessage().getChatId()));
+        updateMessage(buttonQuery, menu.keyboardCurrency(buttonQuery.getMessage().getChatId()));
     }
 
-    private void saveSelectZoneId(CallbackQuery buttonQuery, ZoneId enumData) throws TelegramApiException {
+    private void saveSelectZoneId(CallbackQuery buttonQuery, ZoneId enumData, Setting userSettings) throws TelegramApiException {
         userSettings.setZoneId(enumData);
-        updateMessage(buttonQuery, MenuZoneId.keyboard(buttonQuery.getMessage().getChatId()));
+        updateMessage(buttonQuery, menu.keyboardZoneId(buttonQuery.getMessage().getChatId()));
     }
 
-    private void saveSelectNumDecPlaces(CallbackQuery buttonQuery, NumberOfDecimalPlaces enumData)
+    private void saveSelectNumDecPlaces(CallbackQuery buttonQuery, NumberOfDecimalPlaces enumData, Setting userSettings)
             throws TelegramApiException {
         userSettings.setNumberOfDecimalPlaces(enumData);
-        updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(buttonQuery.getMessage().getChatId()));
+        updateMessage(buttonQuery, menu.keyboardNumDecPlaces(buttonQuery.getMessage().getChatId()));
     }
 
-    private void saveSelectNotificationTime(CallbackQuery buttonQuery, NotificationTime enumData)
+    private void saveSelectNotificationTime(CallbackQuery buttonQuery, NotificationTime enumData, Setting userSettings)
             throws TelegramApiException {
         userSettings.setNotificationTime(enumData);
-        updateMessage(buttonQuery, MenuNotification.keyboard(buttonQuery.getMessage().getChatId()));
+        updateMessage(buttonQuery, menu.keyboardNotification(buttonQuery.getMessage().getChatId()));
     }
 
-    private void saveSelectBanks(CallbackQuery buttonQuery, Banks enumData) throws TelegramApiException {
+    private void saveSelectBanks(CallbackQuery buttonQuery, Banks enumData, Setting userSettings) throws TelegramApiException {
         userSettings.setSelectedBank(enumData);
-        updateMessage(buttonQuery, MenuBanks.keyboard(buttonQuery.getMessage().getChatId()));
+        updateMessage(buttonQuery, menu.keyboardBanks(buttonQuery.getMessage().getChatId()));
     }
-    private void saveSelectLanguage(CallbackQuery buttonQuery, Language enumData) throws TelegramApiException {
+
+    private void saveSelectLanguage(CallbackQuery buttonQuery, Language enumData, Setting userSettings) throws TelegramApiException {
         Long chatId = buttonQuery.getMessage().getChatId();
         userSettings.setSelectedLanguage(enumData);
-        printMessage(chatId, new MenuUA().keyboardStart(),
+        menu = getMenu(userSettings);
+        printMessage(chatId, menu.keyboardStart(),
                 Language.translate("Ласкаво просимо. Цей бот дозволить відслідкувати актуальні курси валют.",
                         Settings.settings.get(chatId).getSelectedLanguage())
         );
     }
+
     private void printMessage(Long chatID, InlineKeyboardMarkup keyboard, String text)
             throws TelegramApiException {
         execute(SendMessage.builder()
@@ -188,42 +194,43 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
                 .replyMarkup(keyboard)
                 .build());
     }
-        public void checkMainMenu(CallbackQuery buttonQuery) throws TelegramApiException {
+
+    public void checkMainMenu(CallbackQuery buttonQuery) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        if (Buttons.convertToEnum(dataButtonQuery) != null){
+        if (Buttons.convertToEnum(dataButtonQuery) != null) {
             switch (Buttons.convertToEnum(dataButtonQuery)) {
                 case GET_INFO:
                     service.execute(new SaveSettings());
                     printMessage(chatId, Settings.getInfo(chatId));
-                    printMessage(chatId, MenuStart.keyboard(),
+                    printMessage(chatId, menu.keyboardStart(),
                             Language.translate("Щоб отримати інфо натисність кнопку",
                                     Settings.settings.get(chatId).getSelectedLanguage()));
                     break;
                 case SETTINGS:
-                    printMessage(chatId, MenuSettings.keyboard(Settings.settings.get(chatId)),
+                    printMessage(chatId, menu.keyboardSettings(Settings.settings.get(chatId)),
                             Language.translate("Виберіть налаштування",
-                            Settings.settings.get(chatId).getSelectedLanguage()));
+                                    Settings.settings.get(chatId).getSelectedLanguage()));
                     break;
                 case BACK_TO_START:
-                    printMessage(chatId, MenuStart.keyboard(),
+                    printMessage(chatId, menu.keyboardStart(),
                             Language.translate("Щоб отримати інфо натисність кнопку",
-                            Settings.settings.get(chatId).getSelectedLanguage()));
+                                    Settings.settings.get(chatId).getSelectedLanguage()));
                     break;
                 case NUM_DECIMAL_PLACES:
-                    updateMessage(buttonQuery, MenuNumDecimalPlaces.keyboard(chatId));
+                    updateMessage(buttonQuery, menu.keyboardNumDecPlaces(chatId));
                     break;
                 case BANK:
-                    updateMessage(buttonQuery, MenuBanks.keyboard(chatId));
+                    updateMessage(buttonQuery, menu.keyboardBanks(chatId));
                     break;
                 case CURRENCY:
-                    updateMessage(buttonQuery, MenuCurrency.keyboard(chatId));
+                    updateMessage(buttonQuery, menu.keyboardCurrency(chatId));
                     break;
                 case NOTIFICATION:
-                    updateMessage(buttonQuery, MenuNotification.keyboard(chatId));
+                    updateMessage(buttonQuery, menu.keyboardNotification(chatId));
                     break;
                 case ZONEID:
-                    updateMessage(buttonQuery, MenuZoneId.keyboard(chatId));
+                    updateMessage(buttonQuery, menu.keyboardZoneId(chatId));
                     break;
                 case LANGUAGE:
                     updateMessage(buttonQuery, menu.keyboardLanguageSet(chatId));
@@ -231,286 +238,290 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
             }
         }
     }
-    public void checkBanksMenu(CallbackQuery buttonQuery) throws TelegramApiException {
+
+    public void checkBanksMenu(CallbackQuery buttonQuery, Setting userSettings) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        if (Banks.convertToEnum(dataButtonQuery) != null){
+        if (Banks.convertToEnum(dataButtonQuery) != null) {
             switch (Banks.convertToEnum(dataButtonQuery)) {
                 case PRIVAT:
                     if (!userSettings.getSelectedBank().equals(Banks.PRIVAT)) {
-                        saveSelectBanks(buttonQuery, Banks.PRIVAT);
+                        saveSelectBanks(buttonQuery, Banks.PRIVAT, userSettings);
                     }
                     break;
                 case NBU:
                     if (!userSettings.getSelectedBank().equals(Banks.NBU)) {
-                        saveSelectBanks(buttonQuery, Banks.NBU);
+                        saveSelectBanks(buttonQuery, Banks.NBU, userSettings);
                     }
                     break;
                 case MONO:
                     if (!userSettings.getSelectedBank().equals(Banks.MONO)) {
-                        saveSelectBanks(buttonQuery, Banks.MONO);
+                        saveSelectBanks(buttonQuery, Banks.MONO, userSettings);
                     }
                     break;
             }
         }
     }
-    public void checkDecimalPlacesMenu(CallbackQuery buttonQuery) throws TelegramApiException {
+
+    public void checkDecimalPlacesMenu(CallbackQuery buttonQuery, Setting userSettings) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        if (NumberOfDecimalPlaces.convertToEnum(dataButtonQuery) != null){
+        if (NumberOfDecimalPlaces.convertToEnum(dataButtonQuery) != null) {
             switch (NumberOfDecimalPlaces.convertToEnum(dataButtonQuery)) {
                 case TWO:
                     if (userSettings.getNumberOfDecimalPlaces() != NumberOfDecimalPlaces.TWO.getIntNumber()) {
-                        saveSelectNumDecPlaces(buttonQuery, NumberOfDecimalPlaces.TWO);
+                        saveSelectNumDecPlaces(buttonQuery, NumberOfDecimalPlaces.TWO, userSettings);
                     }
                     break;
                 case THREE:
                     if (userSettings.getNumberOfDecimalPlaces() != NumberOfDecimalPlaces.THREE.getIntNumber()) {
-                        saveSelectNumDecPlaces(buttonQuery, NumberOfDecimalPlaces.THREE);
+                        saveSelectNumDecPlaces(buttonQuery, NumberOfDecimalPlaces.THREE, userSettings);
                     }
                     break;
                 case FOUR:
                     if (userSettings.getNumberOfDecimalPlaces() != NumberOfDecimalPlaces.FOUR.getIntNumber()) {
-                        saveSelectNumDecPlaces(buttonQuery, NumberOfDecimalPlaces.FOUR);
+                        saveSelectNumDecPlaces(buttonQuery, NumberOfDecimalPlaces.FOUR, userSettings);
                     }
                     break;
             }
         }
     }
-    public void checkNotificationMenu(CallbackQuery buttonQuery) throws TelegramApiException {
+
+    public void checkNotificationMenu(CallbackQuery buttonQuery, Setting userSettings) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        if (NotificationTime.convertToEnum(dataButtonQuery) != null){
+        if (NotificationTime.convertToEnum(dataButtonQuery) != null) {
             switch (NotificationTime.convertToEnum(dataButtonQuery)) {
                 case NINE:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.NINE.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.NINE);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.NINE, userSettings);
                     }
                     break;
                 case TEN:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.TEN.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.TEN);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.TEN, userSettings);
                     }
                     break;
                 case ELEVEN:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.ELEVEN.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.ELEVEN);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.ELEVEN, userSettings);
                     }
                     break;
                 case TWELVE:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.TWELVE.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.TWELVE);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.TWELVE, userSettings);
                     }
                     break;
                 case THIRTEEN:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.THIRTEEN.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.THIRTEEN);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.THIRTEEN, userSettings);
                     }
                     break;
                 case FOURTEEN:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.FOURTEEN.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.FOURTEEN);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.FOURTEEN, userSettings);
                     }
                     break;
                 case FIFTEEN:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.FIFTEEN.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.FIFTEEN);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.FIFTEEN, userSettings);
                     }
                     break;
                 case SIXTEEN:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.SIXTEEN.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.SIXTEEN);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.SIXTEEN, userSettings);
                     }
                     break;
                 case SEVENTEEN:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.SEVENTEEN.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.SEVENTEEN);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.SEVENTEEN, userSettings);
                     }
                     break;
                 case EIGHTEEN:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.EIGHTEEN.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.EIGHTEEN);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.EIGHTEEN, userSettings);
                     }
                     break;
                 case SWICH_OFF:
                     if (userSettings.getNotificationTime().getTime() != NotificationTime.SWICH_OFF.getTime()) {
-                        saveSelectNotificationTime(buttonQuery, NotificationTime.SWICH_OFF);
+                        saveSelectNotificationTime(buttonQuery, NotificationTime.SWICH_OFF, userSettings);
                     }
                     break;
             }
         }
     }
-    public void checkCurrencyMenu(CallbackQuery buttonQuery) throws TelegramApiException {
+
+    public void checkCurrencyMenu(CallbackQuery buttonQuery,Setting userSettings) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        if (Currency.convertToEnum(dataButtonQuery) != null){
+        if (Currency.convertToEnum(dataButtonQuery) != null) {
             switch (Currency.convertToEnum(dataButtonQuery)) {
                 case USD:
-                    saveSelectCurrency(buttonQuery, Currency.USD);
+                    saveSelectCurrency(buttonQuery, Currency.USD, userSettings);
                     break;
                 case EUR:
-                    saveSelectCurrency(buttonQuery, Currency.EUR);
+                    saveSelectCurrency(buttonQuery, Currency.EUR, userSettings);
                     break;
                 case PLN:
-                    saveSelectCurrency(buttonQuery, Currency.PLN);
+                    saveSelectCurrency(buttonQuery, Currency.PLN, userSettings);
                     break;
                 case BTC:
-                    saveSelectCurrency(buttonQuery, Currency.BTC);
+                    saveSelectCurrency(buttonQuery, Currency.BTC, userSettings);
                     break;
             }
         }
     }
 
-    public void checkZoneIdMenu(CallbackQuery buttonQuery) throws TelegramApiException {
+    public void checkZoneIdMenu(CallbackQuery buttonQuery, Setting userSettings) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        if (ZoneId.convertToEnum(dataButtonQuery) != null){
+        if (ZoneId.convertToEnum(dataButtonQuery) != null) {
             switch (ZoneId.convertToEnum(dataButtonQuery)) {
                 case UTC_ONE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_ONE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_ONE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_ONE, userSettings);
                     }
                     break;
                 case UTC_TWO:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_TWO.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_TWO);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_TWO, userSettings);
                     }
                     break;
                 case UTC_THREE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_THREE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_THREE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_THREE, userSettings);
                     }
                     break;
                 case UTC_FOUR:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_FOUR.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_FOUR);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_FOUR, userSettings);
                     }
                     break;
                 case UTC_FIVE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_FIVE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_FIVE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_FIVE, userSettings);
                     }
                     break;
                 case UTC_SIX:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_SIX.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_SIX);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_SIX, userSettings);
                     }
                     break;
                 case UTC_SEVEN:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_SEVEN.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_SEVEN);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_SEVEN, userSettings);
                     }
                     break;
                 case UTC_EIGHT:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_EIGHT.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_EIGHT);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_EIGHT, userSettings);
                     }
                     break;
                 case UTC_NINE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_NINE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_NINE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_NINE, userSettings);
                     }
                     break;
                 case UTC_TEN:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_TEN.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_TEN);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_TEN, userSettings);
                     }
                     break;
                 case UTC_ELEVEN:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_ELEVEN.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_ELEVEN);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_ELEVEN, userSettings);
                     }
                     break;
                 case UTC_TWELVE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_TWELVE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_TWELVE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_TWELVE, userSettings);
                     }
                     break;
                 case UTC_MINUS_ONE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_ONE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_ONE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_ONE, userSettings);
                     }
                     break;
                 case UTC_MINUS_TWO:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_TWO.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_TWO);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_TWO, userSettings);
                     }
                     break;
                 case UTC_MINUS_THREE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_THREE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_THREE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_THREE, userSettings);
                     }
                     break;
                 case UTC_MINUS_FOUR:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_FOUR.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_FOUR);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_FOUR, userSettings);
                     }
                     break;
                 case UTC_MINUS_FIVE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_FIVE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_FIVE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_FIVE, userSettings);
                     }
                     break;
                 case UTC_MINUS_SIX:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_SIX.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_SIX);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_SIX, userSettings);
                     }
                     break;
                 case UTC_MINUS_SEVEN:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_SEVEN.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_SEVEN);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_SEVEN, userSettings);
                     }
                     break;
                 case UTC_MINUS_EIGHT:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_EIGHT.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_EIGHT);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_EIGHT, userSettings);
                     }
                     break;
                 case UTC_MINUS_NINE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_NINE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_NINE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_NINE, userSettings);
                     }
                     break;
                 case UTC_MINUS_TEN:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_TEN.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_TEN);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_TEN, userSettings);
                     }
                     break;
                 case UTC_MINUS_ELEVEN:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_ELEVEN.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_ELEVEN);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_ELEVEN, userSettings);
                     }
                     break;
                 case UTC_MINUS_TWELVE:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_MINUS_TWELVE.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_TWELVE);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_MINUS_TWELVE, userSettings);
                     }
                     break;
                 case UTC_ZERO:
                     if (!userSettings.getZoneId().getNameZone().equals(ZoneId.UTC_ZERO.getNameZone())) {
-                        saveSelectZoneId(buttonQuery, ZoneId.UTC_ZERO);
+                        saveSelectZoneId(buttonQuery, ZoneId.UTC_ZERO, userSettings);
                     }
                     break;
             }
         }
     }
 
-    private void checkStartLanguageMenu(CallbackQuery buttonQuery) throws TelegramApiException {
+    private void checkStartLanguageMenu(CallbackQuery buttonQuery, Setting userSettings) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        if (Language.convertToEnum(dataButtonQuery) != null){
+        if (Language.convertToEnum(dataButtonQuery) != null) {
             switch (Language.convertToEnum(dataButtonQuery)) {
                 case UA:
-                    saveSelectLanguage(buttonQuery, Language.UA);
+                    saveSelectLanguage(buttonQuery, Language.UA, userSettings);
                     break;
                 case EN:
-                    saveSelectLanguage(buttonQuery, Language.EN);
+                    saveSelectLanguage(buttonQuery, Language.EN, userSettings);
                     break;
                 case PL:
-                    saveSelectLanguage(buttonQuery, Language.PL);
+                    saveSelectLanguage(buttonQuery, Language.PL, userSettings);
                     break;
                 case CZ:
-                    saveSelectLanguage(buttonQuery, Language.CZ);
+                    saveSelectLanguage(buttonQuery, Language.CZ, userSettings);
                     break;
                 case RU:
                     printMessage(chatId, "Русский военный корабль, иди на ***. " +
@@ -524,27 +535,35 @@ public class CurrencyInfoBot extends TelegramLongPollingBot {
         }
     }
 
-    private void checkStartLanguage(CallbackQuery buttonQuery) throws TelegramApiException {
+    private void checkStartLanguage(CallbackQuery buttonQuery,Setting userSettings) throws TelegramApiException {
         long chatId = buttonQuery.getMessage().getChatId();
         String dataButtonQuery = buttonQuery.getData();
-        if (Language.convertToEnum(dataButtonQuery) != null){
+        if (Language.convertToEnum(dataButtonQuery) != null) {
             switch (Language.convertToEnum(dataButtonQuery)) {
                 case UA:
-                    saveSelectLanguage(buttonQuery, Language.UA);
+                    saveSelectLanguage(buttonQuery, Language.UA, userSettings);
                     break;
                 case EN:
-                    saveSelectLanguage(buttonQuery, Language.EN);
+                    saveSelectLanguage(buttonQuery, Language.EN, userSettings);
                     break;
                 case PL:
-                    saveSelectLanguage(buttonQuery, Language.PL);
+                    saveSelectLanguage(buttonQuery, Language.PL, userSettings);
                     break;
                 case CZ:
-                    saveSelectLanguage(buttonQuery, Language.CZ);
+                    saveSelectLanguage(buttonQuery, Language.CZ, userSettings);
                     break;
                 case RU:
                     printMessage(chatId, "Русский военный корабль, иди на ***. " +
                             "СЛАВА УКРАЇНІ! \uD83C\uDDFA\uD83C\uDDE6");
             }
         }
+    }
+
+    private Menu getMenu(Setting userSettings) {
+        menu = userSettings.getSelectedLanguage() == Language.EN ? new MenuEN() :
+                userSettings.getSelectedLanguage() == Language.CZ ? new MenuEN() :                         // Виправити!
+                        userSettings.getSelectedLanguage() == Language.PL ? new MenuEN() :                 // Виправити!
+                                userSettings.getSelectedLanguage() == Language.UA ? new MenuUA() : menu;   // Виправити!
+        return menu;
     }
 }
