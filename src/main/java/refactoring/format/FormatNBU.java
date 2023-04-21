@@ -1,4 +1,4 @@
-package newway.format;
+package refactoring.format;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,8 +1,8 @@
 import com.google.gson.Gson;
-import newway.datareader.DataReader;
-import newway.format.FormatMono;
-import newway.format.FormatNBU;
-import newway.format.FormatPrivat;
+import refactoring.datareader.DataReader;
+import refactoring.format.FormatMono;
+import refactoring.format.FormatNBU;
+import refactoring.format.FormatPrivat;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
@@ -13,7 +13,7 @@ public class TestEnv {
     private final static String MONOBANK_URL = "https://api.monobank.ua/bank/currency";
     private final static String NBU_URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json";
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
         HttpClient client = HttpClient.newHttpClient();
         Gson gson = new Gson();
 

@@ -1,4 +1,4 @@
-package newway.format;
+package refactoring.format;
 
 public abstract class Format {
 }
