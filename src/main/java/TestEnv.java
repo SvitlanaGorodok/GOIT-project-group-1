@@ -21,12 +21,12 @@ public class TestEnv {
         List<FormatPrivat> privatList = dataReaderPrivat.read(client, gson, PRIVAT_URL);
         System.out.println("Private:\n" + privatList);
 
-        DataReader<FormatMono> dataReaderMono = new DataReader<>();
-        List<FormatMono> monoList = dataReaderMono.read(client, gson, MONOBANK_URL);
-        System.out.println("Mono:\n" + monoList);
-
-        DataReader<FormatNBU> dataReaderNbu = new DataReader<>();
-        List<FormatNBU> nbuList = dataReaderNbu.read(client, gson, NBU_URL);
-        System.out.println("NBU: \n" + nbuList);
+//        DataReader<FormatMono> dataReaderMono = new DataReader<>();
+//        List<FormatMono> monoList = dataReaderMono.read(client, gson, MONOBANK_URL);
+//        System.out.println("Mono:\n" + monoList);
+//
+//        DataReader<FormatNBU> dataReaderNbu = new DataReader<>();
+//        List<FormatNBU> nbuList = dataReaderNbu.read(client, gson, NBU_URL);
+//        System.out.println("NBU: \n" + nbuList);
     }
 }
