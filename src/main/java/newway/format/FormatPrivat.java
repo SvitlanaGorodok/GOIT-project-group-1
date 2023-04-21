@@ -1,10 +1,13 @@
 package newway.format;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
+@ToString
 // View of currency values in json format for Privat bank
 public class FormatPrivat extends Format {
     private String ccy;

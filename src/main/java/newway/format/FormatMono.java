@@ -2,9 +2,11 @@ package newway.format;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
+@ToString
 // View of currency values in json format for Monobank
 public class FormatMono extends Format {
         private int currencyCodeA;
