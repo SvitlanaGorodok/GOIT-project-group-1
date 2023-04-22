@@ -8,8 +8,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @AllArgsConstructor
-@ToString
 public class CurrencyPair {
     float buy;
     float sell;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "buy=" + buy +
+                ", sell=" + sell +
+                '}';
+    }
 }

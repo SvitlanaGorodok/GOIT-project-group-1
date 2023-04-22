@@ -2,7 +2,7 @@ package refactoring.service.parser;
 
 import refactoring.model.Bank;
 import refactoring.model.CurrencyPair;
-import refactoring.model.format.FormatNBU;
+import refactoring.model.jsonformat.FormatNBU;
 
 import java.util.List;
 import java.util.Map;
@@ -15,10 +15,9 @@ public class ParserNBU implements Parser<FormatNBU> {
         Map<String, CurrencyPair> currencyMap = listOfData.stream()
                 .collect(Collectors.toMap(FormatNBU::getCc,
                         format -> new CurrencyPair(format.getRate(), format.getRate())));
-        bank.setUsd(currencyMap.get("USD"));
-        bank.setEur(currencyMap.get("EUR"));
-        bank.setPln(currencyMap.get("PLN"));
-        bank.setBtc(currencyMap.get("BTC"));
+        bank.setUsd(currencyMap.getOrDefault("USD", new CurrencyPair(0.0f, 0.0f)));
+        bank.setEur(currencyMap.getOrDefault("EUR", new CurrencyPair(0.0f, 0.0f)));
+        bank.setPln(currencyMap.getOrDefault("PLN", new CurrencyPair(0.0f, 0.0f)));
         return bank;
     }
 }

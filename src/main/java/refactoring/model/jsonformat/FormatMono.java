@@ -1,11 +1,8 @@
-package refactoring.model.format;
+package refactoring.model.jsonformat;
 
-import banksUtil.Monobank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.Objects;
 
 // View of currency values in json format for Monobank
 @Setter

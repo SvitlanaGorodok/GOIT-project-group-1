@@ -1,7 +1,7 @@
 package refactoring.service.parser;
 
 import refactoring.model.Bank;
-import refactoring.model.format.Format;
+import refactoring.model.jsonformat.Format;
 
 import java.util.List;
 

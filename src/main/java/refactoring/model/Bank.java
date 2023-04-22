@@ -14,6 +14,5 @@ public class Bank {
     private CurrencyPair usd;
     private CurrencyPair eur;
     private CurrencyPair pln;
-    private CurrencyPair btc;
     private LocalDateTime time;
 }
