@@ -1,4 +1,4 @@
-package refactoring.format;
+package refactoring.model.format;
 
 import lombok.Getter;
 import lombok.Setter;

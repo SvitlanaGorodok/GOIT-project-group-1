@@ -1,4 +1,4 @@
-package refactoring.format;
+package refactoring.model.format;
 
 public abstract class Format {
 }

@@ -1,7 +1,7 @@
-package refactoring.parser;
+package refactoring.service.parser;
 
-import refactoring.bank.Bank;
-import refactoring.format.Format;
+import refactoring.model.Bank;
+import refactoring.model.format.Format;
 
 import java.util.List;
 
