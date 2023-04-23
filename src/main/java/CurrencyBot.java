@@ -23,16 +23,24 @@ public class CurrencyBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         Long chatId = getChatId(update);
+        SendMessage message = createMessage("Hello", chatId);
+        createMenu(message);
+
+        sendApiMethod(message);
+    }
+
+    private SendMessage createMessage(String text, Long chatId){
+        return new SendMessage(chatId.toString(), text);
+    }
+
+    private void createMenu(SendMessage message){
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         KeyboardRow keyboardRow = new KeyboardRow();
         KeyboardButton keyboardButton = new KeyboardButton("BTN 1");
         keyboardRow.add(keyboardButton);
         replyKeyboardMarkup.setKeyboard(List.of(keyboardRow));
-        SendMessage message = new SendMessage();
-        message.setText("Hello");
-        message.setChatId(chatId);
+        replyKeyboardMarkup.setResizeKeyboard(true);
         message.setReplyMarkup(replyKeyboardMarkup);
-        sendApiMethod(message);
     }
 
     private Long getChatId(Update update) {
