@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CurrencyBot extends TelegramLongPollingBot {
     @Override
@@ -25,7 +27,6 @@ public class CurrencyBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         Long chatId = getChatId(update);
         SendMessage message = createMessage("Hello", chatId);
-//        createMenu(message);
         ReplyKeyboardMarkup replyKeyboardMarkup = createMenu(List.of("BTN1", "BTN2", "BTN3", "BTN4", "BTN5"), 2);
         message.setReplyMarkup(replyKeyboardMarkup);
         sendApiMethod(message);
@@ -33,16 +34,6 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     private SendMessage createMessage(String text, Long chatId){
         return new SendMessage(chatId.toString(), text);
-    }
-
-    private void createMenu(SendMessage message){
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        KeyboardRow keyboardRow = new KeyboardRow();
-        KeyboardButton keyboardButton = new KeyboardButton("BTN 1");
-        keyboardRow.add(keyboardButton);
-        replyKeyboardMarkup.setKeyboard(List.of(keyboardRow));
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        message.setReplyMarkup(replyKeyboardMarkup);
     }
 
     private ReplyKeyboardMarkup createMenu(List<String> buttonsList, int buttonsAmountInRow){
