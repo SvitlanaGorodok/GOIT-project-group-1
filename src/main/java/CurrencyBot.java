@@ -53,11 +53,15 @@ public class CurrencyBot extends TelegramLongPollingBot {
             keyboardRows.add(new KeyboardRow());
         }
         int counter = 0;
+        int rowNumber = 1;
         for (KeyboardRow keyboardRow : keyboardRows) {
-            for (int i = counter; i < buttonsAmountInRow; i++) {
-                keyboardRow.add(buttonsList.get(counter));
+            for (int i = counter; i < buttonsAmountInRow * rowNumber; i++) {
+                if (counter < buttonsList.size()){
+                    keyboardRow.add(buttonsList.get(counter));
+                }
                 counter++;
             }
+            rowNumber++;
         }
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setKeyboard(keyboardRows);
