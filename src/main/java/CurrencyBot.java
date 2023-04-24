@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CurrencyBot extends TelegramLongPollingBot {
@@ -24,8 +25,9 @@ public class CurrencyBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         Long chatId = getChatId(update);
         SendMessage message = createMessage("Hello", chatId);
-        createMenu(message);
-
+//        createMenu(message);
+        ReplyKeyboardMarkup replyKeyboardMarkup = createMenu(List.of("BTN1", "BTN2", "BTN3", "BTN4", "BTN5"), 2);
+        message.setReplyMarkup(replyKeyboardMarkup);
         sendApiMethod(message);
     }
 
@@ -41,6 +43,26 @@ public class CurrencyBot extends TelegramLongPollingBot {
         replyKeyboardMarkup.setKeyboard(List.of(keyboardRow));
         replyKeyboardMarkup.setResizeKeyboard(true);
         message.setReplyMarkup(replyKeyboardMarkup);
+    }
+
+    private ReplyKeyboardMarkup createMenu(List<String> buttonsList, int buttonsAmountInRow){
+        int rowsAmount = buttonsList.size() / buttonsAmountInRow + 1;
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        //IntStream?
+        for (int i = 0; i < rowsAmount; i++) {
+            keyboardRows.add(new KeyboardRow());
+        }
+        int counter = 0;
+        for (KeyboardRow keyboardRow : keyboardRows) {
+            for (int i = counter; i < buttonsAmountInRow; i++) {
+                keyboardRow.add(buttonsList.get(counter));
+                counter++;
+            }
+        }
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        return replyKeyboardMarkup;
     }
 
     private Long getChatId(Update update) {
