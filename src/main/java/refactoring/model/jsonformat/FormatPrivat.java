@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 // View of currency values in json format for Privat bank
-public class FormatPrivat extends Format {
+public class FormatPrivat implements Format {
     private String ccy;
     private String base_ccy;
     private float buy;

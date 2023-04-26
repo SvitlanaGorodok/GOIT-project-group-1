@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public interface Menu {
-    public void printMenu();
+    public void printMenu(Long chatId);
 
     default void createMenu(List<String> buttonsList, int buttonsAmountInRow, SendMessage message) {
         if (buttonsAmountInRow > 0) {

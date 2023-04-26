@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class FormatMono extends Format {
+public class FormatMono implements Format {
         private int currencyCodeA;
         private int currencyCodeB;
         private int date;

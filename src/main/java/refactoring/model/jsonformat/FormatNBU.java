@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 // View of currency values in json format for NBU bank
-public class FormatNBU extends Format {
+public class FormatNBU implements Format {
     private int r030;
     private String txt;
     private float rate;

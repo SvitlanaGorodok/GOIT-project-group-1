@@ -2,7 +2,7 @@ package refactoring.menu;
 
 public class MenuNotification implements Menu{
     @Override
-    public void printMenu() {
+    public void printMenu(Long chatId) {
 
     }
 }
