@@ -22,13 +22,12 @@ public class CurrencyBot extends TelegramLongPollingBot {
         return "5553351040:AAHugdZyMWm_u8av-bQqsEaP6Et7WXPsOtk";
     }
 
-    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
         Long chatId = getChatId(update);
         SendMessage message = createMessage("Hello", chatId);
         createMenu(List.of("BTN1", "BTN2", "BTN3", "BTN4", "BTN5"), 2, message);
-        sendApiMethod(message);
+        sendApiMethodAsync(message);
 
     }
 
