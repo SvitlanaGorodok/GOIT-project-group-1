@@ -28,6 +28,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
         SendMessage message = createMessage("Hello", chatId);
         createMenu(List.of("BTN1", "BTN2", "BTN3", "BTN4", "BTN5"), 2, message);
         sendApiMethodAsync(message);
+        System.out.println(update.getMessage().getFrom().getLanguageCode());
 
     }
 
