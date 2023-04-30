@@ -8,7 +8,7 @@ public class MenuBank implements Menu{
     @Override
     public SendMessage printMenu(Long chatId) {
         SendMessage message = new SendMessage(chatId.toString(), "Please choose option:");
-        List<String> buttons = List.of("TWO", "THREE", "FOUR", "BACK_TO_START", "BACK_TO_SETTINGS");
+        List<String> buttons = List.of("Privat", "Monobank", "NBU", "BACK_TO_START", "BACK_TO_SETTINGS");
         createMenu(buttons, 3, message);
         return message;
     }
