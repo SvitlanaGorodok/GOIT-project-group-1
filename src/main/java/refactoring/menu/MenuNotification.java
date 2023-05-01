@@ -1,6 +1,7 @@
 package refactoring.menu;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import refactoring.model.buttonnames.BasicButtons;
 import refactoring.model.buttonnames.Notifications;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class MenuNotification implements Menu{
                 Notifications.TWELVE.name(), Notifications.THIRTEEN.name(), Notifications.FOURTEEN.name(),
                 Notifications.FIFTEEN.name(), Notifications.SIXTEEN.name(), Notifications.SEVENTEEN.name(),
                 Notifications.EIGHTEEN.name(), Notifications.SWITCH_OFF.name(),
-                "BACK_TO_START", "BACK_TO_SETTINGS");
+                BasicButtons.BACK_TO_SETTINGS.name(), BasicButtons.BACK_TO_START.name());
         createMenu(buttons, 5, message);
         return message;
     }
