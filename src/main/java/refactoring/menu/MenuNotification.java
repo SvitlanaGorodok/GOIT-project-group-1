@@ -1,6 +1,7 @@
 package refactoring.menu;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import refactoring.model.buttonnames.Notifications;
 
 import java.util.List;
 
@@ -8,9 +9,11 @@ public class MenuNotification implements Menu{
     @Override
     public SendMessage printMenu(Long chatId) {
         SendMessage message = new SendMessage(chatId.toString(), "Please choose option:");
-        List<String> buttons = List.of("NINE", "TEN", "ELEVEN", "TWELVE", "THIRTEEN",
-                "FOURTEEN", "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN",
-                "SWICH_OFF", "BACK_TO_START", "BACK_TO_SETTINGS");
+        List<String> buttons = List.of(Notifications.NINE.name(), Notifications.TEN.name(), Notifications.ELEVEN.name(),
+                Notifications.TWELVE.name(), Notifications.THIRTEEN.name(), Notifications.FOURTEEN.name(),
+                Notifications.FIFTEEN.name(), Notifications.SIXTEEN.name(), Notifications.SEVENTEEN.name(),
+                Notifications.EIGHTEEN.name(), Notifications.SWITCH_OFF.name(),
+                "BACK_TO_START", "BACK_TO_SETTINGS");
         createMenu(buttons, 5, message);
         return message;
     }

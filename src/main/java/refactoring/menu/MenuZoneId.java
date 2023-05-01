@@ -1,6 +1,7 @@
 package refactoring.menu;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import refactoring.model.buttonnames.ZoneId;
 
 import java.util.List;
 
@@ -8,13 +9,15 @@ public class MenuZoneId implements Menu{
     @Override
     public SendMessage printMenu(Long chatId) {
         SendMessage message = new SendMessage(chatId.toString(), "Please choose option:");
-        List<String> buttons = List.of("UTC 0", "UTC +1", "UTC +2", "UTC +3",
-                "UTC +4", "UTC +5", "UTC +6", "UTC +7",
-                "UTC +8", "UTC +9", "UTC +10", "UTC +11",
-                "UTC +12", "UTC -1", "UTC -2", "UTC -3",
-                "UTC -4", "UTC -5", "UTC -6", "UTC -7",
-                "UTC -8", "UTC -9", "UTC -10", "UTC -11",
-                "UTC -12", "BACK_TO_START", "BACK_TO_SETTINGS");
+        List<String> buttons = List.of(
+                ZoneId.UTC_ZERO.name(), ZoneId.UTC_ONE.name(), ZoneId.UTC_TWO.name(), ZoneId.UTC_THREE.name(),
+                ZoneId.UTC_FOUR.name(), ZoneId.UTC_FIVE.name(), ZoneId.UTC_SIX.name(), ZoneId.UTC_SEVEN.name(),
+                ZoneId.UTC_EIGHT.name(), ZoneId.UTC_NINE.name(), ZoneId.UTC_TEN.name(), ZoneId.UTC_ELEVEN.name(),
+                ZoneId.UTC_TWELVE.name(), ZoneId.UTC_MINUS_ONE.name(), ZoneId.UTC_MINUS_TWO.name(), ZoneId.UTC_MINUS_THREE.name(),
+                ZoneId.UTC_MINUS_FOUR.name(), ZoneId.UTC_MINUS_FIVE.name(), ZoneId.UTC_MINUS_SIX.name(),
+                ZoneId.UTC_MINUS_SEVEN.name(), ZoneId.UTC_MINUS_EIGHT.name(), ZoneId.UTC_MINUS_NINE.name(),
+                ZoneId.UTC_MINUS_TEN.name(), ZoneId.UTC_MINUS_ELEVEN.name(), ZoneId.UTC_MINUS_TWELVE.name(),
+                "BACK_TO_START", "BACK_TO_SETTINGS");
         createMenu(buttons, 4, message);
         return message;
     }

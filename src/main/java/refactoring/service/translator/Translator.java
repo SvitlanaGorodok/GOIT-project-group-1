@@ -1,4 +1,5 @@
 package refactoring.service.translator;
 
-public class Translator {
+public interface Translator {
+    String translate(String text);
 }
