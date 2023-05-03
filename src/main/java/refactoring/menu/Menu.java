@@ -6,9 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -45,19 +43,19 @@ public interface Menu {
         }
     }
 
-    default void createMenuNew(SendMessage message, Map<String, String > buttonsMap) {
+    default void createMenuNew(SendMessage message, List<InlineKeyboardButton> buttons, List<Integer> keyboadrView) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        List<InlineKeyboardButton> buttons = new ArrayList<>();
-        for (String callback : buttonsMap.keySet()) {
-            buttons.add(createOneButton(callback, buttonsMap.get(callback)));
+        int index = 0;
+        for (Integer buttonsAmount : keyboadrView) {
+            keyboard.add(buttons.subList(index, index + buttonsAmount));
+            index += buttonsAmount;
         }
-        keyboard.add(buttons);
         markup.setKeyboard(keyboard);
         message.setReplyMarkup(markup);
     }
 
-    default InlineKeyboardButton createOneButton(String text, String callbackText){
+    private InlineKeyboardButton createButton(String text, String callbackText) {
         return InlineKeyboardButton.builder()
                 .text(text)
                 .callbackData(callbackText)

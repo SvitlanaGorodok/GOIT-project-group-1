@@ -2,7 +2,9 @@ import lombok.SneakyThrows;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
@@ -26,14 +28,37 @@ public class CurrencyBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         Long chatId = getChatId(update);
         SendMessage message = createMessage("Hello", chatId);
-        createMenu(List.of("BTN1", "BTN2", "BTN3", "BTN4", "BTN5"), 2, message);
+        List<InlineKeyboardButton> buttons = List.of(
+                createButton("buttonName1", "buttonText1"),
+                createButton("buttonName2", "buttonText2"),
+                createButton("buttonName3", "buttonText3"),
+                createButton("buttonName4", "buttonText4"),
+                createButton("buttonName5", "buttonText5"));
+        createMenu(message, buttons, List.of(2, 2, 1));
         sendApiMethodAsync(message);
-        System.out.println(update.getMessage().getFrom().getLanguageCode());
-
     }
 
     private SendMessage createMessage(String text, Long chatId) {
         return new SendMessage(chatId.toString(), text);
+    }
+
+    void createMenu(SendMessage message, List<InlineKeyboardButton> buttons, List<Integer> keyboadrView) {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        int index = 0;
+        for (Integer buttonsAmount : keyboadrView) {
+            keyboard.add(buttons.subList(index, index + buttonsAmount));
+            index += buttonsAmount;
+        }
+        markup.setKeyboard(keyboard);
+        message.setReplyMarkup(markup);
+    }
+
+    private InlineKeyboardButton createButton(String text, String callbackText) {
+        return InlineKeyboardButton.builder()
+                .text(text)
+                .callbackData(callbackText)
+                .build();
     }
 
     private void createMenu(List<String> buttonsList, int buttonsAmountInRow, SendMessage message) {
