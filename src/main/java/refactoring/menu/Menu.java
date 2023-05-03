@@ -1,10 +1,14 @@
 package refactoring.menu;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -39,5 +43,24 @@ public interface Menu {
             replyKeyboardMarkup.setResizeKeyboard(true);
             message.setReplyMarkup(replyKeyboardMarkup);
         }
+    }
+
+    default void createMenuNew(SendMessage message, Map<String, String > buttonsMap) {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        List<InlineKeyboardButton> buttons = new ArrayList<>();
+        for (String callback : buttonsMap.keySet()) {
+            buttons.add(createOneButton(callback, buttonsMap.get(callback)));
+        }
+        keyboard.add(buttons);
+        markup.setKeyboard(keyboard);
+        message.setReplyMarkup(markup);
+    }
+
+    default InlineKeyboardButton createOneButton(String text, String callbackText){
+        return InlineKeyboardButton.builder()
+                .text(text)
+                .callbackData(callbackText)
+                .build();
     }
 }

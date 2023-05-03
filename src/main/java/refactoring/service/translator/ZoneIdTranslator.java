@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ZoneIdTranslator implements Translator{
+public class ZoneIdTranslator implements Translator {
     @Override
     public List<String> translate(Language language) {
         List<ZoneId> buttons = List.of(
@@ -24,7 +24,7 @@ public class ZoneIdTranslator implements Translator{
                 .collect(Collectors.toList());
     }
 
-    private String getName(ZoneId zoneId){
+    private String getName(ZoneId zoneId) {
         Map<ZoneId, String> zoneIdNameMap = new HashMap<>();
         zoneIdNameMap.put(ZoneId.UTC_ZERO, "UTC 0");
         zoneIdNameMap.put(ZoneId.UTC_ONE, "UTC +1");
